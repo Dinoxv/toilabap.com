@@ -1,10 +1,10 @@
-# RITEX AI
+# toilabap.com
 
-> A professional real-time cryptocurrency trading terminal for [Hyperliquid DEX](https://hyperliquid.xyz) with advanced technical analysis, multi-timeframe charting, and automated signal detection.
+> toilabap.com is a professional real-time cryptocurrency trading terminal for [Hyperliquid DEX](https://hyperliquid.xyz) with advanced technical analysis, multi-timeframe charting, and automated signal detection.
 
 ## What It Does
 
-RITEX AI is a self-hosted web-based trading terminal that connects to the Hyperliquid decentralized exchange. It provides real-time charting with TradingView lightweight-charts, a multi-symbol scanner with signal detection, position/order management, and WebSocket-driven live data feeds. It supports read-only mode (wallet address only) or full trading (with private key). 100% client-side — your keys never leave your browser.
+toilabap.com is a self-hosted web-based trading terminal that connects to the Hyperliquid decentralized exchange. It provides real-time charting with TradingView lightweight-charts, a multi-symbol scanner with signal detection, position and order management, and WebSocket-driven live data feeds. It supports read-only mode (wallet address only) or full trading (with private key). 100% client-side — your keys never leave your browser.
 
 ## Key Features
 
@@ -36,7 +36,7 @@ Requires Node.js 18+.
 
 ## Author
 
-Built by [RITEX AI](https://ritexai.com)
+Built by [toilabap.com](https://toilabap.com)
 
 ## License
 

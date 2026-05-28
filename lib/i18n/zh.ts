@@ -58,7 +58,7 @@ export const zh: Translations = {
     reviewDesc: '追踪每笔交易。查看胜率、盈亏和绩效趋势。',
     readyToTrade: '准备交易？',
     readyToTradeDesc: '零设置开始更聪明的剥头皮交易。连接交易所凭证即可开始。',
-    builtBy: '由 RITEX AI 开发',
+    builtBy: '由 toilabap.com 开发',
     betaWarning: 'BETA软件：此平台处于测试阶段。交易存在重大财务损失风险。过往表现不代表未来结果。风险自负。',
     // Stats
     statsLines: 'TS/TSX 代码行',
@@ -118,7 +118,7 @@ export const zh: Translations = {
   },
   auth: {
     loadingCredentials: '正在加载凭证...',
-    welcomeTitle: '欢迎使用 RITEX AI',
+    welcomeTitle: '欢迎使用 toilabap.com',
     welcomeDesc: '配置您的交易所凭证以开始',
     privateKeyRequired: '私钥为必填项',
     privateKeyMustStart0x: '私钥必须以0x开头',
@@ -280,8 +280,8 @@ export const zh: Translations = {
     trendLengthColor: '趋势长度（颜色）',
     atrMultSl: 'ATR 系数（SL）',
     tpMultiplier: 'TP 系数',
-    positionSize: '█ 仓位大小（% 账户价值）',
-    positionSizeDesc: '配置每种订单类型使用的账户价值百分比。',
+    positionSize: '█ 仓位大小（USDT）',
+    positionSizeDesc: '为每种订单类型输入初始保证金（USDT）。',
     cloudOrders: '云订单',
     smallOrders: '小订单（SM做多/做空）',
     bigOrders: '大订单（BIG做多/做空）',

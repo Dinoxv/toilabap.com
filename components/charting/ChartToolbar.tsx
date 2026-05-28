@@ -51,12 +51,13 @@ const INTERVAL_GROUPS: { title: string; items: IntervalItem[] }[] = [
       { value: '1d', label: '1 day', favorite: true },
       { value: '3d', label: '3 days' },
       { value: '1w', label: '1 week' },
-      { value: '1M', label: '1 month' },
+      { value: '1M', label: '1 month (1mo)' },
     ],
   },
 ];
 
 const FAVORITE_INTERVALS: { value: TimeInterval; label: string }[] = [
+  { value: '1m', label: '1m' },
   { value: '5m', label: '5m' },
   { value: '1h', label: '1h' },
   { value: '1d', label: '1d' },
@@ -65,7 +66,7 @@ const FAVORITE_INTERVALS: { value: TimeInterval; label: string }[] = [
 const SHORT_LABEL: Record<TimeInterval, string> = {
   '1m': '1m', '3m': '3m', '5m': '5m', '15m': '15m', '30m': '30m',
   '1h': '1h', '2h': '2h', '4h': '4h', '8h': '8h', '12h': '12h',
-  '1d': '1d', '3d': '3d', '1w': '1w', '1M': '1M',
+  '1d': '1d', '3d': '3d', '1w': '1w', '1M': '1mo',
 };
 
 // ---------------- chart-type icons ----------------
@@ -239,6 +240,7 @@ export interface ChartToolbarProps {
   onToggleIndicator: (id: string) => void;
   trendMatrixSettings?: {
     msLen: number;
+    htfTF: '1m' | '3m' | '5m' | '15m' | '1h' | '4h' | '1d';
     htfEmaLen: number;
     atrLength: number;
     atrMult: number;
@@ -290,6 +292,7 @@ const isExcludedIndicator = (indicator: IndicatorOption): boolean => {
 
 const TREND_MATRIX_DEFAULTS: NonNullable<ChartToolbarProps['trendMatrixSettings']> = {
   msLen: 10,
+  htfTF: '5m',
   htfEmaLen: 50,
   atrLength: 14,
   atrMult: 4,
@@ -305,6 +308,26 @@ const TREND_MATRIX_DEFAULTS: NonNullable<ChartToolbarProps['trendMatrixSettings'
   showHTF: true,
   showPending: true,
 };
+
+function timeframeToMinutes(tf: TimeInterval | NonNullable<ChartToolbarProps['trendMatrixSettings']>['htfTF']): number | null {
+  switch (tf) {
+    case '1m': return 1;
+    case '3m': return 3;
+    case '5m': return 5;
+    case '15m': return 15;
+    case '30m': return 30;
+    case '1h': return 60;
+    case '2h': return 120;
+    case '4h': return 240;
+    case '8h': return 480;
+    case '12h': return 720;
+    case '1d': return 1440;
+    case '3d': return 4320;
+    case '1w': return 10080;
+    case '1M': return 43200;
+    default: return null;
+  }
+}
 
 export function ChartToolbar({
   interval,
@@ -327,6 +350,21 @@ export function ChartToolbar({
     indicator.label.toLowerCase().includes(normalizedIndicatorSearch) ||
     indicator.id.toLowerCase().includes(normalizedIndicatorSearch)
   );
+  const isTrendMatrixHtfLocked = interval === '1m' || interval === '5m';
+  const actualTrendMatrixHtf = interval === '1m'
+    ? '3m'
+    : interval === '5m'
+      ? '15m'
+      : trendMatrixSettings?.htfTF ?? '5m';
+  const tradeMinutes = timeframeToMinutes(interval);
+  const isHtfOptionInvalidForInterval = (htf: NonNullable<ChartToolbarProps['trendMatrixSettings']>['htfTF']): boolean => {
+    if (isTrendMatrixHtfLocked) {
+      return htf !== actualTrendMatrixHtf;
+    }
+    const htfMinutes = timeframeToMinutes(htf);
+    if (!tradeMinutes || !htfMinutes) return true;
+    return htfMinutes <= tradeMinutes;
+  };
 
   return (
     <div
@@ -525,6 +563,30 @@ export function ChartToolbar({
 
               {trendMatrixOpen && (
               <div className="px-3 py-2 grid grid-cols-2 gap-2 text-xs text-gray-300">
+                <label className="flex flex-col gap-1">
+                  <span>HTF TF</span>
+                  <select
+                    value={trendMatrixSettings.htfTF}
+                    disabled={isTrendMatrixHtfLocked}
+                    onChange={(e) => onTrendMatrixSettingsChange({ htfTF: e.target.value as NonNullable<ChartToolbarProps['trendMatrixSettings']>['htfTF'] })}
+                    className="bg-[#0f1722] border border-gray-700 rounded px-2 py-1"
+                  >
+                    <option value="3m" disabled={isHtfOptionInvalidForInterval('3m')}>3m</option>
+                    <option value="5m" disabled={isHtfOptionInvalidForInterval('5m')}>5m</option>
+                    <option value="15m" disabled={isHtfOptionInvalidForInterval('15m')}>15m</option>
+                    <option value="1h" disabled={isHtfOptionInvalidForInterval('1h')}>1h</option>
+                    <option value="4h" disabled={isHtfOptionInvalidForInterval('4h')}>4h</option>
+                    <option value="1d" disabled={isHtfOptionInvalidForInterval('1d')}>1d</option>
+                  </select>
+                  <span className="inline-flex items-center gap-1 rounded-full border border-cyan-400/40 bg-cyan-400/10 px-2 py-0.5 text-[10px] font-semibold text-cyan-300">
+                    HTF đang dùng: <span className="text-cyan-100">{actualTrendMatrixHtf}</span>
+                  </span>
+                  <span className="text-[10px] text-gray-500">
+                    {isTrendMatrixHtfLocked
+                      ? '1m và 5m khóa theo map cứng.'
+                      : 'Chỉ cho phép HTF lớn hơn timeframe hiện tại.'}
+                  </span>
+                </label>
                 <label className="flex flex-col gap-1">
                   <span>MS Len</span>
                   <input

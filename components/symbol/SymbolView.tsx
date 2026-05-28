@@ -49,9 +49,9 @@ function SymbolView({ coin }: SymbolViewProps) {
   const orderSettings = useMemo(() => {
     const byExchange = settingsOrders.byExchange?.[selectedExchange];
     return byExchange ?? {
-      cloudPercentage: settingsOrders.cloudPercentage,
-      smallPercentage: settingsOrders.smallPercentage,
-      bigPercentage: settingsOrders.bigPercentage,
+      cloudInitialMarginUsdt: settingsOrders.cloudInitialMarginUsdt ?? settingsOrders.cloudPercentage ?? 5,
+      smallInitialMarginUsdt: settingsOrders.smallInitialMarginUsdt ?? settingsOrders.smallPercentage ?? 10,
+      bigInitialMarginUsdt: settingsOrders.bigInitialMarginUsdt ?? settingsOrders.bigPercentage ?? 25,
       leverage: settingsOrders.leverage,
     };
   }, [settingsOrders, selectedExchange]);
@@ -228,12 +228,12 @@ function SymbolView({ coin }: SymbolViewProps) {
         symbol: coin,
         currentPrice,
         priceInterval,
-        percentage: orderSettings.cloudPercentage
+        initialMarginUsdt: orderSettings.cloudInitialMarginUsdt
       });
     } catch (error) {
       // Error executing buy cloud
     }
-  }, [coin, candles, orderSettings.cloudPercentage, buyCloud, sellCloud, invertedMode]);
+  }, [coin, candles, orderSettings.cloudInitialMarginUsdt, buyCloud, sellCloud, invertedMode]);
 
   const handleSellCloud = useCallback(async () => {
     const actualSide = invertedMode ? 'bullish' : 'bearish';
@@ -252,12 +252,12 @@ function SymbolView({ coin }: SymbolViewProps) {
         symbol: coin,
         currentPrice,
         priceInterval,
-        percentage: orderSettings.cloudPercentage
+        initialMarginUsdt: orderSettings.cloudInitialMarginUsdt
       });
     } catch (error) {
       // Error executing sell cloud
     }
-  }, [coin, candles, orderSettings.cloudPercentage, sellCloud, buyCloud, invertedMode]);
+  }, [coin, candles, orderSettings.cloudInitialMarginUsdt, sellCloud, buyCloud, invertedMode]);
 
   const handleSmLong = useCallback(async () => {
     const actualSide = invertedMode ? 'bearish' : 'bullish';
@@ -276,12 +276,12 @@ function SymbolView({ coin }: SymbolViewProps) {
         symbol: coin,
         currentPrice,
         priceInterval,
-        percentage: orderSettings.smallPercentage
+        initialMarginUsdt: orderSettings.smallInitialMarginUsdt
       });
     } catch (error) {
       // Error executing sm long
     }
-  }, [coin, candles, orderSettings.smallPercentage, smLong, smShort, invertedMode]);
+  }, [coin, candles, orderSettings.smallInitialMarginUsdt, smLong, smShort, invertedMode]);
 
   const handleSmShort = useCallback(async () => {
     const actualSide = invertedMode ? 'bullish' : 'bearish';
@@ -300,12 +300,12 @@ function SymbolView({ coin }: SymbolViewProps) {
         symbol: coin,
         currentPrice,
         priceInterval,
-        percentage: orderSettings.smallPercentage
+        initialMarginUsdt: orderSettings.smallInitialMarginUsdt
       });
     } catch (error) {
       // Error executing sm short
     }
-  }, [coin, candles, orderSettings.smallPercentage, smShort, smLong, invertedMode]);
+  }, [coin, candles, orderSettings.smallInitialMarginUsdt, smShort, smLong, invertedMode]);
 
   const handleBigLong = useCallback(async () => {
     const actualSide = invertedMode ? 'bearish' : 'bullish';
@@ -324,12 +324,12 @@ function SymbolView({ coin }: SymbolViewProps) {
         symbol: coin,
         currentPrice,
         priceInterval,
-        percentage: orderSettings.bigPercentage
+        initialMarginUsdt: orderSettings.bigInitialMarginUsdt
       });
     } catch (error) {
       // Error executing big long
     }
-  }, [coin, candles, orderSettings.bigPercentage, bigLong, bigShort, invertedMode]);
+  }, [coin, candles, orderSettings.bigInitialMarginUsdt, bigLong, bigShort, invertedMode]);
 
   const handleBigShort = useCallback(async () => {
     const actualSide = invertedMode ? 'bullish' : 'bearish';
@@ -348,12 +348,12 @@ function SymbolView({ coin }: SymbolViewProps) {
         symbol: coin,
         currentPrice,
         priceInterval,
-        percentage: orderSettings.bigPercentage
+        initialMarginUsdt: orderSettings.bigInitialMarginUsdt
       });
     } catch (error) {
       // Error executing big short
     }
-  }, [coin, candles, orderSettings.bigPercentage, bigShort, bigLong, invertedMode]);
+  }, [coin, candles, orderSettings.bigInitialMarginUsdt, bigShort, bigLong, invertedMode]);
 
   const handleClose25 = useCallback(async () => {
     try {
@@ -649,22 +649,22 @@ onChartClick={async (data) => {
                         const isCloud = type.includes('cloud');
                         const isBig = type.includes('big');
 
-                        let percentage: number;
+                        let initialMarginUsdt: number;
                         if (isCloud) {
-                          percentage = orderSettings.cloudPercentage;
+                          initialMarginUsdt = orderSettings.cloudInitialMarginUsdt;
                         } else if (isBig) {
-                          percentage = orderSettings.bigPercentage;
+                          initialMarginUsdt = orderSettings.bigInitialMarginUsdt;
                         } else {
-                          percentage = orderSettings.smallPercentage;
+                          initialMarginUsdt = orderSettings.smallInitialMarginUsdt;
                         }
 
-                        console.log('Placing order:', { coin, price: data.price, currentPrice, isBuy, percentage, orderType: isCloud ? 'cloud' : isBig ? 'big' : 'small' });
+                        console.log('Placing order:', { coin, price: data.price, currentPrice, isBuy, initialMarginUsdt, orderType: isCloud ? 'cloud' : isBig ? 'big' : 'small' });
 
                         await placeLimitOrderAtPrice({
                           symbol: coin,
                           price: data.price,
                           isBuy,
-                          percentage,
+                          initialMarginUsdt,
                           currentPrice,
                         });
 

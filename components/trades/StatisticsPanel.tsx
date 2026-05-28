@@ -56,44 +56,44 @@ function StatisticsPanel({ groups, totalPnl }: StatisticsPanelProps) {
   }
 
   return (
-    <div className="text-[12px] space-y-1 font-mono">
-      <div className="flex justify-between">
+    <div className="text-[11px] sm:text-[12px] space-y-1 font-mono">
+      <div className="flex items-start justify-between gap-2">
         <span className="text-primary-muted">TOTAL P&L:</span>
-        <span className={totalPnl >= 0 ? 'text-bullish' : 'text-bearish'}>
+        <span className={`text-right ${totalPnl >= 0 ? 'text-bullish' : 'text-bearish'}`}>
           {totalPnl >= 0 ? '+' : ''}{totalPnl.toFixed(2)} USD
         </span>
       </div>
-      <div className="flex justify-between">
+      <div className="flex items-start justify-between gap-2">
         <span className="text-primary-muted">TRADES:</span>
-        <span className="text-primary">{stats.totalTrades}</span>
+        <span className="text-primary text-right">{stats.totalTrades}</span>
       </div>
-      <div className="flex justify-between">
+      <div className="flex items-start justify-between gap-2">
         <span className="text-primary-muted">WIN RATE:</span>
-        <span className={stats.winRate >= 50 ? 'text-bullish' : 'text-bearish'}>
+        <span className={`text-right ${stats.winRate >= 50 ? 'text-bullish' : 'text-bearish'}`}>
           {stats.winRate.toFixed(1)}% ({stats.winCount}W / {stats.lossCount}L)
         </span>
       </div>
-      <div className="flex justify-between">
+      <div className="flex items-start justify-between gap-2">
         <span className="text-primary-muted">AVG P&L:</span>
-        <span className={stats.averagePnl >= 0 ? 'text-bullish' : 'text-bearish'}>
+        <span className={`text-right ${stats.averagePnl >= 0 ? 'text-bullish' : 'text-bearish'}`}>
           {stats.averagePnl >= 0 ? '+' : ''}${stats.averagePnl.toFixed(2)}
         </span>
       </div>
-      <div className="flex justify-between">
+      <div className="flex items-start justify-between gap-2">
         <span className="text-primary-muted">BEST TRADE:</span>
-        <span className="text-bullish">
+        <span className="text-bullish text-right break-all sm:break-normal">
           {stats.bestTrade ? `+$${stats.bestTrade.pnl.toFixed(2)} (${stats.bestTrade.coin})` : '--'}
         </span>
       </div>
-      <div className="flex justify-between">
+      <div className="flex items-start justify-between gap-2">
         <span className="text-primary-muted">WORST TRADE:</span>
-        <span className="text-bearish">
+        <span className="text-bearish text-right break-all sm:break-normal">
           {stats.worstTrade ? `${stats.worstTrade.pnl >= 0 ? '+' : ''}$${stats.worstTrade.pnl.toFixed(2)} (${stats.worstTrade.coin})` : '--'}
         </span>
       </div>
-      <div className="flex justify-between">
+      <div className="flex items-start justify-between gap-2">
         <span className="text-primary-muted">FEES PAID:</span>
-        <span className="text-primary">${Math.abs(stats.totalFees).toFixed(2)}</span>
+        <span className="text-primary text-right">${Math.abs(stats.totalFees).toFixed(2)}</span>
       </div>
     </div>
   );

@@ -1,10 +1,10 @@
-# RITEX AI — Full Technical Reference
+# toilabap.com — Full Technical Reference
 
-> A professional real-time cryptocurrency trading terminal for Hyperliquid DEX with advanced technical analysis, multi-timeframe charting, and automated signal detection.
+> toilabap.com is a professional real-time cryptocurrency trading terminal for Hyperliquid DEX with advanced technical analysis, multi-timeframe charting, and automated signal detection.
 
 ## Architecture Overview
 
-RITEX AI is a Next.js 16 application using the App Router. It connects to Hyperliquid's REST API and WebSocket endpoints via the `@nktkas/hyperliquid` SDK. State is managed through 20+ Zustand stores, each responsible for a specific domain (candles, positions, orders, scanner, settings, etc.). The UI renders TradingView lightweight-charts for all charting. The app is fully client-side; there is no backend server.
+toilabap.com is a Next.js 16 application using the App Router. It connects to Hyperliquid's REST API and WebSocket endpoints via the `@nktkas/hyperliquid` SDK. State is managed through 20+ Zustand stores, each responsible for a specific domain (candles, positions, orders, scanner, settings, etc.). The UI renders TradingView lightweight-charts for all charting. The app is fully client-side; there is no backend server.
 
 ### Data Flow
 
@@ -308,7 +308,7 @@ Private key is stored only in browser memory (React context via `credentials-con
 
 ## Author
 
-Built by [RITEX AI](https://ritexai.com)
+Built by [toilabap.com](https://toilabap.com)
 
 ## License
 

@@ -1,0 +1,8 @@
+{{!< default}}
+<section class="container page">
+  <h1>{{name}}</h1>
+  <p>{{bio}}</p>
+  {{#foreach posts}}
+    <article class="card"><a href="{{url}}">{{title}}</a></article>
+  {{/foreach}}
+</section>

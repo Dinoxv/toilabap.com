@@ -58,7 +58,7 @@ export const en: Translations = {
     reviewDesc: 'Track every trade. See your win rate, P&L, and performance trends.',
     readyToTrade: 'READY TO TRADE?',
     readyToTradeDesc: 'Start scalping smarter with zero setup. Connect your exchange credentials and go.',
-    builtBy: 'Built by RITEX AI',
+    builtBy: 'Built by toilabap.com',
     betaWarning: 'BETA SOFTWARE: This platform is in beta. Trading carries substantial risk of financial loss. Past performance is not indicative of future results. Use at your own risk.',
     // Stats
     statsLines: 'Lines of TS/TSX',
@@ -118,7 +118,7 @@ export const en: Translations = {
   },
   auth: {
     loadingCredentials: 'Loading credentials...',
-    welcomeTitle: 'Welcome to RITEX AI',
+    welcomeTitle: 'Welcome to toilabap.com',
     welcomeDesc: 'Configure your exchange credentials to get started',
     privateKeyRequired: 'Private key is required',
     privateKeyMustStart0x: 'Private key must start with 0x',
@@ -280,8 +280,8 @@ export const en: Translations = {
     trendLengthColor: 'TREND LENGTH (COLOR)',
     atrMultSl: 'ATR MULT (SL)',
     tpMultiplier: 'TP MULTIPLIER',
-    positionSize: '█ POSITION SIZE (% OF ACCOUNT VALUE)',
-    positionSizeDesc: 'Configure the percentage of your account value to use for each order type.',
+    positionSize: '█ POSITION SIZE (USDT)',
+    positionSizeDesc: 'Enter the initial margin in USDT for each order type.',
     cloudOrders: 'CLOUD ORDERS',
     smallOrders: 'SMALL ORDERS (SM LONG/SHORT)',
     bigOrders: 'BIG ORDERS (BIG LONG/SHORT)',

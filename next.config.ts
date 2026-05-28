@@ -16,10 +16,14 @@ const nextConfig: NextConfig = {
         protocol: 'https',
         hostname: 'ritexai.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'toilabap.com',
+      },
     ],
   },
   trailingSlash: true,
-  allowedDevOrigins: ['ritexai.com'],
+  allowedDevOrigins: ['ritexai.com', 'toilabap.com'],
 };
 
 export default nextConfig;

@@ -195,6 +195,23 @@ function RightTradingPanel({
               
               {/* Main Trading Buttons */}
               <div className="space-y-2 mt-3">
+                <div className="grid grid-cols-2 gap-1.5">
+                  <button
+                    className="w-full py-2 px-2 bg-bullish/15 border border-bullish/45 text-bullish font-bold text-[11px] hover:bg-bullish/25 hover:border-bullish/70 active:bg-bullish/40 active:scale-95 transition-all rounded-sm cursor-pointer"
+                    onClick={onSmLong}
+                    title="SM Long position"
+                  >
+                    █ SM LONG
+                  </button>
+                  <button
+                    className="w-full py-2 px-2 bg-bearish/15 border border-bearish/45 text-bearish font-bold text-[11px] hover:bg-bearish/25 hover:border-bearish/70 active:bg-bearish/40 active:scale-95 transition-all rounded-sm cursor-pointer"
+                    onClick={onSmShort}
+                    title="SM Short position"
+                  >
+                    █ SM SHORT
+                  </button>
+                </div>
+
                 <button
                   className="w-full py-4 px-4 bg-gradient-to-br from-bullish/40 to-bullish/20 border-2 border-bullish/70 text-bullish font-extrabold text-base hover:from-bullish/50 hover:to-bullish/30 hover:border-bullish/90 active:from-bullish/60 active:to-bullish/40 active:scale-[0.98] transition-all duration-150 rounded-lg shadow-lg hover:shadow-[0_0_20px_rgba(38,166,154,0.6)] cursor-pointer relative overflow-hidden group"
                   onClick={onBigLong}

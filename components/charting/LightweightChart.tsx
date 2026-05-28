@@ -17,6 +17,7 @@ import {
   type UTCTimestamp,
 } from 'lightweight-charts';
 import { useCandleStore } from '@/stores/useCandleStore';
+import { useWebSocketStatusStore } from '@/stores/useWebSocketStatusStore';
 import { useSettingsStore } from '@/stores/useSettingsStore';
 import { getCandleTimeWindow } from '@/lib/time-utils';
 import { DEFAULT_CANDLE_COUNT } from '@/lib/constants';
@@ -37,6 +38,47 @@ interface LightweightChartProps {
 
 const CHART_PREFS_STORAGE_KEY = 'hyperscalper-lightweight-chart-prefs-v1';
 const SEVEN_DAYS_MS = 7 * 24 * 60 * 60 * 1000;
+
+function getTrendMatrixForcedHtf(interval: TimeInterval): TimeInterval | null {
+  if (interval === '1m') return '3m';
+  if (interval === '5m') return '15m';
+  return null;
+}
+
+function timeframeToMinutes(tf: TimeInterval | string): number | null {
+  switch (tf) {
+    case '1m': return 1;
+    case '3m': return 3;
+    case '5m': return 5;
+    case '15m': return 15;
+    case '30m': return 30;
+    case '1h': return 60;
+    case '2h': return 120;
+    case '4h': return 240;
+    case '8h': return 480;
+    case '12h': return 720;
+    case '1d': return 1440;
+    case '3d': return 4320;
+    case '1w': return 10080;
+    case '1M': return 43200;
+    default: return null;
+  }
+}
+
+function resolveTrendMatrixEffectiveHtf(
+  interval: TimeInterval,
+  selectedHtf: '1m' | '3m' | '5m' | '15m' | '1h' | '4h' | '1d'
+): TimeInterval | null {
+  const forced = getTrendMatrixForcedHtf(interval);
+  if (forced) return forced;
+
+  const tradeMinutes = timeframeToMinutes(interval);
+  const htfMinutes = timeframeToMinutes(selectedHtf);
+  if (!tradeMinutes || !htfMinutes || htfMinutes <= tradeMinutes) {
+    return null;
+  }
+  return selectedHtf;
+}
 
 interface ChartPrefs {
   interval: TimeInterval;
@@ -63,6 +105,24 @@ type TrendMatrixSeriesRefs = {
   tp4: ISeriesApi<'Line'> | null;
   entry: ISeriesApi<'Line'> | null;
   markerCarrier: ISeriesApi<'Line'> | null;
+};
+
+type TrendMatrixPriceLinesRefs = {
+  entry: any | null;
+  stop: any | null;
+  tp: [any | null, any | null, any | null, any | null];
+  resistance: any | null;
+  support: any | null;
+};
+
+type TmBadge = {
+  id: string;
+  text: string;
+  y: number;
+  fg: string;
+  bg: string;
+  border: string;
+  side?: 'right' | 'inline';
 };
 
 function toOhlc(rows: CandleData[]): LwcOhlc[] {
@@ -135,6 +195,67 @@ function formatTime(tsSec: number) {
   const d = new Date(tsSec * 1000);
   const pad = (n: number) => n.toString().padStart(2, '0');
   return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())} ${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())} UTC`;
+}
+
+function formatTmPrice(value: number): string {
+  if (value >= 1000) return value.toFixed(2);
+  if (value >= 100) return value.toFixed(3);
+  if (value >= 1) return value.toFixed(4);
+  return value.toFixed(5);
+}
+
+function toPct(entry: number, level: number, direction: 'long' | 'short'): string {
+  if (!entry) return '0.00%';
+  const raw = direction === 'long'
+    ? ((level - entry) / entry) * 100
+    : ((entry - level) / entry) * 100;
+  const signed = raw >= 0 ? `+${raw.toFixed(2)}` : raw.toFixed(2);
+  return `${signed}%`;
+}
+
+function clearTmPriceLines(target: TrendMatrixPriceLinesRefs) {
+  const all = [target.entry, target.stop, ...target.tp, target.resistance, target.support];
+  all.forEach((line) => {
+    if (!line) return;
+    try {
+      line.series.removePriceLine(line.priceLine);
+    } catch {
+      // no-op
+    }
+  });
+  target.entry = null;
+  target.stop = null;
+  target.tp = [null, null, null, null];
+  target.resistance = null;
+  target.support = null;
+}
+
+function spreadBadgeY(items: TmBadge[], height: number, minGap: number): TmBadge[] {
+  if (items.length <= 1) return items;
+
+  const sorted = [...items]
+    .map((item, index) => ({ ...item, _index: index, y: Math.max(14, Math.min(height - 14, item.y)) }))
+    .sort((a, b) => a.y - b.y);
+
+  for (let i = 1; i < sorted.length; i++) {
+    if (sorted[i].y - sorted[i - 1].y < minGap) {
+      sorted[i].y = sorted[i - 1].y + minGap;
+    }
+  }
+
+  for (let i = sorted.length - 2; i >= 0; i--) {
+    if (sorted[i + 1].y > height - 14) {
+      sorted[i + 1].y = height - 14;
+    }
+    if (sorted[i + 1].y - sorted[i].y < minGap) {
+      sorted[i].y = sorted[i + 1].y - minGap;
+    }
+    sorted[i].y = Math.max(14, sorted[i].y);
+  }
+
+  return sorted
+    .sort((a, b) => a._index - b._index)
+    .map(({ _index, ...rest }) => rest);
 }
 
 function isOhlcType(t: ChartType) {
@@ -539,7 +660,7 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
     }
   });
   const [enabledIndicators, setEnabledIndicators] = useState<Record<string, boolean>>(() => {
-    const defaults: Record<string, boolean> = {};
+    const defaults: Record<string, boolean> = { trendMatrix: true };
     if (typeof window === 'undefined') return defaults;
     try {
       const raw = localStorage.getItem(CHART_PREFS_STORAGE_KEY);
@@ -584,12 +705,16 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
 
   const trendMatrixSettings = useSettingsStore((s) => s.settings.indicators.trendMatrix);
   const updateTrendMatrixSettings = useSettingsStore((s) => s.updateTrendMatrixSettings);
+  const trendMatrixEffectiveHtf = resolveTrendMatrixEffectiveHtf(interval, trendMatrixSettings.htfTF);
+  const trendMatrixVisible = !!enabledIndicators.trendMatrix && !!trendMatrixSettings.enabled;
   const [hover, setHover] = useState<{
     time: number;
     open?: number; high?: number; low?: number; close?: number;
     value?: number;
     volume: number;
   } | null>(null);
+  const [tmRightBadges, setTmRightBadges] = useState<TmBadge[]>([]);
+  const [tmInlineBadges, setTmInlineBadges] = useState<TmBadge[]>([]);
 
   const containerRef = useRef<HTMLDivElement | null>(null);
   const chartRef = useRef<IChartApi | null>(null);
@@ -598,6 +723,14 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
   const overlaySeriesRef = useRef<Record<string, ISeriesApi<'Line'> | null>>({});
   const paneSeriesRef = useRef<Record<string, ISeriesApi<any>[]>>({});
   const trendMatrixSeriesRef = useRef<TrendMatrixSeriesRefs | null>(null);
+  const trendMatrixPriceLinesRef = useRef<TrendMatrixPriceLinesRefs>({
+    entry: null,
+    stop: null,
+    tp: [null, null, null, null],
+    resistance: null,
+    support: null,
+  });
+  const tmBoxSignatureRef = useRef<string>('');
   const chartTypeRef = useRef<ChartType>(chartType);
   const lastDataLenRef = useRef<number>(0);
   // Track first candle timestamp to detect when a full-history fetch replaces WS-primed data.
@@ -607,10 +740,21 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
   const lastFirstCandleTimeRef = useRef<number>(0);
 
   const candles = useCandleStore((s) => s.selectCandles(coin, interval));
+  const trendMatrixHtfCandles = useCandleStore((s) =>
+    trendMatrixEffectiveHtf ? s.selectCandles(coin, trendMatrixEffectiveHtf) : []
+  );
   const fetchCandles = useCandleStore((s) => s.fetchCandles);
   const subscribeToCandles = useCandleStore((s) => s.subscribeToCandles);
   const unsubscribeFromCandles = useCandleStore((s) => s.unsubscribeFromCandles);
   const candleService = useCandleStore((s) => s.service);
+  const wsOverallStatus = useWebSocketStatusStore((s) => s.overallStatus);
+  const candleStreamKey = `${coin.toLowerCase().endsWith('usdt') ? coin.toLowerCase() : `${coin.toLowerCase()}usdt`}@kline_${interval}`;
+  const candleStreamHealth = useWebSocketStatusStore((s) => s.streamHealth[candleStreamKey]);
+  const showRealtimeWarning =
+    wsOverallStatus === 'connecting' ||
+    wsOverallStatus === 'disconnected' ||
+    wsOverallStatus === 'error' ||
+    !!candleStreamHealth?.isStale;
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -619,6 +763,12 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
       localStorage.setItem(CHART_PREFS_STORAGE_KEY, JSON.stringify(prefs));
     } catch {}
   }, [interval, chartType, enabledIndicators]);
+
+  // Keep chart-overlay toggle and settings toggle aligned for Trend Matrix.
+  useEffect(() => {
+    const next = !!trendMatrixSettings.enabled;
+    setEnabledIndicators((prev) => (prev.trendMatrix === next ? prev : { ...prev, trendMatrix: next }));
+  }, [trendMatrixSettings.enabled]);
 
   // Fetch + subscribe per interval (SymbolView only auto-subs 1m/5m/15m/1h).
   useEffect(() => {
@@ -631,6 +781,18 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
     subscribeToCandles(coin, interval);
     return () => { unsubscribeFromCandles(coin, interval); };
   }, [coin, interval, candleService, fetchCandles, subscribeToCandles, unsubscribeFromCandles]);
+
+  useEffect(() => {
+    if (!candleService) return;
+    if (!trendMatrixEffectiveHtf) return;
+
+    const now = Date.now();
+    const { startTime, endTime } = getCandleTimeWindow(trendMatrixEffectiveHtf, DEFAULT_CANDLE_COUNT);
+    fetchCandles(coin, trendMatrixEffectiveHtf, startTime, endTime);
+    subscribeToCandles(coin, trendMatrixEffectiveHtf);
+
+    return () => { unsubscribeFromCandles(coin, trendMatrixEffectiveHtf); };
+  }, [coin, candleService, fetchCandles, subscribeToCandles, unsubscribeFromCandles, trendMatrixEffectiveHtf]);
 
   // Create chart + volume series + crosshair handler ONCE.
   useEffect(() => {
@@ -698,6 +860,9 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
       overlaySeriesRef.current = {};
       paneSeriesRef.current = {};
       trendMatrixSeriesRef.current = null;
+      clearTmPriceLines(trendMatrixPriceLinesRef.current);
+      setTmRightBadges([]);
+      setTmInlineBadges([]);
       lastDataLenRef.current = 0;
     };
   }, []);
@@ -748,7 +913,7 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
 
     // Trend Matrix uses multiple overlay series + a marker carrier.
     {
-      const want = !!enabledIndicators.trendMatrix;
+      const want = trendMatrixVisible;
       const existing = trendMatrixSeriesRef.current;
       if (want && !existing) {
         const bull = trendMatrixSettings.bullColor;
@@ -773,6 +938,10 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
           }
         }
         trendMatrixSeriesRef.current = null;
+        clearTmPriceLines(trendMatrixPriceLinesRef.current);
+        tmBoxSignatureRef.current = '';
+        setTmRightBadges([]);
+        setTmInlineBadges([]);
       }
     }
 
@@ -822,7 +991,7 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
         paneSeriesRef.current[p.id] = [];
       }
     }
-  }, [enabledIndicators, trendMatrixSettings.bullColor, trendMatrixSettings.bearColor]);
+  }, [enabledIndicators, trendMatrixSettings.bullColor, trendMatrixSettings.bearColor, trendMatrixVisible]);
 
   // Push data into series whenever candles or chartType changes.
   useEffect(() => {
@@ -898,9 +1067,14 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
     }
 
     // Update Trend Matrix multi-series overlay.
-    if (enabledIndicators.trendMatrix && trendMatrixSeriesRef.current) {
+    if (trendMatrixVisible && trendMatrixSeriesRef.current) {
       const tm = calculateTrendMatrix(candles, {
         ...trendMatrixSettings,
+        tradeTimeframe: interval,
+        htfCandles: trendMatrixHtfCandles.length > 0 ? trendMatrixHtfCandles : undefined,
+        debugBiasSource: true,
+        debugContext: 'chart',
+        debugSymbol: coin,
         bullColor: trendMatrixSettings.bullColor,
         bearColor: trendMatrixSettings.bearColor,
       });
@@ -938,22 +1112,235 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
         if (refs.markerCarrier) {
           refs.markerCarrier.setData(toCloseLine(candles) as any);
           try {
-            createSeriesMarkers(
-              refs.markerCarrier,
-              tm.buySellLabels.map((m) => ({
-                time: m.time,
-                position: m.color === trendMatrixSettings.bullColor ? 'belowBar' : 'aboveBar',
-                shape: m.color === trendMatrixSettings.bullColor ? 'arrowUp' : 'arrowDown',
-                color: m.color,
-                text: m.color === trendMatrixSettings.bullColor ? 'BUY' : 'SELL',
-                size: 1,
-              }))
-            );
+            createSeriesMarkers(refs.markerCarrier, [] as any);
           } catch {}
+        }
+
+        // Right-side TP/SL/ENTRY boxes with incremental signature check.
+        const summary = tm.summary;
+
+        const chartHeight = containerRef.current?.clientHeight ?? 0;
+        if (chartHeight > 40 && summary.direction !== 'flat' && summary.entry != null && summary.stop != null && summary.tps) {
+          const toY = (series: any, price: number): number | null => {
+            try {
+              const y = series?.priceToCoordinate?.(price);
+              return typeof y === 'number' && Number.isFinite(y) ? y : null;
+            } catch {
+              return null;
+            }
+          };
+
+          const activeDirection: 'long' | 'short' = summary.direction === 'long' ? 'long' : 'short';
+          const rightBadgesRaw: TmBadge[] = [];
+          const tpSeries = [refs.tp1, refs.tp2, refs.tp3, refs.tp4];
+          const tpPalette = [
+            { fg: '#f0fdff', bg: 'rgba(14, 116, 144, 0.98)', border: 'rgba(103, 232, 249, 1)' },
+            { fg: '#c6f7ff', bg: 'rgba(8, 145, 178, 0.82)', border: 'rgba(56, 189, 248, 0.9)' },
+            { fg: '#8defff', bg: 'rgba(8, 145, 178, 0.6)', border: 'rgba(34, 211, 238, 0.72)' },
+            { fg: '#5ee9ff', bg: 'rgba(8, 145, 178, 0.42)', border: 'rgba(34, 211, 238, 0.52)' },
+          ];
+
+          summary.tps.forEach((tp, idx) => {
+            const y = toY(tpSeries[idx], tp);
+            if (y == null) return;
+            const palette = tpPalette[idx] ?? tpPalette[tpPalette.length - 1];
+            rightBadgesRaw.push({
+              id: `tp-${idx + 1}`,
+              text: `TP${idx + 1} ${formatTmPrice(tp)} (${toPct(summary.entry!, tp, activeDirection)})`,
+              y,
+              fg: palette.fg,
+              bg: palette.bg,
+              border: palette.border,
+              side: 'right',
+            });
+          });
+
+          const entryY = toY(refs.entry, summary.entry);
+          if (entryY != null) {
+            rightBadgesRaw.push({
+              id: 'entry',
+              text: `ENTRY ${formatTmPrice(summary.entry)}`,
+              y: entryY,
+              fg: '#cffafe',
+              bg: 'rgba(14, 116, 144, 0.92)',
+              border: 'rgba(34, 211, 238, 0.95)',
+              side: 'right',
+            });
+          }
+
+          const stopY = toY(refs.atrStop, summary.stop);
+          if (stopY != null) {
+            rightBadgesRaw.push({
+              id: 'sl',
+              text: `SL ${formatTmPrice(summary.stop)} (${toPct(summary.entry, summary.stop, activeDirection)})`,
+              y: stopY,
+              fg: '#fecaca',
+              bg: 'rgba(127, 29, 29, 0.92)',
+              border: 'rgba(248, 113, 113, 0.95)',
+              side: 'right',
+            });
+          }
+
+          setTmRightBadges(spreadBadgeY(rightBadgesRaw, chartHeight, 24));
+
+          const inlineRaw: TmBadge[] = [];
+          if (summary.entry != null) {
+            const y = toY(refs.entry, summary.entry);
+            if (y != null) {
+              const isLong = summary.direction === 'long';
+              inlineRaw.push({
+                id: 'signal-badge',
+                text: `${isLong ? 'BUY' : 'SELL'} (${summary.reachedTp}/4)`,
+                y,
+                fg: isLong ? '#cffafe' : '#ffe4e6',
+                bg: isLong ? 'rgba(14, 116, 144, 0.92)' : 'rgba(136, 19, 55, 0.92)',
+                border: isLong ? 'rgba(34, 211, 238, 0.85)' : 'rgba(251, 113, 133, 0.85)',
+                side: 'inline',
+              });
+            }
+          }
+          if (summary.pendingResistance != null) {
+            const y = toY(refs.pendingHigh, summary.pendingResistance);
+            if (y != null) {
+              inlineRaw.push({
+                id: 'khang-cu',
+                text: `Khang cu ${formatTmPrice(summary.pendingResistance)}`,
+                y,
+                fg: '#67e8f9',
+                bg: 'rgba(2, 44, 62, 0.88)',
+                border: 'rgba(34, 211, 238, 0.75)',
+                side: 'inline',
+              });
+            }
+          }
+          if (summary.pendingSupport != null) {
+            const y = toY(refs.pendingLow, summary.pendingSupport);
+            if (y != null) {
+              inlineRaw.push({
+                id: 'ho-tro',
+                text: `Ho tro ${formatTmPrice(summary.pendingSupport)}`,
+                y,
+                fg: '#f0abfc',
+                bg: 'rgba(74, 20, 83, 0.9)',
+                border: 'rgba(217, 70, 239, 0.8)',
+                side: 'inline',
+              });
+            }
+          }
+          if (summary.breakoutLabel && summary.breakoutPrice != null) {
+            const y = toY(refs.entry, summary.breakoutPrice);
+            if (y != null) {
+              inlineRaw.push({
+                id: 'pha-vo',
+                text: summary.breakoutLabel,
+                y,
+                fg: '#93c5fd',
+                bg: 'rgba(30, 58, 138, 0.92)',
+                border: 'rgba(96, 165, 250, 0.85)',
+                side: 'inline',
+              });
+            }
+          }
+          setTmInlineBadges(spreadBadgeY(inlineRaw, chartHeight, 18));
+        } else {
+          setTmRightBadges([]);
+          setTmInlineBadges([]);
+        }
+
+        const signature = JSON.stringify({
+          dir: summary.direction,
+          entry: summary.entry,
+          stop: summary.stop,
+          tps: summary.tps,
+          rs: summary.pendingResistance,
+          sp: summary.pendingSupport,
+        });
+
+        if (signature !== tmBoxSignatureRef.current) {
+          clearTmPriceLines(trendMatrixPriceLinesRef.current);
+          tmBoxSignatureRef.current = signature;
+
+          if (summary.direction !== 'flat' && summary.entry != null && summary.stop != null && summary.tps) {
+            const activeDirection: 'long' | 'short' = summary.direction === 'long' ? 'long' : 'short';
+            const sideColor = summary.direction === 'long' ? '#22d3ee' : '#fb7185';
+
+            trendMatrixPriceLinesRef.current.entry = {
+              series: refs.entry,
+              priceLine: refs.entry?.createPriceLine({
+                price: summary.entry,
+                color: sideColor,
+                lineWidth: 1,
+                lineStyle: 2,
+                axisLabelVisible: false,
+                title: `ENTRY ${formatTmPrice(summary.entry)}`,
+              } as any),
+            };
+
+            trendMatrixPriceLinesRef.current.stop = {
+              series: refs.atrStop,
+              priceLine: refs.atrStop?.createPriceLine({
+                price: summary.stop,
+                color: '#ef4444',
+                lineWidth: 1,
+                lineStyle: 0,
+                axisLabelVisible: false,
+                title: `SL ${formatTmPrice(summary.stop)} (${toPct(summary.entry, summary.stop, activeDirection)})`,
+              } as any),
+            };
+
+            const tpSeries = [refs.tp1, refs.tp2, refs.tp3, refs.tp4];
+            summary.tps.forEach((tp, idx) => {
+              const series = tpSeries[idx];
+              trendMatrixPriceLinesRef.current.tp[idx] = {
+                series,
+                priceLine: series?.createPriceLine({
+                  price: tp,
+                  color: '#22d3ee',
+                  lineWidth: 1,
+                  lineStyle: idx === 0 ? 0 : 2,
+                  axisLabelVisible: false,
+                  title: `TP${idx + 1} ${formatTmPrice(tp)} (${toPct(summary.entry!, tp, activeDirection)})`,
+                } as any),
+              };
+            });
+          }
+
+          if (summary.pendingResistance != null) {
+            trendMatrixPriceLinesRef.current.resistance = {
+              series: refs.pendingHigh,
+              priceLine: refs.pendingHigh?.createPriceLine({
+                price: summary.pendingResistance,
+                color: '#22d3ee',
+                lineWidth: 1,
+                lineStyle: 2,
+                axisLabelVisible: false,
+                title: `Khang cu ${formatTmPrice(summary.pendingResistance)}`,
+              } as any),
+            };
+          }
+
+          if (summary.pendingSupport != null) {
+            trendMatrixPriceLinesRef.current.support = {
+              series: refs.pendingLow,
+              priceLine: refs.pendingLow?.createPriceLine({
+                price: summary.pendingSupport,
+                color: '#e879f9',
+                lineWidth: 1,
+                lineStyle: 2,
+                axisLabelVisible: false,
+                title: `Ho tro ${formatTmPrice(summary.pendingSupport)}`,
+              } as any),
+            };
+          }
         }
       } catch (err) {
         console.warn('[LightweightChart] TM setData error (non-fatal):', err);
+        setTmRightBadges([]);
+        setTmInlineBadges([]);
       }
+    } else {
+      setTmRightBadges([]);
+      setTmInlineBadges([]);
     }
 
     // Update pane indicators (RSI / MACD).
@@ -965,7 +1352,7 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
         seriesArr[i].setData(dataArr[i] as any);
       }
     }
-  }, [candles, chartType, enabledIndicators, trendMatrixSettings]);
+  }, [candles, chartType, enabledIndicators, interval, trendMatrixHtfCandles, trendMatrixSettings, trendMatrixVisible]);
 
   return (
     <div className={`flex flex-col w-full h-full bg-[#0f1722] ${className ?? ''}`} data-chart="lightweight">
@@ -976,9 +1363,15 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
         onChartTypeChange={setChartType}
         indicators={INDICATOR_OPTIONS}
         enabledIndicators={enabledIndicators}
-        onToggleIndicator={(id) =>
-          setEnabledIndicators((prev) => ({ ...prev, [id]: !prev[id] }))
-        }
+        onToggleIndicator={(id) => {
+          if (id === 'trendMatrix') {
+            const next = !trendMatrixVisible;
+            setEnabledIndicators((prev) => ({ ...prev, [id]: next }));
+            updateTrendMatrixSettings({ enabled: next });
+            return;
+          }
+          setEnabledIndicators((prev) => ({ ...prev, [id]: !prev[id] }));
+        }}
         trendMatrixSettings={trendMatrixSettings}
         onTrendMatrixSettingsChange={(next) =>
           updateTrendMatrixSettings(next)
@@ -988,6 +1381,68 @@ function LightweightChart({ coin, exchange: _exchange, className }: LightweightC
       {/* Chart area */}
       <div className="relative flex-1 min-h-0">
         <div ref={containerRef} className="absolute inset-0" />
+
+        <img
+          src="/branding/toilabap.com-logo-dark.svg"
+          alt="toilabap.com"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-[5] w-[220px] max-w-[40%] -translate-x-1/2 -translate-y-1/2 opacity-10 select-none"
+          draggable={false}
+        />
+
+        {tmInlineBadges.map((badge) => (
+          <div
+            key={badge.id}
+            className="pointer-events-none absolute z-20 px-[6px] py-[1px] text-[10px] leading-tight font-semibold tracking-wide rounded-[2px]"
+            style={{
+              right: '198px',
+              top: `${badge.y}px`,
+              transform: 'translateY(-50%)',
+              color: badge.fg,
+              background: badge.bg,
+              border: `1px solid ${badge.border}`,
+              textShadow: '0 0 6px rgba(0,0,0,0.55)',
+            }}
+          >
+            {badge.text}
+          </div>
+        ))}
+
+        {tmRightBadges.map((badge) => (
+          (() => {
+            const isTp = badge.id.startsWith('tp-');
+            return (
+          <div
+            key={badge.id}
+            className="pointer-events-none absolute z-20 px-[6px] py-[1px] text-[10px] leading-tight font-black tracking-[0.03em] rounded-[2px]"
+            style={{
+              right: '8px',
+              top: `${badge.y}px`,
+              transform: 'translateY(-50%)',
+              display: 'flex',
+              alignItems: 'center',
+              height: isTp ? '18px' : '20px',
+              paddingTop: 0,
+              paddingBottom: 0,
+              color: badge.fg,
+              background: badge.bg,
+              border: `1px solid ${badge.border}`,
+              boxShadow: '0 0 0 1px rgba(0,0,0,0.35) inset',
+              textShadow: '0 0 6px rgba(0,0,0,0.55)',
+            }}
+          >
+            {badge.text}
+          </div>
+            );
+          })()
+        ))}
+
+        {showRealtimeWarning && (
+          <div className="pointer-events-none absolute top-2 right-2 z-10 px-2 py-1 text-[10px] font-mono bg-yellow-900/50 border border-yellow-500/40 text-yellow-200">
+            {candleStreamHealth?.isStale
+              ? `Realtime delayed (${Math.round((Date.now() - (candleStreamHealth.lastMessageAt || Date.now())) / 1000)}s) - auto resubscribe...`
+              : `Realtime ${wsOverallStatus} - auto reconnecting...`}
+          </div>
+        )}
 
         {hover && (
           <div className="pointer-events-none absolute top-2 left-2 z-10 px-2 py-1 text-[10px] font-mono bg-black/70 border border-gray-700 text-gray-300">

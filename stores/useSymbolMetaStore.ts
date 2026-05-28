@@ -4,17 +4,20 @@ import type { ExchangeTradingService } from '@/lib/services/types';
 export interface SymbolMeta {
   name: string;
   szDecimals: number;
-  maxLeverage: number;
+  maxLeverage?: number;
 }
 
 interface SymbolMetaStore {
   metadata: Record<string, SymbolMeta>;
+  spotMetadata: Record<string, SymbolMeta>;
   loading: boolean;
   error: string | null;
   service: ExchangeTradingService | null;
   setService: (service: ExchangeTradingService) => void;
   fetchMetadata: () => Promise<void>;
+  fetchSpotMetadata: () => Promise<void>;
   getDecimals: (symbol: string) => { price: number; size: number };
+  getSpotDecimals: (symbol: string) => { price: number; size: number };
 }
 
 const DEFAULT_PRICE_DECIMALS = 2;
@@ -22,6 +25,7 @@ const DEFAULT_SIZE_DECIMALS = 4;
 
 export const useSymbolMetaStore = create<SymbolMetaStore>((set, get) => ({
   metadata: {},
+  spotMetadata: {},
   loading: false,
   error: null,
   service: null,
@@ -60,9 +64,50 @@ export const useSymbolMetaStore = create<SymbolMetaStore>((set, get) => ({
     }
   },
 
+  fetchSpotMetadata: async () => {
+    const { service } = get();
+    if (!service) {
+      console.warn('Service not initialized yet, skipping spot metadata fetch');
+      return;
+    }
+
+    set({ loading: true, error: null });
+
+    try {
+      const { meta } = await service.getSpotMetaAndAssetCtxs();
+      
+      const spotMetadata: Record<string, SymbolMeta> = {};
+      if (meta.universe && Array.isArray(meta.universe)) {
+        meta.universe.forEach((symbol: any) => {
+          spotMetadata[symbol.name] = symbol;
+        });
+      }
+
+      set({ spotMetadata, loading: false });
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : 'Unknown error',
+        loading: false
+      });
+    }
+  },
+
   getDecimals: (symbol: string) => {
     const { metadata } = get();
     const symbolMeta = metadata[symbol];
+    const sizeDecimals = symbolMeta?.szDecimals ?? DEFAULT_SIZE_DECIMALS;
+
+    const priceDecimals = sizeDecimals === 0 ? 6 : Math.max(sizeDecimals, 2);
+
+    return {
+      price: priceDecimals,
+      size: sizeDecimals,
+    };
+  },
+
+  getSpotDecimals: (symbol: string) => {
+    const { spotMetadata } = get();
+    const symbolMeta = spotMetadata[symbol];
     const sizeDecimals = symbolMeta?.szDecimals ?? DEFAULT_SIZE_DECIMALS;
 
     const priceDecimals = sizeDecimals === 0 ? 6 : Math.max(sizeDecimals, 2);

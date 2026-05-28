@@ -1,0 +1,14 @@
+{
+  "name": "toilabap-theme",
+  "version": "1.0.0",
+  "description": "Toilabap Ghost theme",
+  "keywords": ["ghost-theme"],
+  "author": {
+    "name": "Toilabap",
+    "email": "admin@toilabap.local"
+  },
+  "engines": {
+    "ghost": ">=5.0.0"
+  },
+  "license": "MIT"
+}

@@ -123,19 +123,18 @@ export default function LandingPage() {
         <header className="min-h-screen relative overflow-hidden flex items-center justify-center">
           <div className="absolute inset-0 z-0" style={{ transform: `translateY(${scrollY * 0.5}px)`, transition: 'transform 0.1s ease-out' }}>
             <div className="absolute inset-0 bg-gradient-to-br from-slate-950/70 via-slate-900/80 to-slate-950/70 z-10"></div>
-            <img src="/landing/hero.png" alt="RITEX AI Trading Platform" className="w-full h-full object-cover" />
+            <img src="/landing/hero.png" alt="toilabap.com Trading Platform" className="w-full h-[320px] md:h-[420px] object-cover object-top rounded-b-2xl border-b border-white/10 shadow-lg" />
           </div>
           <div className="absolute -top-20 -right-20 w-64 h-64 md:w-96 md:h-96 bg-primary/20 rounded-full blur-3xl z-0" style={{ transform: `translateY(${scrollY * 0.3}px)` }}></div>
           <div className="absolute -bottom-20 -left-20 w-64 h-64 md:w-96 md:h-96 bg-primary/10 rounded-full blur-3xl z-0" style={{ transform: `translateY(${scrollY * 0.7}px)` }}></div>
 
           <div className="relative z-20 max-w-5xl mx-auto px-4 md:px-6 text-center">
             <div className="flex items-center justify-center gap-3 mb-5">
-              <img src="/branding/toilabap.com-icon.svg" alt="Toilabap icon" className="h-10 w-10 md:h-12 md:w-12" />
               <img src="/branding/toilabap.com-logo-dark.svg" alt="Toilabap logo" className="h-8 md:h-10 w-auto" />
             </div>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 md:gap-4 mb-6">
               <h1 className="text-4xl sm:text-5xl md:text-8xl font-bold tracking-tight bg-gradient-to-r from-white via-primary to-white bg-clip-text text-transparent animate-gradient bg-[length:200%_auto]">
-                RITEX AI
+                TOILABAP TERMINAL
               </h1>
               <div className="flex items-center gap-3">
                 <span className="px-3 py-1 bg-yellow-500/20 border border-yellow-500/50 rounded-lg text-yellow-500 font-mono text-xs md:text-sm font-bold">BETA</span>
@@ -147,10 +146,7 @@ export default function LandingPage() {
             <p className="text-base sm:text-lg md:text-2xl text-primary/80 mb-6 font-mono font-light">{t.landing.tagline}</p>
             <p className="text-sm sm:text-base md:text-xl text-gray-300 mb-10 max-w-3xl mx-auto leading-relaxed px-4">{t.landing.description}</p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4">
-              <a href="/0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36/btc/" className="group relative px-8 py-4 bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 font-mono uppercase tracking-wider transition-all text-sm rounded-xl shadow-lg hover:shadow-xl hover:scale-105">
-                <span className="relative z-10">{t.landing.viewDemo}</span>
-                <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-              </a>
+              {/* VIEW DEMO button removed as requested */}
               <button onClick={() => setShowCredentials(true)} className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary font-mono uppercase tracking-wider transition-all text-sm rounded-xl shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-105">
                 <span className="relative z-10">{t.landing.launchTerminal}</span>
                 <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
@@ -306,7 +302,26 @@ export default function LandingPage() {
               {[...features, ...features].map((f, i) => (
                 <div key={i} className={`backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl hover:bg-white/10 hover:border-primary/30 transition-all overflow-hidden flex-none snap-start ${i >= features.length ? 'w-80 hidden md:block' : 'w-[85vw] md:w-80'}`}>
                   <div className="group aspect-video overflow-hidden bg-black/20">
-                    <img src={f.img} alt={f.title} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                    <img src={f.img} alt={f.title} className="w-full h-[160px] md:h-[180px] object-cover rounded-lg border border-white/10 transition-transform duration-500 group-hover:scale-105" />
+                          {/* ── BACKTEST MARKETING MOCKUP ── */}
+                          <section className="mb-16 md:mb-28" data-section-index="backtest">
+                            <div className="backdrop-blur-xl bg-gradient-to-br from-green-500/10 to-primary/5 border border-green-500/30 rounded-2xl p-6 md:p-8 lg:p-12 shadow-xl mb-8 flex flex-col md:flex-row items-center gap-8">
+                              <div className="flex-1 min-w-[220px]">
+                                <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold mb-3 md:mb-4 font-mono text-green-400">Backtest Results (Mockup)</h2>
+                                <ul className="text-gray-200 text-base md:text-lg leading-relaxed space-y-2 font-mono">
+                                  <li>ROI: <span className="text-green-400 font-bold">+312%</span> (12 months)</li>
+                                  <li>Win Rate: <span className="text-green-400 font-bold">68.2%</span></li>
+                                  <li>Max Drawdown: <span className="text-red-400 font-bold">-14.7%</span></li>
+                                  <li>Sharpe Ratio: <span className="text-blue-400 font-bold">2.13</span></li>
+                                  <li>Trades: <span className="text-primary font-bold">1,245</span></li>
+                                </ul>
+                                <p className="text-xs text-gray-400 mt-3">*Số liệu minh họa cho mục đích marketing. Kết quả thực tế có thể khác biệt.</p>
+                              </div>
+                              <div className="flex-1 flex items-center justify-center min-w-[220px]">
+                                <img src="/landing/backtest-mockup.png" alt="Backtest Mockup" className="w-full max-w-xs md:max-w-sm rounded-xl border border-green-500/20 shadow-lg" style={{height:'220px',objectFit:'contain'}} />
+                              </div>
+                            </div>
+                          </section>
                   </div>
                   <div className="p-5 md:p-6">
                     <h3 className="text-base md:text-lg font-mono text-primary mb-2">{f.title}</h3>
@@ -371,35 +386,32 @@ export default function LandingPage() {
               <h3 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4 font-mono">{t.landing.readyToTrade}</h3>
               <p className="text-gray-300 text-sm md:text-base mb-6 md:mb-8 max-w-md mx-auto">{t.landing.readyToTradeDesc}</p>
               <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center">
-                <a href="/0xb83de012dba672c76a7dbbbf3e459cb59d7d6e36/btc/" className="group relative px-8 py-4 bg-gradient-to-r from-gray-700 to-gray-600 hover:from-gray-600 hover:to-gray-500 font-mono uppercase tracking-wider transition-all text-sm rounded-xl shadow-lg hover:shadow-xl hover:scale-105">
-                  <span className="relative z-10">{t.landing.viewDemo}</span>
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                </a>
+                {/* VIEW DEMO button removed as requested */}
                 <button onClick={() => setShowCredentials(true)} className="group relative px-8 py-4 bg-gradient-to-r from-primary to-primary/80 hover:from-primary/90 hover:to-primary font-mono uppercase tracking-wider transition-all text-sm rounded-xl shadow-lg shadow-primary/25 hover:shadow-primary/40 hover:scale-105">
                   <span className="relative z-10">{t.landing.launchTerminal}</span>
                   <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
                 </button>
               </div>
               <div className="mt-8 pt-6 border-t border-white/10">
-                <a href="https://ritexai.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gray-400 hover:text-primary transition-colors font-mono text-xs md:text-sm">
-                  <span>RITEX AI</span>
+                <a href="https://toilabap.com" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-1 text-gray-400 hover:text-primary transition-colors font-mono text-xs md:text-sm">
+                  <span>toilabap.com</span>
                 </a>
 
                 <div className="mt-4 flex items-center justify-center gap-2 text-gray-400 font-mono text-xs md:text-sm">
                   <img
-                    src="/Ritchi-icon.png"
-                    alt="Ritchi logo"
-                    className="h-4 w-4 rounded-full"
+                    src="/branding/toilabap.com-icon.svg"
+                    alt="toilabap.com icon"
+                    className="h-4 w-4"
                   />
                   <span>
-                    Bản quyền thuộc về{' '}
+                    Powered by{' '}
                     <a
-                      href="https://ritchi.guru"
+                      href="https://toilabap.com"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-primary underline hover:text-primary-bright transition-colors"
                     >
-                      Ritchi.guru
+                      toilabap.com
                     </a>
                   </span>
                 </div>
@@ -414,19 +426,19 @@ export default function LandingPage() {
         <div className="backdrop-blur-xl bg-white/10 border border-white/20 rounded-full px-3 py-1.5 shadow-lg">
           <div className="flex items-center gap-2 text-[10px] md:text-xs text-gray-200 font-mono">
             <img
-              src="/Ritchi-icon.png"
-              alt="Ritchi logo"
-              className="h-4 w-4 rounded-full"
+              src="/branding/toilabap.com-icon.svg"
+              alt="toilabap.com icon"
+              className="h-4 w-4"
             />
             <span>
-              Bản quyền thuộc về{' '}
+              Powered by{' '}
               <a
-                href="https://ritchi.guru"
+                href="https://toilabap.com"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary underline hover:text-primary-bright transition-colors"
               >
-                Ritchi.guru
+                toilabap.com
               </a>
             </span>
           </div>

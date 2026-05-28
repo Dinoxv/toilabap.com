@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /admin
+Disallow: /admincp
+Disallow: /pay/admin
+Disallow: /pay/portal
+Disallow: /pay/success
+Disallow: /pay/cancel
+
+Sitemap: https://toilabap.com/sitemap.xml

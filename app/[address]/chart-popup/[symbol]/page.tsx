@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: ChartPopupPageProps): Promise
   const normalized = normalizeSymbol(symbol);
 
   return {
-    title: `${normalized} Chart | RITEX AI`,
+    title: `${normalized} Chart | app.toilabap.com`,
     description: `${normalized} chart popup window for multi-monitor trading setup`,
   };
 }

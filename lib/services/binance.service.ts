@@ -72,7 +72,8 @@ type BinancePositionRisk = {
   positionAmt: string;
   entryPrice: string;
   markPrice: string;
-  unrealizedProfit: string;
+  unRealizedProfit?: string;
+  unrealizedProfit?: string;
   leverage: string;
 };
 
@@ -91,6 +92,13 @@ type BinanceAccountTrade = {
   time: number;
   orderId: number;
   id: number;
+};
+
+type BinanceIncomeItem = {
+  symbol?: string;
+  time?: number;
+  incomeType?: string;
+  income?: string;
 };
 
 type BinanceMetaCache = {
@@ -692,12 +700,13 @@ export class BinanceService extends HyperliquidService {
       .filter((p) => Math.abs(parseFloat(p.positionAmt)) > 0)
       .map((p) => {
         const szi = parseFloat(p.positionAmt);
+        const unrealizedProfit = p.unRealizedProfit ?? p.unrealizedProfit ?? '0';
         return {
           position: {
             coin: fromBinanceSymbol(p.symbol),
             szi: String(szi),
             entryPx: p.entryPrice,
-            unrealizedPnl: p.unrealizedProfit,
+            unrealizedPnl: unrealizedProfit,
             positionValue: String(Math.abs(szi * parseFloat(p.markPrice))),
             leverage: { value: p.leverage },
           },
@@ -741,12 +750,86 @@ export class BinanceService extends HyperliquidService {
   }
 
   async getUserFillsByTime(startTime: number, endTime?: number, _user?: string): Promise<UserFill[]> {
-    const symbols = await this.getAllPerpMetas();
-    const targetSymbols = symbols[0]?.universe?.slice(0, 30)?.map((u: any) => u.name) || [];
+    const targetSymbols = new Set<string>();
 
+    // 1) Discover symbols with real activity in time window.
+    // Paginate income endpoint so monthly tab doesn't miss symbols on active accounts.
+    try {
+      const maxIncomePages = 8;
+      const queryEndTime = endTime ?? Date.now();
+      let cursorEndTime = queryEndTime;
+
+      for (let page = 0; page < maxIncomePages; page += 1) {
+        const incomeRows = await this.signedRequest<BinanceIncomeItem[]>('GET', '/fapi/v1/income', {
+          startTime,
+          endTime: cursorEndTime,
+          limit: 1000,
+        });
+
+        if (!incomeRows.length) {
+          break;
+        }
+
+        incomeRows.forEach((row) => {
+          const symbol = String(row.symbol || '').trim();
+          if (symbol.endsWith('USDT')) {
+            targetSymbols.add(fromBinanceSymbol(symbol));
+          }
+        });
+
+        const oldestRowTime = incomeRows.reduce((oldest, row) => {
+          const t = Number(row.time || 0);
+          return t > 0 ? Math.min(oldest, t) : oldest;
+        }, cursorEndTime);
+
+        if (oldestRowTime <= startTime || incomeRows.length < 1000) {
+          break;
+        }
+
+        cursorEndTime = oldestRowTime - 1;
+      }
+    } catch (error) {
+      console.warn('[Binance] getUserFillsByTime: income discovery failed, fallback to other symbol sources.', error);
+    }
+
+    // 2) Include active position symbols.
+    try {
+      const positions = await this.getOpenPositions();
+      positions.forEach((p) => {
+        const coin = String(p.position.coin || '').trim().toUpperCase();
+        if (coin) {
+          targetSymbols.add(coin);
+        }
+      });
+    } catch (error) {
+      console.warn('[Binance] getUserFillsByTime: open positions lookup failed.', error);
+    }
+
+    // 3) Include open order symbols.
+    try {
+      const openOrders = await this.getOpenOrders();
+      openOrders.forEach((o) => {
+        const coin = String(o.coin || '').trim().toUpperCase();
+        if (coin) {
+          targetSymbols.add(coin);
+        }
+      });
+    } catch (error) {
+      console.warn('[Binance] getUserFillsByTime: open orders lookup failed.', error);
+    }
+
+    // 4) Fallback scan set when account-activity discovery is empty.
+    if (targetSymbols.size === 0) {
+      const symbols = await this.getAllPerpMetas();
+      const fallbackSymbols = symbols[0]?.universe?.slice(0, 160)?.map((u: any) => u.name) || [];
+      fallbackSymbols.forEach((coin: string) => targetSymbols.add(coin));
+    }
+
+    const symbolsToScan = Array.from(targetSymbols).slice(0, 160);
     const fills: UserFill[] = [];
+    let failedUserTradesRequests = 0;
 
-    for (const coin of targetSymbols) {
+    for (const coin of symbolsToScan) {
       try {
         const tradeParams: Record<string, string | number | boolean> = {
           symbol: toCoinSymbol(coin),
@@ -774,9 +857,14 @@ export class BinanceService extends HyperliquidService {
             feeToken: 'USDT',
           });
         });
-      } catch {
-        // Skip symbols that fail
+      } catch (error) {
+        failedUserTradesRequests += 1;
+        console.warn(`[Binance] getUserFillsByTime: failed to load userTrades for ${coin}`, error);
       }
+    }
+
+    if (symbolsToScan.length > 0 && failedUserTradesRequests === symbolsToScan.length) {
+      throw new Error('Binance monthly/daily trades fetch failed for all discovered symbols. Check API key permission or rate limit.');
     }
 
     return fills.sort((a, b) => b.time - a.time);

@@ -1,0 +1,8 @@
+{{!< default}}
+{{#get "pages" filter="slug:landing" limit="1" as |landingPages|}}
+  {{#foreach landingPages}}
+    <article class="page-landing container">
+      {{{content}}}
+    </article>
+  {{/foreach}}
+{{/get}}

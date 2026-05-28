@@ -1,0 +1,18 @@
+[
+  {
+    "label": "Trang chu",
+    "url": "/"
+  },
+  {
+    "label": "Bang gia",
+    "url": "/pricing/"
+  },
+  {
+    "label": "Landing",
+    "url": "/landing/"
+  },
+  {
+    "label": "Blog",
+    "url": "/"
+  }
+]

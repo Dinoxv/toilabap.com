@@ -25,22 +25,22 @@ const binancePlex = localFont({
   display: "swap",
 });
 
-const siteUrl = "https://ritexai.com";
-const ogImage = `${siteUrl}/landing/hero.png`;
+const siteUrl = "https://app.toilabap.com";
+const ogImage = `https://toilabap.com/landing/hero.png`;
 
 export const metadata: Metadata = {
-  title: "RITEX AI | Advanced Multi-Exchange Trading Terminal",
-  description: "Professional multi-exchange trading terminal. Real-time charts, market scanner, divergence detection & instant execution. 100% client-side — your credentials never leave your browser.",
+  title: "app.toilabap.com | Live Trading Terminal",
+  description: "Launch the live trading terminal. Real-time multi-exchange charts, market scanner, divergence detection, and instant execution. Trade on Binance and Hyperliquid directly from your browser.",
   metadataBase: new URL(siteUrl),
   alternates: {
     canonical: "/",
   },
   icons: {
     icon: [
-      { url: "/branding/toilabap.com-icon.svg", type: "image/svg+xml", sizes: "any" },
+      { url: "/branding/toilabap.com-icon.png", type: "image/png" },
     ],
-    shortcut: ["/branding/toilabap.com-icon.svg"],
-    apple: ["/branding/toilabap.com-icon.svg"],
+    shortcut: ["/branding/toilabap.com-icon.png"],
+    apple: ["/branding/toilabap.com-icon.png"],
   },
   robots: {
     index: true,
@@ -53,30 +53,32 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     url: siteUrl,
-    title: "RITEX AI — Advanced Multi-Exchange Trading Terminal",
-    description: "Professional multi-exchange trading terminal. Real-time charts, market scanner, divergence detection & instant order execution. 100% client-side.",
-    siteName: "RITEX AI",
+    title: "app.toilabap.com — Live Trading Terminal",
+    description: "Launch the advanced trading terminal with real-time charts, market scanner, divergence detection, and multi-exchange support.",
+    siteName: "app.toilabap.com",
     images: [
       {
         url: ogImage,
         width: 1200,
         height: 630,
-        alt: "RITEX AI Trading Terminal",
+        alt: "toilabap.com Trading Terminal",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "RITEX AI — Multi-Exchange Trading Terminal",
-    description: "Real-time charts, market scanner, divergence detection & instant execution. 100% client-side — your credentials never leave your browser.",
+    title: "app.toilabap.com — Multi-Exchange Trading Terminal",
+    description: "Live trading terminal with real-time charts, market scanner, divergence detection, and instant multi-exchange execution.",
     images: [ogImage],
   },
-  authors: [{ name: "RITEX AI", url: "https://ritexai.com" }],
+  authors: [{ name: "app.toilabap.com", url: "https://app.toilabap.com" }],
   keywords: [
     "Hyperliquid",
     "Binance",
     "trading terminal",
-    "RITEX AI",
+    "toilabap.com",
+    "algo trading platform",
+    "smart money concept",
     "crypto trading",
     "CEX/DEX trading",
     "technical analysis",
@@ -93,7 +95,7 @@ export const metadata: Metadata = {
     "multi-timeframe analysis",
   ],
   other: {
-    "ai-content-declaration": "RITEX AI is a professional multi-exchange trading terminal. Visit https://ritexai.com for more information.",
+    "ai-content-declaration": "toilabap.com is a professional multi-exchange trading terminal. Visit https://toilabap.com for more information.",
   },
 };
 
@@ -112,25 +114,25 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <link rel="alternate" hrefLang="en" href="https://ritexai.com" />
-        <link rel="alternate" hrefLang="vi" href="https://ritexai.com" />
-        <link rel="alternate" hrefLang="zh" href="https://ritexai.com" />
-        <link rel="alternate" hrefLang="x-default" href="https://ritexai.com" />
+        <link rel="alternate" hrefLang="en" href="https://app.toilabap.com" />
+        <link rel="alternate" hrefLang="vi" href="https://app.toilabap.com" />
+        <link rel="alternate" hrefLang="zh" href="https://app.toilabap.com" />
+        <link rel="alternate" hrefLang="x-default" href="https://app.toilabap.com" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
             __html: JSON.stringify({
               "@context": "https://schema.org",
               "@type": "WebApplication",
-              name: "RITEX AI",
+              name: "app.toilabap.com",
               url: siteUrl,
-              description: "Professional multi-exchange trading terminal with real-time charts, market scanner, and instant order execution.",
+              description: "Live trading terminal with real-time charts, market scanner, divergence detection, and multi-exchange order execution.",
               applicationCategory: "FinanceApplication",
               operatingSystem: "Web",
               author: {
                 "@type": "Organization",
-                name: "RITEX AI",
-                url: "https://ritexai.com",
+                name: "toilabap.com",
+                url: "https://toilabap.com",
               },
               offers: {
                 "@type": "Offer",

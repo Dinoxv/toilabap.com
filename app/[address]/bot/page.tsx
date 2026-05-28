@@ -4,7 +4,7 @@ import BotTradingView from '@/components/BotTradingView';
 import { isBinanceRouteSlug, BINANCE_ROUTE_SLUG } from '@/lib/constants/routing';
 
 export const metadata: Metadata = {
-  title: 'Bot Trading | RITEX AI',
+  title: 'Bot Trading | app.toilabap.com',
   description: 'Manage automated trading bot settings and execution',
 };
 

@@ -1,8 +1,4 @@
 # INSTRUCTIONS MASTER PLAYBOOK v2.1
-
-![Toilabap Logo](../toilabap.com-logo-dark.svg)
-![Toilabap Icon](../toilabap.com-icon.svg)
-
 ## TOILABAP.COM — NỀN TẢNG GIAO DỊCH THUẬT TOÁN TOÀN DIỆN
 ### *Powered by Blankly-Architecture × Trend Matrix Strategy [Ritchi] × Pro Trader Marketing*
 
@@ -132,6 +128,58 @@ Nền tảng kết nối trực tiếp với tài khoản giao dịch cá nhân 
 
 **Sàn & Broker tích hợp:**
 - Alpaca, Interactive Brokers, Robinhood, Schwab, Binance, Coinbase, OANDA, và các sàn crypto major
+
+---
+
+### 2.3 Hyperscalper — Lớp Terminal Real-Time
+
+> **GitHub:** [github.com/Dinoxv/toilabap.com](https://github.com/Dinoxv/toilabap.com)
+
+Toilabap.com là nền tảng algo trading toàn diện. Hyperscalper là lớp terminal real-time để scan, xác nhận và thực thi quyết định nhanh hơn thị trường.
+
+Nếu Toilabap Framework là **bộ não chiến lược** (build → backtest → deploy), thì Hyperscalper là **đôi mắt và phản xạ** — terminal quan sát thị trường liên tục, phát hiện setup ngay trên runtime, và kích hoạt lệnh đúng khoảnh khắc.
+
+```
+┌──────────────────────────────────────────────────────────┐
+│              HYPERSCALPER — REAL-TIME TERMINAL           │
+│   Scanner │ Candle Engine │ Volume Trigger │ Bot Lifecycle│
+├──────────────────────────────────────────────────────────┤
+│              TOILABAP FRAMEWORK LAYER                    │
+│   Strategy Logic │ Backtest │ Paper Trade │ Live Deploy  │
+├──────────────────────────────────────────────────────────┤
+│              EXCHANGE ABSTRACTION LAYER                  │
+│   Alpaca │ Binance │ OANDA │ Interactive Brokers │ ...   │
+└──────────────────────────────────────────────────────────┘
+```
+
+**Tech stack:**
+- **Frontend runtime:** Next.js + React + `lightweight-charts` — charting event-driven tốc độ cao
+- **Language:** TypeScript 98.2% — type-safe toàn bộ hệ thống
+- **State / Runtime:** Stores quản lý scanner, candles, bot lifecycle
+- **Deployment:** PM2 + deployment ID + static-load recovery — uptime production
+- **AI Layer:** `AI_TRADING_LOGIC.md` — logic AI tích hợp trực tiếp vào quyết định giao dịch
+
+**Các module chính:**
+
+| Module | File tài liệu | Chức năng |
+|---|---|---|
+| Trend Matrix Scanner | `RITCHI_TREND_SCANNER.md` | Quét CHoCH, Sweep, FVG real-time |
+| Bot Trading Binance | `docs/BotTrading-Binance-Phase1.md` | Giao dịch tự động Phase 1 |
+| Volume Trigger Engine | `docs/REALTIME_VOLUME_TRIGGER_ENGINE.md` | Phát hiện dòng tiền đột biến |
+| AI Trading Flow | `AI_TRADING_LOGIC.md` | Logic AI hỗ trợ quyết định |
+| Loading Recovery | `docs/LOADING_FREEZE_RUNBOOK.md` | Runbook xử lý sự cố vận hành |
+
+**Brand message từ repo:**
+> *"Toilabap.com không bán một dashboard.*
+> *Toilabap.com bán tốc độ tư duy và khả năng theo dấu Tiền Lớn trong thị trường vận động liên tục."*
+
+**Quickstart cho developer:**
+```bash
+npm install          # Cài dependencies
+npm run dev          # Chạy local
+npm run build        # Build production
+npm run deploy:pm2   # Deploy với PM2
+```
 
 ---
 
@@ -668,6 +716,13 @@ Tuần trước: 12 config nhận được.
 ### CTA Level 4 — High-intent (Direct Contact)
 > *"Sẵn sàng build strategy đầu tiên của bạn? Liên hệ trực tiếp để được onboard vào Closed Beta sớm nhất:"*
 
+### CTA Level 5 — Developer / Technical (GitHub)
+> *"Toilabap.com là hệ thống mã nguồn mở. Toàn bộ source code của Hyperscalper — real-time terminal, scanner engine, volume trigger, AI trading logic — đều có thể xem và đóng góp tại GitHub."*
+>
+> **→ Star repo: [github.com/Dinoxv/toilabap.com](https://github.com/Dinoxv/toilabap.com)**
+>
+> *Dành cho: Developer muốn tự deploy · Quant muốn đọc code thực · Trader kỹ thuật muốn hiểu sâu hệ thống*
+
 ---
 
 ## VIII. THÔNG TIN LIÊN HỆ CHÍNH THỨC
@@ -678,6 +733,7 @@ Tuần trước: 12 config nhận được.
 |------|------|----------|
 | 🌐 Website chính | [Toilabap.com](https://toilabap.com) | Waitlist, product info |
 | 🔗 Platform phụ | [Ritchi.guru](https://ritchi.guru) | AI Agent documentation |
+| 🐙 GitHub | [github.com/Dinoxv/toilabap.com](https://github.com/Dinoxv/toilabap.com) | Source code, docs kỹ thuật, Hyperscalper |
 | 💬 Telegram | [@Jbap1989](https://t.me/Jbap1989) | Real-time support, community |
 | 📱 Zalo | [+84 859295259](https://zalo.me/859295259) | Vietnamese market support |
 | 👥 Facebook | [Connect tại đây](https://www.facebook.com/share/1EVjJuNhce/?mibextid=wwXIfr) | Community, content |
@@ -953,6 +1009,12 @@ TOILABAP.COM LÀ GÌ?
 → "Write once, run on any exchange" — Stocks, Crypto, Forex, Futures.
 → Flagship: Trend Matrix Strategy [Ritchi] — SMC built-in, sẵn sàng deploy.
 
+HYPERSCALPER LÀ GÌ?
+→ Real-time terminal layer chạy trên Toilabap — scan, confirm, execute.
+→ Stack: Next.js + React + TypeScript + lightweight-charts + PM2.
+→ Modules: Scanner, Volume Trigger, Bot Lifecycle, AI Trading Logic.
+→ Open-source: github.com/Dinoxv/toilabap.com (TypeScript 98.2%).
+
 VẤN ĐỀ CHÚNG TÔI GIẢI QUYẾT?
 → 7 tuần → 90 giây. Từ hypothesis đến live trade.
 → Loại bỏ boilerplate code, data plumbing, exchange connectivity overhead.
@@ -970,6 +1032,7 @@ CHÚNG TÔI KHÔNG HỨA GÌ?
 
 CTA CHÍNH?
 → Waitlist: Toilabap.com (12,000+ traders đang chờ)
+→ GitHub (Developer): github.com/Dinoxv/toilabap.com
 → Demo: Trend Matrix Strategy backtest live — drop config vào community
 → Contact: @Jbap1989 (Telegram) | +84 859295259 (Zalo)
 ```
@@ -978,7 +1041,8 @@ CTA CHÍNH?
 
 *Tài liệu này được cập nhật dựa trên kiến trúc kỹ thuật của Blankly Finance Framework (docs.blankly.finance),
 Trend Matrix Strategy [Ritchi] v3.1.1 (SMC + Confluence Score System),
+Hyperscalper real-time terminal (github.com/Dinoxv/toilabap.com),
 và định hướng marketing chiến lược cho thị trường Việt Nam & Đông Nam Á.*
 
-*Version 2.1 | Toilabap.com × Ritchi.guru | 2025*
-*Cập nhật: Tích hợp Trend Matrix Strategy v3.1.1 — CHoCH, Liquidity Sweep, FVG, Killzone, ATR Risk*
+*Version 2.2 | Toilabap.com × Ritchi.guru × Hyperscalper | 2025*
+*Cập nhật: Bổ sung Hyperscalper system, GitHub CTA, Brand Guidelines từ file SVG gốc*

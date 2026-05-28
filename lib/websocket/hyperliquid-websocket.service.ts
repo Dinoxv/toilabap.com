@@ -90,7 +90,7 @@ export class HyperliquidWebSocketService implements ExchangeWebSocketService {
             // Error processing candle
           }
         }
-      );
+      ).catch(() => ({ unsubscribe: () => {} }));
 
       const subscription: Subscription = {
         id: subscriptionId,
@@ -136,7 +136,7 @@ export class HyperliquidWebSocketService implements ExchangeWebSocketService {
             // Error processing trade
           }
         }
-      );
+      ).catch(() => ({ unsubscribe: () => {} }));
 
       const subscription: Subscription = {
         id: subscriptionId,
@@ -172,7 +172,7 @@ export class HyperliquidWebSocketService implements ExchangeWebSocketService {
             // Error processing allMids
           }
         }
-      );
+      ).catch(() => ({ unsubscribe: () => {} }));
 
       const subscription: Subscription = {
         id: subscriptionId,
@@ -195,7 +195,9 @@ export class HyperliquidWebSocketService implements ExchangeWebSocketService {
         if (typeof subscription.unsubscribeFn === 'function') {
           subscription.unsubscribeFn();
         } else if (subscription.unsubscribeFn instanceof Promise) {
-          subscription.unsubscribeFn.then(sub => sub.unsubscribe());
+          subscription.unsubscribeFn
+            .then(sub => sub.unsubscribe())
+            .catch(() => {});
         }
       } catch (error) {
         // Error unsubscribing

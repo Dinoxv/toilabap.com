@@ -1,0 +1,16 @@
+services:
+  ghost:
+    image: ghost:5-alpine
+    container_name: toilabap-ghost
+    restart: unless-stopped
+    ports:
+      - "2368:2368"
+    environment:
+      url: http://localhost:2368
+      NODE_ENV: development
+      database__client: sqlite3
+      database__connection__filename: /var/lib/ghost/content/data/ghost.db
+    volumes:
+      - ./content:/var/lib/ghost/content
+      - ./toilabap-theme:/var/lib/ghost/content/themes/toilabap-theme
+      - ./routes.yaml:/var/lib/ghost/content/settings/routes.yaml

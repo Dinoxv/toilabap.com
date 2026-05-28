@@ -72,7 +72,7 @@ export interface SieuXuHuongSettings {
 export interface TrendMatrixSettings {
   enabled: boolean;
   msLen: number;
-  htfTF: '1m' | '5m' | '15m' | '1h' | '4h' | '1d';
+  htfTF: '1m' | '3m' | '5m' | '15m' | '1h' | '4h' | '1d';
   htfEmaLen: number;
   atrLength: number;
   atrMult: number;
@@ -200,6 +200,7 @@ export interface ScannerSettings {
   scanInterval: number;
   topMarkets: number;
   playSound: boolean;
+  playSoundOnNewSignal: boolean; // New property to enable/disable sound for new signals
   runtimeByExchange: {
     hyperliquid: {
       enabled: boolean;
@@ -252,21 +253,31 @@ export interface ScannerSettings {
 }
 
 export interface OrderSettings {
-  cloudPercentage: number;
-  smallPercentage: number;
-  bigPercentage: number;
+  cloudInitialMarginUsdt: number;
+  smallInitialMarginUsdt: number;
+  bigInitialMarginUsdt: number;
+  // Legacy fields (kept optional for backward compatibility with persisted settings)
+  cloudPercentage?: number;
+  smallPercentage?: number;
+  bigPercentage?: number;
   leverage: number;
   byExchange: {
     hyperliquid: {
-      cloudPercentage: number;
-      smallPercentage: number;
-      bigPercentage: number;
+      cloudInitialMarginUsdt: number;
+      smallInitialMarginUsdt: number;
+      bigInitialMarginUsdt: number;
+      cloudPercentage?: number;
+      smallPercentage?: number;
+      bigPercentage?: number;
       leverage: number;
     };
     binance: {
-      cloudPercentage: number;
-      smallPercentage: number;
-      bigPercentage: number;
+      cloudInitialMarginUsdt: number;
+      smallInitialMarginUsdt: number;
+      bigInitialMarginUsdt: number;
+      cloudPercentage?: number;
+      smallPercentage?: number;
+      bigPercentage?: number;
       leverage: number;
     };
   };
@@ -472,6 +483,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
     scanInterval: 1,
     topMarkets: 50,
     playSound: true,
+    playSoundOnNewSignal: false,
     runtimeByExchange: {
       hyperliquid: {
         enabled: false,
@@ -597,18 +609,27 @@ export const DEFAULT_SETTINGS: AppSettings = {
     },
   },
   orders: {
+    cloudInitialMarginUsdt: 5,
+    smallInitialMarginUsdt: 10,
+    bigInitialMarginUsdt: 25,
     cloudPercentage: 5,
     smallPercentage: 10,
     bigPercentage: 25,
     leverage: 10,
     byExchange: {
       hyperliquid: {
+        cloudInitialMarginUsdt: 5,
+        smallInitialMarginUsdt: 10,
+        bigInitialMarginUsdt: 25,
         cloudPercentage: 5,
         smallPercentage: 10,
         bigPercentage: 25,
         leverage: 10,
       },
       binance: {
+        cloudInitialMarginUsdt: 5,
+        smallInitialMarginUsdt: 10,
+        bigInitialMarginUsdt: 25,
         cloudPercentage: 5,
         smallPercentage: 10,
         bigPercentage: 25,

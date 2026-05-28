@@ -24,6 +24,8 @@ export function RequireCredentials({ children }: RequireCredentialsProps) {
   const [loadingTimedOut, setLoadingTimedOut] = useState(false);
   const requiresHyperliquid = selectedExchange === 'hyperliquid';
   const hasSelectedExchangeCredentials = requiresHyperliquid ? hasHyperliquidCredentials : hasBinanceCredentials;
+  const normalizedPathname = pathname === '/' ? '/' : pathname.replace(/\/+$/, '');
+  const bypassCredentialGate = normalizedPathname === '/admin' || normalizedPathname === '/pay/admin' || normalizedPathname === '/admincp';
 
   useEffect(() => {
     if (isLoaded) {
@@ -51,14 +53,20 @@ export function RequireCredentials({ children }: RequireCredentialsProps) {
     return () => window.clearTimeout(timer);
   }, [isLoaded]);
 
+  // Route-based exchange detection (runs immediately without waiting for credentials)
   useEffect(() => {
-    if (!isLoaded) return;
-    if (pathname === '/') return;
+    if (pathname === '/' || bypassCredentialGate) return;
+    if (!addressFromUrl) return;
 
     if (isBinanceRouteSlug(addressFromUrl) && selectedExchange !== 'binance') {
       setSelectedExchange('binance');
-      return;
     }
+  }, [addressFromUrl, selectedExchange, setSelectedExchange, pathname]);
+
+  // Credential-dependent logic (runs after credentials load)
+  useEffect(() => {
+    if (!isLoaded) return;
+    if (pathname === '/' || bypassCredentialGate) return;
 
     if (!hasHyperliquidCredentials && hasBinanceCredentials && selectedExchange !== 'binance') {
       setSelectedExchange('binance');
@@ -81,7 +89,7 @@ export function RequireCredentials({ children }: RequireCredentialsProps) {
 
   // Never block explicit address routes (e.g. chart-popup) behind credential bootstrap.
   // This avoids sticky loading screens on reload when local credential init is delayed.
-  if (pathname === '/') {
+  if (pathname === '/' || bypassCredentialGate) {
     return <>{children}</>;
   }
 
@@ -121,7 +129,7 @@ export function RequireCredentials({ children }: RequireCredentialsProps) {
       <div className="flex items-center justify-center min-h-screen bg-gray-950 p-6">
         <div className="max-w-2xl w-full">
           <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-white mb-2">Welcome to RITEX AI</h1>
+            <h1 className="text-4xl font-bold text-white mb-2">Welcome to toilabap.com</h1>
             <p className="text-gray-400">
               Configure your {requiresHyperliquid ? 'Hyperliquid' : 'Binance'} credentials to get started
             </p>

@@ -16,27 +16,17 @@ const ORDER_COUNT = 5;
 const TAKE_PROFIT_PERCENT = 2;
 const MIN_NOTIONAL = 10; // Hyperliquid minimum order value in USD
 
-function resolveOrderValueByPercent(accountBalance: { accountValue: string; withdrawable: string }, percentage: number): number {
-  const accountValue = Number.parseFloat(accountBalance.accountValue || '0');
-
-  if (!Number.isFinite(accountValue) || accountValue <= 0) {
-    throw new Error('Perps account value is 0. Transfer USDC to Perps or close positions before opening a new trade.');
+function resolveOrderValueByInitialMargin(initialMarginUsdt: number, leverage: number): number {
+  if (!Number.isFinite(initialMarginUsdt) || initialMarginUsdt <= 0) {
+    throw new Error('Initial margin must be greater than 0 USDT.');
   }
 
-  const requestedValue = (accountValue * percentage) / 100;
+  const requestedValue = initialMarginUsdt * leverage;
   if (requestedValue >= MIN_NOTIONAL) {
     return requestedValue;
   }
 
-  if (accountValue >= MIN_NOTIONAL) {
-    return MIN_NOTIONAL;
-  }
-
-  const withdrawable = Number.parseFloat(accountBalance.withdrawable || '0');
-  throw new Error(
-    `Perps account value ($${accountValue.toFixed(2)}) is below minimum $${MIN_NOTIONAL}. ` +
-    `Withdrawable: $${Number.isFinite(withdrawable) ? withdrawable.toFixed(2) : '0.00'}.`
-  );
+  return MIN_NOTIONAL;
 }
 
 function resolveActiveLeverage(): number {
@@ -50,14 +40,14 @@ interface CloudOrderParams {
   symbol: string;
   currentPrice: number;
   priceInterval: number;
-  percentage: number;
+  initialMarginUsdt: number;
 }
 
 interface MarketOrderParams {
   symbol: string;
   currentPrice: number;
   priceInterval: number;
-  percentage: number;
+  initialMarginUsdt: number;
 }
 
 interface ClosePositionParams {
@@ -74,7 +64,7 @@ interface LimitOrderAtPriceParams {
   symbol: string;
   price: number;
   isBuy: boolean;
-  percentage: number;
+  initialMarginUsdt: number;
   currentPrice: number;
 }
 
@@ -124,7 +114,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     const { service } = get();
     if (!service) { toast.error('Please connect wallet to trade'); return; }
 
-    const { symbol, currentPrice, priceInterval, percentage } = params;
+    const { symbol, currentPrice, priceInterval, initialMarginUsdt } = params;
     const orderStore = useOrderStore.getState();
 
     set((state) => ({
@@ -136,10 +126,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     const optimisticOrders: any[] = [];
 
     try {
-      const [accountBalance, metadata] = await Promise.all([
-        service.getAccountBalanceCached(),
-        service.getMetadataCache(symbol)
-      ]);
+      const metadata = await service.getMetadataCache(symbol);
 
       const priceLevels: number[] = [];
       for (let i = 1; i <= ORDER_COUNT; i++) {
@@ -150,7 +137,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
       const leverage = resolveActiveLeverage();
       await service.setLeverage(symbol, leverage, metadata);
 
-      const cloudSize = resolveOrderValueByPercent(accountBalance, percentage);
+      const cloudSize = resolveOrderValueByInitialMargin(initialMarginUsdt, leverage);
 
       const batchOrders = [];
       let totalCoinSize = 0;
@@ -277,7 +264,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     const { service } = get();
     if (!service) { toast.error('Please connect wallet to trade'); return; }
 
-    const { symbol, currentPrice, priceInterval, percentage } = params;
+    const { symbol, currentPrice, priceInterval, initialMarginUsdt } = params;
     const orderStore = useOrderStore.getState();
 
     set((state) => ({
@@ -289,10 +276,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     const optimisticOrders: any[] = [];
 
     try {
-      const [accountBalance, metadata] = await Promise.all([
-        service.getAccountBalanceCached(),
-        service.getMetadataCache(symbol)
-      ]);
+      const metadata = await service.getMetadataCache(symbol);
 
       const priceLevels: number[] = [];
       for (let i = 1; i <= ORDER_COUNT; i++) {
@@ -303,7 +287,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
       const leverage = resolveActiveLeverage();
       await service.setLeverage(symbol, leverage, metadata);
 
-      const cloudSize = resolveOrderValueByPercent(accountBalance, percentage);
+      const cloudSize = resolveOrderValueByInitialMargin(initialMarginUsdt, leverage);
 
       const batchOrders = [];
       let totalCoinSize = 0;
@@ -430,7 +414,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     const { service } = get();
     if (!service) { toast.error('Please connect wallet to trade'); return; }
 
-    const { symbol, currentPrice, priceInterval, percentage } = params;
+    const { symbol, currentPrice, priceInterval, initialMarginUsdt } = params;
     const orderStore = useOrderStore.getState();
     const batchTempId = `batch_${Date.now()}`;
     const optimisticOrders: any[] = [];
@@ -441,15 +425,12 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     }));
 
     try {
-      const [accountBalance, metadata] = await Promise.all([
-        service.getAccountBalanceCached(),
-        service.getMetadataCache(symbol)
-      ]);
+      const metadata = await service.getMetadataCache(symbol);
 
       const leverage = resolveActiveLeverage();
       await service.setLeverage(symbol, leverage, metadata);
 
-      const positionSize = resolveOrderValueByPercent(accountBalance, percentage);
+      const positionSize = resolveOrderValueByInitialMargin(initialMarginUsdt, leverage);
 
       const coinSize = positionSize / currentPrice;
       const { size: formattedSize, wasBumped } = service.ensureMinNotional(coinSize, currentPrice, metadata, MIN_NOTIONAL);
@@ -542,7 +523,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     const { service } = get();
     if (!service) { toast.error('Please connect wallet to trade'); return; }
 
-    const { symbol, currentPrice, priceInterval, percentage } = params;
+    const { symbol, currentPrice, priceInterval, initialMarginUsdt } = params;
     const orderStore = useOrderStore.getState();
     const batchTempId = `batch_${Date.now()}`;
     const optimisticOrders: any[] = [];
@@ -553,15 +534,12 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     }));
 
     try {
-      const [accountBalance, metadata] = await Promise.all([
-        service.getAccountBalanceCached(),
-        service.getMetadataCache(symbol)
-      ]);
+      const metadata = await service.getMetadataCache(symbol);
 
       const leverage = resolveActiveLeverage();
       await service.setLeverage(symbol, leverage, metadata);
 
-      const positionSize = resolveOrderValueByPercent(accountBalance, percentage);
+      const positionSize = resolveOrderValueByInitialMargin(initialMarginUsdt, leverage);
 
       const coinSize = positionSize / currentPrice;
       const { size: formattedSize, wasBumped } = service.ensureMinNotional(coinSize, currentPrice, metadata, MIN_NOTIONAL);
@@ -654,7 +632,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     const { service } = get();
     if (!service) { toast.error('Please connect wallet to trade'); return; }
 
-    const { symbol, currentPrice, priceInterval, percentage } = params;
+    const { symbol, currentPrice, priceInterval, initialMarginUsdt } = params;
     const orderStore = useOrderStore.getState();
     const batchTempId = `batch_${Date.now()}`;
     const optimisticOrders: any[] = [];
@@ -665,15 +643,12 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     }));
 
     try {
-      const [accountBalance, metadata] = await Promise.all([
-        service.getAccountBalanceCached(),
-        service.getMetadataCache(symbol)
-      ]);
+      const metadata = await service.getMetadataCache(symbol);
 
       const leverage = resolveActiveLeverage();
       await service.setLeverage(symbol, leverage, metadata);
 
-      const positionSize = resolveOrderValueByPercent(accountBalance, percentage);
+      const positionSize = resolveOrderValueByInitialMargin(initialMarginUsdt, leverage);
 
       const coinSize = positionSize / currentPrice;
       const { size: formattedSize, wasBumped } = service.ensureMinNotional(coinSize, currentPrice, metadata, MIN_NOTIONAL);
@@ -766,7 +741,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     const { service } = get();
     if (!service) { toast.error('Please connect wallet to trade'); return; }
 
-    const { symbol, currentPrice, priceInterval, percentage } = params;
+    const { symbol, currentPrice, priceInterval, initialMarginUsdt } = params;
     const orderStore = useOrderStore.getState();
     const batchTempId = `batch_${Date.now()}`;
     const optimisticOrders: any[] = [];
@@ -777,15 +752,12 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     }));
 
     try {
-      const [accountBalance, metadata] = await Promise.all([
-        service.getAccountBalanceCached(),
-        service.getMetadataCache(symbol)
-      ]);
+      const metadata = await service.getMetadataCache(symbol);
 
       const leverage = resolveActiveLeverage();
       await service.setLeverage(symbol, leverage, metadata);
 
-      const positionSize = resolveOrderValueByPercent(accountBalance, percentage);
+      const positionSize = resolveOrderValueByInitialMargin(initialMarginUsdt, leverage);
 
       const coinSize = positionSize / currentPrice;
       const { size: formattedSize, wasBumped } = service.ensureMinNotional(coinSize, currentPrice, metadata, MIN_NOTIONAL);
@@ -881,7 +853,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
       toast.error('Please connect wallet to trade'); return;
     }
 
-    const { symbol, price, isBuy, percentage, currentPrice } = params;
+    const { symbol, price, isBuy, initialMarginUsdt, currentPrice } = params;
 
     const useTriggerOrder = (isBuy && price > currentPrice) || (!isBuy && price < currentPrice);
     const orderType = useTriggerOrder ? 'TRIGGER MARKET' : 'LIMIT';
@@ -891,7 +863,7 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
       price,
       currentPrice,
       isBuy,
-      percentage,
+      initialMarginUsdt,
       orderType,
       reason: isBuy
         ? (price > currentPrice ? 'LONG above current (breakout entry)' : 'LONG below current (pullback entry)')
@@ -907,22 +879,19 @@ export const useTradingStore = create<TradingStore>((set, get) => ({
     }));
 
     try {
-      const [accountBalance, metadata] = await Promise.all([
-        service.getAccountBalanceCached(),
-        service.getMetadataCache(symbol)
-      ]);
+      const metadata = await service.getMetadataCache(symbol);
 
       const leverage = resolveActiveLeverage();
       await service.setLeverage(symbol, leverage, metadata);
 
-      const positionSize = resolveOrderValueByPercent(accountBalance, percentage);
+      const positionSize = resolveOrderValueByInitialMargin(initialMarginUsdt, leverage);
 
       const coinSize = positionSize / price;
       const { size: formattedSize, wasBumped } = service.ensureMinNotional(coinSize, price, metadata, MIN_NOTIONAL);
       const formattedPrice = service.formatPriceCached(price, metadata);
 
       console.log('[placeLimitOrderAtPrice] Calculated values:', {
-        accountValue: parseFloat(accountBalance.accountValue),
+        leverage,
         positionSize,
         coinSize,
         formattedSize,

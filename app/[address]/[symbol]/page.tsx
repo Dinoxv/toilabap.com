@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: SymbolPageProps): Promise<Met
   const normalized = normalizeSymbol(symbol);
 
   return {
-    title: `${normalized} Trading | RITEX AI`,
+    title: `${normalized} Trading | app.toilabap.com`,
     description: `Real-time ${normalized} chart with advanced scalping tools across supported exchanges`,
   };
 }

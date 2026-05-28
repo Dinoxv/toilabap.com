@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Toilabap.com — Theo Dấu Dòng Tiền Thông Minh</title>
+<meta name="description" content="Toilabap.com - Nền tảng phân tích dòng tiền thông minh với AI, giúp trader bắt được các tín hiệu mạnh từ những nhà giao dịch chuyên nghiệp.">
+<meta property="og:title" content="Toilabap.com — Theo Dấu Dòng Tiền Thông Minh">
+<meta property="og:description" content="Nền tảng phân tích dòng tiền thông minh với AI, giúp trader bắt được các tín hiệu mạnh từ những nhà giao dịch chuyên nghiệp.">
+<meta property="og:image" content="https://intro.toilabap.com/bap-hero.png">
+<meta property="og:url" content="https://toilabap.com">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Toilabap.com — Theo Dấu Dòng Tiền Thông Minh">
+<meta name="twitter:description" content="Nền tảng phân tích dòng tiền thông minh với AI">
+<meta name="twitter:image" content="https://intro.toilabap.com/bap-hero.png">
+<link rel="canonical" href="https://toilabap.com">
+<link rel="icon" type="image/png" href="assets/toilabap.com-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cyan:#3CD3FE;
+  --bull:#34E67E;
+  --bear:#FF52F1;
+  --pending:#F59E0B;
+  --bg:#0D0F12;
+  --surface:#1A1D24;
+  --surface2:#252930;
+  --border:#252930;
+  --text:#FFFFFF;
+  --muted:#6B7280;
+  --muted2:#9CA3AF;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Space Grotesk',sans-serif;line-height:1.6;overflow-x:hidden}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:0 40px;height:64px;display:flex;align-items:center;justify-content:space-between;background:rgba(13,15,18,0.85);backdrop-filter:blur(20px);border-bottom:1px solid rgba(37,41,48,0.6)}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo svg{width:32px;height:32px}
+.nav-links{display:flex;gap:20px;list-style:none}
+.nav-links a{color:var(--muted2);text-decoration:none;font-size:13px;font-weight:500;transition:color 0.2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{background:var(--cyan);color:#0D0F12;font-weight:700;font-size:14px;padding:10px 24px;border-radius:8px;text-decoration:none;transition:all 0.2s;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif}
+.nav-cta:hover{filter:brightness(1.1);box-shadow:0 0 24px rgba(60,211,254,0.25)}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 40px 80px;position:relative;overflow:hidden}
+.hero-video-bg{position:absolute;inset:0;overflow:hidden}
+.hero-video-bg video{width:100%;height:100%;object-fit:cover;filter:hue-rotate(75deg) saturate(1.15);opacity:0.55}
+.hero-video-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(0deg,#0D0F12 12%,rgba(13,15,18,0.55) 55%,transparent 100%);pointer-events:none}
+.hero-glow{position:absolute;top:-200px;left:50%;transform:translateX(-50%);width:900px;height:700px;background:radial-gradient(ellipse,rgba(60,211,254,0.12) 0%,transparent 70%);pointer-events:none;z-index:1}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(60,211,254,0.1);border:1px solid rgba(60,211,254,0.3);border-radius:100px;padding:6px 16px;font-size:13px;font-weight:500;color:var(--cyan);margin-bottom:32px;animation:fadeDown 0.6s ease both}
+.hero-badge .dot{width:6px;height:6px;background:var(--bull);border-radius:50%;animation:pulse 2s infinite}
+.hero-title{font-family:'Outfit',sans-serif;font-size:clamp(48px,6vw,88px);font-weight:800;line-height:1.0;letter-spacing:-0.01em;margin-bottom:24px;animation:fadeDown 0.6s 0.1s ease both}
+.hero-title .accent{color:var(--cyan)}
+.hero-title .accent2{color:var(--bull)}
+.hero-sub{font-size:clamp(16px,2vw,20px);color:var(--muted2);max-width:600px;line-height:1.7;margin-bottom:48px;animation:fadeDown 0.6s 0.2s ease both}
+.hero-actions{display:flex;gap:16px;align-items:center;justify-content:center;flex-wrap:wrap;animation:fadeDown 0.6s 0.3s ease both}
+.btn-primary{background:var(--cyan);color:#0D0F12;font-weight:700;font-size:15px;padding:14px 32px;border-radius:8px;text-decoration:none;transition:all 0.2s;display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{filter:brightness(1.1);box-shadow:0 0 32px rgba(60,211,254,0.3)}
+.btn-ghost{background:transparent;color:var(--text);font-weight:600;font-size:15px;padding:14px 32px;border-radius:8px;text-decoration:none;border:1px solid var(--border);transition:all 0.2s;display:inline-flex;align-items:center;gap:8px}
+.btn-ghost:hover{border-color:var(--muted);background:var(--surface)}
+
+/* TICKER TAPE */
+.ticker-wrap{width:100%;overflow:hidden;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--surface);padding:10px 0;animation:fadeDown 0.6s 0.4s ease both}
+.ticker-inner{display:flex;gap:48px;white-space:nowrap;animation:ticker 30s linear infinite}
+.ticker-item{display:inline-flex;align-items:center;gap:10px;font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted2)}
+.ticker-item .pair{color:var(--text);font-weight:500}
+.ticker-item .up{color:var(--bull)}
+.ticker-item .down{color:var(--bear)}
+.ticker-item .badge{font-size:11px;padding:2px 8px;border-radius:100px;font-weight:700}
+.badge-buy{background:rgba(52,230,126,0.15);color:var(--bull);border:1px solid rgba(52,230,126,0.3)}
+.badge-sell{background:rgba(255,82,241,0.15);color:var(--bear);border:1px solid rgba(255,82,241,0.3)}
+
+/* STATS BAR */
+.stats{display:flex;justify-content:center;gap:0;padding:80px 40px;position:relative}
+.stat-item{flex:1;max-width:220px;text-align:center;padding:40px 24px;position:relative}
+.stat-item:not(:last-child)::after{content:'';position:absolute;right:0;top:20%;height:60%;width:1px;background:var(--border)}
+.stat-num{font-family:'Outfit',sans-serif;font-size:clamp(40px,5vw,64px);font-weight:800;line-height:1;letter-spacing:-0.01em;margin-bottom:8px}
+.stat-num.cyan{color:var(--cyan)}
+.stat-num.bull{color:var(--bull)}
+.stat-num.bear{color:var(--bear)}
+.stat-num.amber{color:var(--pending)}
+.stat-label{font-size:14px;color:var(--muted);max-width:160px;margin:0 auto;line-height:1.5}
+
+/* SECTION BASICS */
+section{padding:100px 40px;max-width:1200px;margin:0 auto}
+.section-tag{font-size:12px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--cyan);margin-bottom:16px}
+.section-title{font-family:'Outfit',sans-serif;font-size:clamp(32px,4vw,52px);font-weight:800;line-height:1.1;letter-spacing:-0.01em;margin-bottom:20px}
+.section-desc{font-size:17px;color:var(--muted2);max-width:560px;line-height:1.7}
+
+/* PROBLEM SECTION */
+.problem-section{background:linear-gradient(180deg,var(--bg) 0%,rgba(26,29,36,0.3) 50%,var(--bg) 100%);padding:100px 40px}
+.problem-inner{max-width:1200px;margin:0 auto}
+.problem-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;margin-top:64px}
+.timeline{display:flex;flex-direction:column;gap:0}
+.timeline-item{display:flex;gap:20px;padding:20px 0;position:relative}
+.timeline-item:not(:last-child)::before{content:'';position:absolute;left:19px;top:52px;width:1px;height:calc(100% - 12px);background:var(--border)}
+.timeline-dot{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;flex-shrink:0;border:1px solid}
+.dot-red{background:rgba(220,38,38,0.1);border-color:rgba(220,38,38,0.3);color:#F87171}
+.dot-warn{background:rgba(245,158,11,0.1);border-color:rgba(245,158,11,0.3);color:var(--pending)}
+.timeline-content{padding-top:8px}
+.timeline-week{font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+.timeline-title{font-weight:600;font-size:15px;margin-bottom:4px}
+.timeline-desc{font-size:14px;color:var(--muted2);line-height:1.5}
+.timeline-cost{font-family:'JetBrains Mono',monospace;font-size:12px;color:#F87171;background:rgba(220,38,38,0.08);border:1px solid rgba(220,38,38,0.2);border-radius:100px;padding:2px 10px;display:inline-block;margin-top:6px}
+
+.problem-right{display:flex;flex-direction:column;gap:24px}
+.pain-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;transition:border-color 0.2s}
+.pain-card:hover{border-color:rgba(60,211,254,0.3)}
+.pain-num{font-family:'Outfit',sans-serif;font-size:48px;font-weight:800;letter-spacing:-0.01em;line-height:1;margin-bottom:8px}
+.pain-num span{font-size:24px;vertical-align:top;margin-top:8px;display:inline-block}
+.pain-label{font-size:14px;color:var(--muted2);line-height:1.5}
+
+/* SOLUTION */
+.solution-section{max-width:1200px;margin:0 auto;padding:100px 40px}
+.pipeline{display:flex;align-items:stretch;gap:0;margin-top:64px;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden}
+.pipe-step{flex:1;padding:32px 24px;position:relative;border-right:1px solid var(--border);transition:background 0.2s}
+.pipe-step:last-child{border-right:none}
+.pipe-step:hover{background:rgba(60,211,254,0.04)}
+.pipe-arrow{position:absolute;right:-12px;top:50%;transform:translateY(-50%);width:24px;height:24px;background:var(--bg);border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;z-index:1;font-size:10px;color:var(--cyan)}
+.pipe-num{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--cyan);letter-spacing:0.1em;margin-bottom:12px}
+.pipe-time{font-family:'JetBrains Mono',monospace;font-size:28px;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1}
+.pipe-time .unit{font-size:14px;color:var(--muted);font-weight:400}
+.pipe-label{font-size:13px;color:var(--muted2);line-height:1.5}
+.pipe-total{flex:0 0 auto;background:var(--cyan);padding:32px 28px;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-width:180px}
+.pipe-total .big{font-family:'Outfit',sans-serif;font-size:48px;font-weight:800;color:#0D0F12;line-height:1;letter-spacing:-0.01em}
+.pipe-total .label{font-size:13px;font-weight:700;color:rgba(13,15,18,0.7);margin-top:4px}
+
+/* CODE COMPARE */
+.code-compare{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:64px}
+.code-block{border-radius:12px;overflow:hidden;border:1px solid var(--border)}
+.code-header{padding:12px 16px;display:flex;align-items:center;justify-content:space-between;font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;gap:8px}
+.code-header.old{background:rgba(220,38,38,0.1);color:#F87171;border-bottom:1px solid rgba(220,38,38,0.2)}
+.code-header.new{background:rgba(52,230,126,0.1);color:var(--bull);border-bottom:1px solid rgba(52,230,126,0.2)}
+.code-header .dot{width:8px;height:8px;border-radius:50%}
+.code-body{background:#080A0D;padding:24px;font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;overflow-x:auto}
+.kw{color:var(--cyan)}
+.str{color:var(--bull)}
+.cm{color:var(--muted)}
+.num{color:var(--pending)}
+.fn{color:#C792EA}
+
+/* STRATEGY SECTION */
+.strategy-section{padding:100px 40px;background:linear-gradient(180deg,var(--bg) 0%,rgba(26,29,36,0.4) 50%,var(--bg) 100%)}
+.strategy-inner{max-width:1200px;margin:0 auto}
+.strategy-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;margin-top:64px;align-items:start}
+
+/* ALERT MOCKUP */
+.alert-mockup{background:var(--surface);border:1px solid var(--border);border-radius:16px;overflow:hidden;font-family:'JetBrains Mono',monospace}
+.alert-topbar{background:rgba(52,230,126,0.08);border-bottom:1px solid rgba(52,230,126,0.2);padding:12px 16px;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--bull);font-weight:700;letter-spacing:0.04em}
+.alert-body{padding:20px 16px}
+.alert-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid rgba(37,41,48,0.6);font-size:13px}
+.alert-row:last-child{border-bottom:none}
+.alert-label{color:var(--muted);display:flex;align-items:center;gap:6px}
+.alert-value{color:var(--text);font-weight:500}
+.alert-value.green{color:var(--bull)}
+.alert-value.red{color:var(--bear)}
+.alert-value.cyan{color:var(--cyan)}
+.alert-score{display:flex;gap:4px;align-items:center}
+.score-pip{width:20px;height:20px;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700}
+.pip-on{background:rgba(52,230,126,0.2);color:var(--bull);border:1px solid rgba(52,230,126,0.4)}
+.pip-off{background:rgba(107,114,128,0.1);color:var(--muted);border:1px solid rgba(107,114,128,0.2)}
+.tp-row{display:flex;flex-direction:column;gap:8px;margin-top:12px}
+.tp-line{display:flex;align-items:center;gap:10px;font-size:12px}
+.tp-line .level{color:var(--muted);min-width:32px}
+.tp-bar-wrap{flex:1;height:4px;background:rgba(37,41,48,0.8);border-radius:2px;overflow:hidden}
+.tp-bar{height:100%;border-radius:2px}
+.tp-line .pct{color:var(--bull);min-width:48px;text-align:right}
+
+/* FILTER GRID */
+.filter-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.filter-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px;transition:border-color 0.2s}
+.filter-card:hover{border-color:rgba(60,211,254,0.2)}
+.filter-icon{font-size:28px;margin-bottom:10px}
+.filter-name{font-weight:600;font-size:14px;margin-bottom:4px}
+.filter-desc{font-size:12px;color:var(--muted);line-height:1.5}
+.filter-badge{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;background:rgba(60,211,254,0.1);color:var(--cyan);border:1px solid rgba(60,211,254,0.2);border-radius:100px;padding:2px 8px;display:inline-block;margin-top:8px}
+
+/* BACKTEST RESULTS */
+.bt-results{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;margin-top:24px}
+.bt-title{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:16px;display:flex;align-items:center;gap:8px}
+.bt-title::before{content:'';display:block;width:8px;height:8px;border-radius:50%;background:var(--bull);animation:pulse 2s infinite}
+.bt-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.bt-item{background:var(--bg);border-radius:8px;padding:14px 12px;text-align:center}
+.bt-score{display:flex;flex-direction:column;gap:16px}
+.bt-score-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--border)}
+.bt-score-row:last-child{border-bottom:none}
+.bt-conf{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted2);min-width:64px}
+.bt-conf .lbl{font-size:10px;color:var(--muted);display:block;margin-bottom:2px}
+.bt-bar-group{flex:1;display:flex;flex-direction:column;gap:4px}
+.bt-mini-bar{height:20px;border-radius:4px;display:flex;align-items:center;padding:0 8px;font-size:11px;font-weight:700;font-family:'JetBrains Mono',monospace;justify-content:space-between;color:white}
+.bt-stat-val{font-family:'JetBrains Mono',monospace;font-size:22px;font-weight:700;line-height:1;margin-bottom:2px}
+.bt-stat-lbl{font-size:11px;color:var(--muted)}
+
+/* BACKTEST LAB */
+.bt-form{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px;margin-top:40px}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:18px}
+.fg{display:flex;flex-direction:column;gap:5px}
+.flabel{font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.fsel{background:var(--bg);border:1px solid var(--border);border-radius:8px;color:var(--text);padding:9px 12px;font-family:'JetBrains Mono',monospace;font-size:12px;cursor:pointer;appearance:none;transition:border-color .2s}
+.fsel:hover,.fsel:focus{border-color:rgba(60,211,254,.4);outline:none}
+.rval{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);font-weight:700}
+.filter-row{display:flex;gap:16px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.fltr{display:flex;align-items:center;gap:5px;font-size:12px;cursor:pointer}
+.run-btn{background:var(--cyan);color:#0D0F12;font-weight:700;font-size:13px;padding:11px 28px;border-radius:8px;border:none;cursor:pointer;font-family:'Space Grotesk',sans-serif;transition:all .2s;display:flex;align-items:center;gap:8px}
+.run-btn:hover{filter:brightness(1.1);box-shadow:0 0 18px rgba(60,211,254,.28)}
+.run-btn:disabled{opacity:.5;cursor:not-allowed}
+.result-area{display:none;margin-top:24px}
+.result-area.show{display:block}
+.r-header{display:flex;align-items:center;gap:8px;margin-bottom:16px}
+.metrics{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:18px}
+.mc{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:14px;text-align:center}
+.mv{font-family:'Outfit',sans-serif;font-size:26px;font-weight:900;letter-spacing:-0.01em;line-height:1;margin-bottom:3px}
+.ml{font-size:10px;color:var(--muted)}
+.chart-wrap{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:16px;height:160px;display:flex;align-items:flex-end;gap:2px;margin-bottom:16px;overflow:hidden}
+.bar{border-radius:2px 2px 0 0;transition:height .3s}
+.log{background:var(--bg);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.log-hdr{padding:10px 14px;border-bottom:1px solid var(--border);font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.log-row{display:grid;grid-template-columns:60px 90px 70px 50px 70px;padding:9px 14px;border-bottom:1px solid rgba(37,41,48,.35);font-family:'JetBrains Mono',monospace;font-size:11px}
+.log-row:last-child{border-bottom:none}
+
+/* REAL USERS */
+.proof-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:24px}
+.proof-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.proof-img{width:100%;height:220px;object-fit:cover;display:block}
+.proof-meta{padding:12px 14px}
+.proof-user{font-weight:700;font-size:14px;margin-bottom:4px}
+.proof-note{font-size:12px;color:var(--muted2)}
+
+/* STRATEGIES */
+.strategies-section{max-width:1200px;margin:0 auto;padding:100px 40px}
+.strategy-list{display:flex;flex-direction:column;gap:16px;margin-top:48px}
+.strat-item{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:28px 32px;display:flex;align-items:flex-start;gap:24px;transition:all 0.2s;cursor:default}
+.strat-item:hover{border-color:rgba(60,211,254,0.25);background:rgba(26,29,36,0.8)}
+.strat-num{font-family:'JetBrains Mono',monospace;font-size:13px;font-weight:700;color:var(--cyan);background:rgba(60,211,254,0.1);border:1px solid rgba(60,211,254,0.2);border-radius:8px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:4px}
+.strat-content{flex:1}
+.strat-name{font-weight:700;font-size:16px;margin-bottom:6px}
+.strat-desc{font-size:14px;color:var(--muted2);line-height:1.6;margin-bottom:12px}
+.strat-tags{display:flex;flex-wrap:wrap;gap:8px}
+.strat-tag{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:500;padding:3px 10px;border-radius:100px;border:1px solid}
+.tag-cyan{border-color:rgba(60,211,254,0.3);color:var(--cyan);background:rgba(60,211,254,0.08)}
+.tag-bull{border-color:rgba(52,230,126,0.3);color:var(--bull);background:rgba(52,230,126,0.08)}
+.tag-bear{border-color:rgba(255,82,241,0.3);color:var(--bear);background:rgba(255,82,241,0.08)}
+.tag-amber{border-color:rgba(245,158,11,0.3);color:var(--pending);background:rgba(245,158,11,0.08)}
+.strat-pf{text-align:right;flex-shrink:0}
+.pf-val{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:700;color:var(--bull);line-height:1}
+.pf-label{font-size:11px;color:var(--muted);margin-top:2px}
+.pf-wr{font-family:'JetBrains Mono',monospace;font-size:13px;color:var(--muted2);margin-top:6px}
+
+/* HONEST SECTION */
+.honest-section{padding:100px 40px;background:var(--surface);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.honest-inner{max-width:1200px;margin:0 auto}
+.honest-grid{display:grid;grid-template-columns:1fr 1fr;gap:48px;margin-top:48px}
+.honest-col-title{font-size:12px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:24px;display:flex;align-items:center;gap:8px}
+.title-bull{color:var(--bull)}
+.title-red{color:#F87171}
+.honest-list{display:flex;flex-direction:column;gap:12px}
+.honest-item{display:flex;gap:12px;padding:16px;background:var(--bg);border-radius:10px;border:1px solid var(--border)}
+.honest-icon{font-size:18px;flex-shrink:0;width:28px;text-align:center;margin-top:2px}
+.honest-text{font-size:14px;color:var(--muted2);line-height:1.5}
+.honest-text strong{color:var(--text);font-weight:600}
+
+/* CONTACT / CTA */
+.cta-section{padding:120px 40px;text-align:center;position:relative;overflow:hidden}
+.cta-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:600px;height:400px;background:radial-gradient(ellipse,rgba(60,211,254,0.07) 0%,transparent 70%);pointer-events:none}
+.cta-inner{max-width:800px;margin:0 auto;position:relative}
+.cta-title{font-family:'Outfit',sans-serif;font-size:clamp(36px,5vw,64px);font-weight:800;line-height:1.1;letter-spacing:-0.01em;margin-bottom:20px}
+.cta-desc{font-size:17px;color:var(--muted2);margin-bottom:48px;line-height:1.7}
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:48px;text-align:left}
+.contact-card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:12px;transition:all 0.2s;text-decoration:none;color:inherit}
+.contact-card:hover{border-color:rgba(60,211,254,0.3);transform:translateY(-2px)}
+.contact-icon{width:44px;height:44px;border-radius:10px;background:rgba(60,211,254,0.1);border:1px solid rgba(60,211,254,0.2);display:flex;align-items:center;justify-content:center;font-size:20px}
+.contact-platform{font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted)}
+.contact-handle{font-weight:600;font-size:15px}
+.contact-desc{font-size:13px;color:var(--muted);line-height:1.4}
+
+/* FOOTER */
+footer{border-top:1px solid var(--border);padding:40px;text-align:center}
+.footer-inner{max-width:1200px;margin:0 auto}
+.footer-logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:16px}
+.footer-disclaimer{font-size:13px;color:var(--muted);max-width:600px;margin:0 auto;line-height:1.6}
+.footer-bottom{display:flex;justify-content:center;gap:32px;margin-top:24px;flex-wrap:wrap}
+.footer-link{font-size:13px;color:var(--muted);text-decoration:none;transition:color 0.2s}
+.footer-link:hover{color:var(--text)}
+
+
+/* FOUNDER SECTION */
+.founder-section{padding:120px 40px;background:var(--bg);position:relative;overflow:hidden}
+.founder-section::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)}
+.founder-section::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent)}
+.founder-inner{max-width:1200px;margin:0 auto}
+.founder-grid{display:grid;grid-template-columns:420px 1fr;gap:80px;align-items:center}
+.founder-photo-wrap{position:relative}
+.founder-photo-frame{position:relative;border-radius:24px;overflow:hidden;aspect-ratio:3/4;box-shadow:0 32px 80px rgba(0,0,0,0.6)}
+.founder-photo{width:100%;height:100%;object-fit:cover;object-position:center top;filter:contrast(1.05)}
+.founder-photo-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,transparent 50%,rgba(13,15,18,0.8) 100%)}
+.founder-accent-line{position:absolute;top:0;left:0;width:4px;height:100%;background:linear-gradient(180deg,var(--cyan) 0%,transparent 100%)}
+.founder-stat-float{position:absolute;bottom:-24px;left:50%;transform:translateX(-50%);background:var(--surface);border:1px solid var(--border);border-radius:100px;padding:14px 28px;display:flex;align-items:center;gap:20px;white-space:nowrap;box-shadow:0 8px 32px rgba(0,0,0,0.4)}
+.float-stat{display:flex;flex-direction:column;align-items:center;gap:2px}
+.float-num{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--cyan);line-height:1}
+.float-lbl{font-size:11px;color:var(--muted);white-space:nowrap}
+.float-divider{width:1px;height:32px;background:var(--border)}
+.founder-content{padding-bottom:24px}
+.founder-title-badge{display:flex;align-items:center;gap:8px;margin-bottom:32px;flex-wrap:wrap}
+.ftag{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:500;color:var(--cyan);background:rgba(60,211,254,0.08);border:1px solid rgba(60,211,254,0.2);border-radius:100px;padding:4px 12px}
+.fdot{color:var(--muted)}
+.founder-bio{display:flex;flex-direction:column;gap:16px;margin-bottom:32px}
+.founder-bio p{font-size:16px;color:var(--muted2);line-height:1.75}
+.founder-bio strong{color:var(--text);font-weight:600}
+.founder-bio em{color:var(--cyan);font-style:italic}
+.founder-quote{padding:24px;background:rgba(60,211,254,0.04);border-radius:16px;border:1px solid rgba(60,211,254,0.15);position:relative;margin-bottom:32px}
+.quote-line{position:absolute;top:0;left:0;width:4px;height:100%;background:var(--cyan);border-radius:2px 0 0 2px}
+.quote-text{font-size:15px;color:var(--muted2);line-height:1.7;font-style:italic;margin-bottom:10px;padding-left:8px}
+.quote-author{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--cyan);font-weight:500;padding-left:8px}
+.founder-links{display:flex;gap:12px;flex-wrap:wrap}
+.founder-link{display:flex;align-items:center;gap:8px;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:10px 18px;text-decoration:none;color:var(--text);font-size:14px;font-weight:500;transition:all 0.2s}
+.founder-link:hover{border-color:rgba(60,211,254,0.4);background:rgba(60,211,254,0.06)}
+.fl-icon{font-size:18px}
+@media(max-width:900px){.founder-grid{grid-template-columns:1fr;gap:60px}.founder-stat-float{position:relative;bottom:0;left:0;transform:none;margin-top:16px;justify-content:center}}
+
+/* ANIMATIONS */
+@keyframes fadeDown{from{opacity:0;transform:translateY(-16px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+@keyframes ticker{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@keyframes scan{0%{transform:translateY(-100%)}100%{transform:translateY(400%)}}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin .8s linear infinite;display:inline-block}
+.fade-up{opacity:0;transform:translateY(24px);transition:opacity 0.6s ease,transform 0.6s ease}
+.fade-up.visible{opacity:1;transform:translateY(0)}
+
+/* MOBILE */
+@media(max-width:768px){
+  nav{padding:0 20px}.nav-links{display:none}
+  .hero{padding:100px 20px 60px}
+  section,.problem-section,.strategy-section,.strategies-section,.solution-section,.honest-section,.cta-section{padding:60px 20px}
+  .problem-grid,.strategy-grid,.code-compare,.honest-grid{grid-template-columns:1fr}
+  .pipeline{flex-direction:column}.pipe-total{min-width:auto}
+  .stats{flex-wrap:wrap}.stat-item{flex:0 0 50%}
+  .bt-row{grid-template-columns:1fr 1fr}
+  .form-grid{grid-template-columns:1fr}
+  .metrics{grid-template-columns:1fr 1fr}
+  .log-row{grid-template-columns:50px 80px 60px 45px 60px}
+  .proof-grid{grid-template-columns:1fr}
+  .proof-img{height:auto}
+  .contact-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="/toilabap.com-logo-dark.svg" alt="Toilabap.com Logo" style="height: 32px; width: auto;">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#problem">Bài Toán</a></li>
+    <li><a href="#solution">Giải Pháp</a></li>
+    <li><a href="#strategy">Trend Matrix</a></li>
+    <li><a href="#backtest">Backtest Lab</a></li>
+    <li><a href="#real-users">User Thực Tế</a></li>
+    <li><a href="#platform">Tính Năng</a></li>
+    <li><a href="#founder">Sáng Lập</a></li>
+    <li><a href="#contact">Liên Hệ</a></li>
+    <li><a href="https://github.com/Dinoxv/toilabap.com" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+  </ul>
+  <a href="pricing.html" class="nav-cta">Mua chỉ báo →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="home">
+  <div class="hero-video-bg">
+    <video autoplay loop muted playsinline>
+      <source src="https://cdn.neonapi.io/public/pages/about/hero/hero-anim.mp4" type="video/mp4">
+      <source src="https://cdn.neonapi.io/public/pages/about/hero/hero-anim.webm" type="video/webm">
+    </video>
+  </div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-badge">
+    <span class="dot"></span>
+    12,000+ trader đã đăng ký quyền truy cập sớm
+  </div>
+
+  <h1 class="hero-title">
+    Theo dấu<br>
+    <span class="accent">Dòng Tiền Thông Minh</span><br>
+    <span class="accent2">đi trước nhịp giá</span>
+  </h1>
+
+  <p class="hero-sub">
+    Nền tảng algo trading end-to-end: từ luận điểm giao dịch đến lệnh live chỉ trong
+    <strong style="color:var(--cyan)">90 giây</strong>.
+    Vận hành 24/7, tự bám phiên thanh khoản cao, tự quản trị thoát lệnh.
+  </p>
+
+  <div class="hero-actions">
+      <a href="https://app.toilabap.com" class="btn-primary">
+        Trading Terminal
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="https://github.com/Dinoxv/toilabap.com" class="btn-ghost">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub Open Source
+    </a>
+  </div>
+</div>
+
+<!-- TICKER TAPE -->
+<div class="ticker-wrap">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item"><span class="pair">BTCUSDT</span><span class="up">95,420</span><span class="badge badge-buy">BUY (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">ETHUSDT</span><span class="up">3,285</span><span class="badge badge-buy">BUY (4/4)</span></span>
+    <span class="ticker-item"><span class="pair">EURUSD</span><span class="down">1.0845</span><span class="badge badge-sell">SELL (2/4)</span></span>
+    <span class="ticker-item"><span class="pair">NVDA</span><span class="up">874.50</span><span class="badge badge-buy">BUY (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">SOLUSDT</span><span class="down">142.30</span><span class="badge badge-sell">SELL (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">GBPUSD</span><span class="up">1.2738</span><span class="badge badge-buy">BUY (2/4)</span></span>
+    <span class="ticker-item"><span class="pair">AAPL</span><span class="up">184.92</span><span class="badge badge-buy">BUY (4/4)</span></span>
+    <span class="ticker-item"><span class="pair">XAUUSD</span><span class="down">2,312</span><span class="badge badge-sell">SELL (3/4)</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="pair">BTCUSDT</span><span class="up">95,420</span><span class="badge badge-buy">BUY (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">ETHUSDT</span><span class="up">3,285</span><span class="badge badge-buy">BUY (4/4)</span></span>
+    <span class="ticker-item"><span class="pair">EURUSD</span><span class="down">1.0845</span><span class="badge badge-sell">SELL (2/4)</span></span>
+    <span class="ticker-item"><span class="pair">NVDA</span><span class="up">874.50</span><span class="badge badge-buy">BUY (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">SOLUSDT</span><span class="down">142.30</span><span class="badge badge-sell">SELL (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">GBPUSD</span><span class="up">1.2738</span><span class="badge badge-buy">BUY (2/4)</span></span>
+    <span class="ticker-item"><span class="pair">AAPL</span><span class="up">184.92</span><span class="badge badge-buy">BUY (4/4)</span></span>
+    <span class="ticker-item"><span class="pair">XAUUSD</span><span class="down">2,312</span><span class="badge badge-sell">SELL (3/4)</span></span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats fade-up">
+  <div class="stat-item">
+    <div class="stat-num bear">89%</div>
+    <div class="stat-label">Retail trader thua lỗ vì thiếu hệ thống thực thi chuẩn</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" style="color:var(--pending)">7 tuần</div>
+    <div class="stat-label">Chu kỳ trung bình từ luận điểm đến triển khai live</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num cyan">90s</div>
+    <div class="stat-label">Từ prompt đến lệnh live trên Toilabap.com</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num bull">12K+</div>
+    <div class="stat-label">Trader trong hàng chờ Closed Beta</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<div class="problem-section" id="problem">
+  <div class="problem-inner">
+    <div class="section-tag fade-up">Bài Toán Thị Trường</div>
+    <h2 class="section-title fade-up">Điểm nghẽn <span style="color:var(--pending)">7 tuần</span><br>bào mòn mọi lợi thế</h2>
+    <p class="section-desc fade-up">Khoảng cách từ luận điểm đến thực thi không phải bài toán IQ, mà là bài toán hạ tầng, quy trình và tốc độ.</p>
+
+    <div class="problem-grid fade-up">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot dot-red">W1</div>
+          <div class="timeline-content">
+            <div class="timeline-week">Tuần 1–3</div>
+            <div class="timeline-title">Code Entry/Exit Logic</div>
+            <div class="timeline-desc">Xây position sizing, ràng buộc rủi ro. Lỗi phổ biến: off-by-one trong data index, look-ahead bias, sizing không chuẩn hóa theo danh mục.</div>
+            <span class="timeline-cost">~3 tuần × $12,500/tuần</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-red">W4</div>
+          <div class="timeline-content">
+            <div class="timeline-week">Tuần 4–5</div>
+            <div class="timeline-title">Backtest Walk-Forward</div>
+            <div class="timeline-desc">Backtest engine xử lý split/dividend sai, mô hình slippage thiếu thực tế. Riêng out-of-sample validation đã ngốn hàng tuần.</div>
+            <span class="timeline-cost">~2 tuần × $12,500/tuần</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-warn">W6</div>
+          <div class="timeline-content">
+            <div class="timeline-week">Tuần 6</div>
+            <div class="timeline-title">Validate Metrics & Risk</div>
+            <div class="timeline-desc">Chiến lược bị loại khi drawdown xấu hơn benchmark. Toàn bộ effort nghiên cứu gần như phải làm lại.</div>
+            <span class="timeline-cost">~1 tuần × $12,500/tuần</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-warn">W7</div>
+          <div class="timeline-content">
+            <div class="timeline-week">Tuần 7</div>
+            <div class="timeline-title">Paper Trade — Market Đã Xoay</div>
+            <div class="timeline-desc">Đến paper trade mới đo được trượt giá thực tế, nhưng market regime đã đổi. Edge ban đầu không còn.</div>
+            <span class="timeline-cost">$87,500 burn-rate. Edge đã trễ nhịp.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-right">
+        <div class="pain-card">
+          <div class="pain-num" style="color:var(--bear)">$87<span style="font-size:28px">K</span></div>
+          <div class="pain-label">Chi phí nhân sự cho mỗi hypothesis tại quỹ lớn, chưa gồm data feed và overhead hạ tầng.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-num" style="color:var(--pending)">50×</div>
+          <div class="pain-label">Số hypothesis bạn có thể kiểm định trong thời gian quỹ tổ chức chỉ test được 1. Đây là edge vận hành thực tế.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-num" style="color:var(--cyan)">$650K</div>
+          <div class="pain-label">Thu nhập junior quant tại quỹ top-tier, chỉ để làm một việc: biến luận điểm thành hệ thống có thể khớp lệnh.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOLUTION -->
+<section class="solution-section" id="solution">
+  <div class="section-tag fade-up">Giải Pháp</div>
+  <h2 class="section-title fade-up">Pipeline <span style="color:var(--cyan)">90 giây</span> —<br>từ prompt đến lệnh khớp live</h2>
+
+  <div class="pipeline fade-up">
+    <div class="pipe-step">
+      <div class="pipe-num">BƯỚC 01</div>
+      <div class="pipe-time">T+0<span class="unit">s</span></div>
+      <div class="pipe-label">Nhập luận điểm bằng ngôn ngữ tự nhiên hoặc nạp sẵn cấu hình Trend Matrix Strategy</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">BƯỚC 02</div>
+      <div class="pipe-time">T+15<span class="unit">s</span></div>
+      <div class="pipe-label">AI biên dịch thành Strategy object: CHoCH + Sweep + FVG + HTF Bias + Killzone + ATR Risk</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">BƯỚC 03</div>
+      <div class="pipe-time">T+47<span class="unit">s</span></div>
+      <div class="pipe-label">Backtest BTC 5 năm khung 1 phút trong 47 giây. Sharpe, Win Rate, Profit Factor tự động xuất</div>
+    </div>
+    <div class="pipe-step" style="border-right:none">
+      <div class="pipe-num">BƯỚC 04</div>
+      <div class="pipe-time">T+90<span class="unit">s</span></div>
+      <div class="pipe-label">s.run() — Triển khai lên Binance/Alpaca/OANDA. Bot vận hành 24/7, bạn nhận cảnh báo theo thời gian thực</div>
+    </div>
+    <div class="pipe-total">
+      <div class="big">90s</div>
+      <div class="label">Luận điểm → Live</div>
+    </div>
+  </div>
+
+  <div class="code-compare fade-up">
+    <div class="code-block">
+      <div class="code-header old">
+        <div class="dot" style="background:#F87171;border-radius:50%"></div>
+        Cách cũ — 200+ dòng boilerplate
+      </div>
+      <div class="code-body"><span class="cm"># Mỗi nguồn data là một API khác nhau</span>
+<span class="kw">import</span> yfinance <span class="kw">as</span> yf          <span class="cm"># US Stocks</span>
+<span class="kw">from</span> binance.client <span class="kw">import</span> Client  <span class="cm"># Crypto</span>
+<span class="kw">import</span> oandapyV20              <span class="cm"># Forex</span>
+
+<span class="cm"># 3 API khác nhau, 3 rate limit khác nhau</span>
+<span class="cm"># Data format không đồng nhất → normalize thủ công</span>
+<span class="cm"># Look-ahead bias, slippage model sai...</span>
+<span class="cm"># → 200-500 dòng TRƯỚC KHI test strategy</span></div>
+    </div>
+    <div class="code-block">
+      <div class="code-header new">
+        <div class="dot" style="background:var(--bull);border-radius:50%"></div>
+        Với Toilabap.com — 3 dòng, chuẩn hóa toàn bộ
+      </div>
+      <div class="code-body"><span class="kw">from</span> toilabap <span class="kw">import</span> Alpaca, Binance, OANDA
+
+<span class="cm"># Cùng một interface, mọi sàn, mọi asset class</span>
+interface.<span class="fn">history</span>(<span class="str">'MSFT'</span>, <span class="num">50</span>, resolution=<span class="str">'1d'</span>)
+interface.<span class="fn">history</span>(<span class="str">'BTC-USD'</span>, <span class="num">50</span>, resolution=<span class="str">'1h'</span>)
+interface.<span class="fn">history</span>(<span class="str">'EUR/USD'</span>, <span class="num">50</span>, resolution=<span class="str">'15m'</span>)
+
+<span class="cm"># Backtest → Deploy: thay đúng MỘT dòng</span>
+s.<span class="fn">backtest</span>(to=<span class="str">'5y'</span>)  <span class="cm"># → s.run()</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGY -->
+<div class="strategy-section" id="strategy">
+  <div class="strategy-inner">
+    <div class="section-tag fade-up">Trend Matrix Strategy [Ritchi] v3.1.1</div>
+    <h2 class="section-title fade-up">Chiến lược SMC production-grade<br><span style="color:var(--cyan)">sẵn sàng vào live ngay hôm nay</span></h2>
+
+    <div class="strategy-grid fade-up">
+      <!-- Alert mockup -->
+      <div>
+        <div class="alert-mockup">
+          <div class="alert-topbar">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            🟢 TÍN HIỆU [LONG] — Điểm Đảo Chiều Xác Suất Cao
+          </div>
+          <div class="alert-body">
+            <div class="alert-row">
+              <span class="alert-label">📊 Cặp</span>
+              <span class="alert-value cyan">BTCUSDT</span>
+            </div>
+            <div class="alert-row">
+              <span class="alert-label">⏱ Khung thời gian</span>
+              <span class="alert-value">1 phút</span>
+            </div>
+            <div class="alert-row">
+              <span class="alert-label">⭐ Mức tin cậy</span>
+              <div class="alert-score">
+                <span class="score-pip pip-on">✓</span>
+                <span class="score-pip pip-on">✓</span>
+                <span class="score-pip pip-on">✓</span>
+                <span class="score-pip pip-off">—</span>
+                <span style="font-size:12px;color:var(--bull);margin-left:4px;font-weight:700">3/4</span>
+              </div>
+            </div>
+            <div class="alert-row">
+              <span class="alert-label">💰 Giá Vào</span>
+              <span class="alert-value">95,000</span>
+            </div>
+            <div class="alert-row">
+              <span class="alert-label">🛡 Mức dừng lỗ</span>
+              <span class="alert-value red">94,620 (−0.40%)</span>
+            </div>
+            <div class="alert-row">
+              <span class="alert-label">🔒 Cắt lỗ cứng</span>
+              <span class="alert-value red">92,150 (−2.47%)</span>
+            </div>
+
+            <div class="tp-row" style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">💰 4 mốc chốt lời theo kế hoạch</div>
+              <div class="tp-line">
+                <span class="level">TP1</span>
+                <div class="tp-bar-wrap"><div class="tp-bar" style="width:100%;background:rgba(52,230,126,0.4)"></div></div>
+                <span class="pct">+0.40%</span>
+              </div>
+              <div class="tp-line">
+                <span class="level">TP2</span>
+                <div class="tp-bar-wrap"><div class="tp-bar" style="width:75%;background:rgba(52,230,126,0.55)"></div></div>
+                <span class="pct">+0.80%</span>
+              </div>
+              <div class="tp-line">
+                <span class="level">TP3</span>
+                <div class="tp-bar-wrap"><div class="tp-bar" style="width:50%;background:rgba(52,230,126,0.7)"></div></div>
+                <span class="pct">+1.20%</span>
+              </div>
+              <div class="tp-line">
+                <span class="level">TP4</span>
+                <div class="tp-bar-wrap"><div class="tp-bar" style="width:30%;background:var(--bull)"></div></div>
+                <span class="pct">+1.60%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Backtest Results -->
+        <div class="bt-results" style="margin-top:16px">
+          <div class="bt-title">Backtest BTC 5 năm — 1 phút — 47 giây</div>
+          <div class="bt-score">
+            <div class="bt-score-row">
+              <div class="bt-conf">
+                <span class="lbl">Score</span>
+                2/4
+              </div>
+              <div class="bt-bar-group">
+                <div class="bt-mini-bar" style="width:100%;background:rgba(52,230,126,0.25);color:var(--bull)">
+                  <span>Win Rate</span><span>56%</span>
+                </div>
+                <div class="bt-mini-bar" style="width:100%;background:rgba(60,211,254,0.15);color:var(--cyan);font-size:10px">
+                  <span>412 lệnh | PF 1.67 | DD 8.3%</span>
+                </div>
+              </div>
+            </div>
+            <div class="bt-score-row">
+              <div class="bt-conf">
+                <span class="lbl">Score</span>
+                3/4
+              </div>
+              <div class="bt-bar-group">
+                <div class="bt-mini-bar" style="width:100%;background:rgba(52,230,126,0.35);color:var(--bull)">
+                  <span>Win Rate</span><span>63%</span>
+                </div>
+                <div class="bt-mini-bar" style="width:100%;background:rgba(60,211,254,0.15);color:var(--cyan);font-size:10px">
+                  <span>198 lệnh | PF 2.14 | DD 5.1%</span>
+                </div>
+              </div>
+            </div>
+            <div class="bt-score-row">
+              <div class="bt-conf">
+                <span class="lbl">Score</span>
+                4/4
+              </div>
+              <div class="bt-bar-group">
+                <div class="bt-mini-bar" style="width:100%;background:rgba(52,230,126,0.5);color:var(--bull)">
+                  <span>Win Rate</span><span>71%</span>
+                </div>
+                <div class="bt-mini-bar" style="width:100%;background:rgba(60,211,254,0.15);color:var(--cyan);font-size:10px">
+                  <span>87 lệnh | PF 2.89 | DD 3.2%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter grid + description -->
+      <div>
+        <p style="color:var(--muted2);font-size:15px;line-height:1.7;margin-bottom:32px">
+          Trend Matrix Strategy đóng gói đầy đủ logic SMC production-grade, từ phát hiện CHoCH đến quản trị rủi ro ATR, không cần tự viết thêm code.
+        </p>
+        <div class="filter-grid">
+          <div class="filter-card">
+            <div class="filter-icon">⚡</div>
+            <div class="filter-name">Khoảnh Khắc Đổi Chiều</div>
+            <div class="filter-desc">CHoCH — thời điểm cấu trúc giá gãy nhịp cũ, hệ thống kích hoạt tín hiệu tức thì</div>
+            <span class="filter-badge">CHoCH Detection</span>
+          </div>
+          <div class="filter-card">
+            <div class="filter-icon">🎣</div>
+            <div class="filter-name">Bẫy Tiền Thông Minh</div>
+            <div class="filter-desc">Liquidity Sweep — nhận diện pha quét stop loss trước khi giá đảo chiều</div>
+            <span class="filter-badge">Liquidity Sweep</span>
+          </div>
+          <div class="filter-card">
+            <div class="filter-icon">🧭</div>
+            <div class="filter-name">La Bàn Xu Hướng</div>
+            <div class="filter-desc">HTF EMA Bias — chỉ kích hoạt lệnh theo đúng hướng xu hướng khung lớn</div>
+            <span class="filter-badge">HTF Bias Filter</span>
+          </div>
+          <div class="filter-card">
+            <div class="filter-icon">🧲</div>
+            <div class="filter-name">Vùng Hút Giá</div>
+            <div class="filter-desc">Fair Value Gap — vùng mất cân bằng giá mà thị trường thường quay lại lấp</div>
+            <span class="filter-badge">FVG Detection</span>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">⏰ Giờ Vàng Giao Dịch (GMT+7)</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:13px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="color:var(--muted2)">🇬🇧 London Open</span>
+              <span style="color:var(--cyan)">14:00 – 17:00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="color:var(--muted2)">🇺🇸 New York AM</span>
+              <span style="color:var(--cyan)">19:30 – 22:00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="color:var(--muted2)">🌙 New York PM</span>
+              <span style="color:var(--cyan)">01:00 – 03:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BACKTEST LAB -->
+<section id="backtest">
+  <div class="section-tag fade-up">🔬 Backtest Lab</div>
+  <h2 class="section-title fade-up">Test hypothesis của bạn <span style="color:var(--cyan)">trong 47 giây</span></h2>
+  <p class="section-desc fade-up">Cấu hình Trend Matrix Strategy, chạy backtest mô phỏng, nhận Sharpe, Win Rate, Profit Factor tức thì.</p>
+
+  <div class="bt-form fade-up">
+    <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;background:var(--cyan);border-radius:50%;display:block"></span>Cấu hình Backtest</div>
+    <div class="form-grid">
+      <div class="fg"><label class="flabel">Symbol</label>
+        <select class="fsel" id="bt-sym"><option>BTCUSDT</option><option>ETHUSDT</option><option>SOLUSDT</option><option>EURUSD</option><option>GBPUSD</option><option>MSFT</option><option>NVDA</option></select></div>
+      <div class="fg"><label class="flabel">Timeframe</label>
+        <select class="fsel" id="bt-tf"><option>1m</option><option>5m</option><option>15m</option><option>1h</option><option>4h</option><option>1d</option></select></div>
+      <div class="fg"><label class="flabel">Lookback</label>
+        <select class="fsel" id="bt-lb"><option>1 năm</option><option>2 năm</option><option selected>5 năm</option></select></div>
+      <div class="fg"><label class="flabel">Min Confluence: <span class="rval" id="cv">2</span>/4</label>
+        <input type="range" min="0" max="4" value="2" id="bt-conf" oninput="document.getElementById('cv').textContent=this.value" style="width:100%;accent-color:var(--cyan);margin-top:10px"></div>
+      <div class="fg"><label class="flabel">Risk Per Trade: <span class="rval" id="rv">1.0</span>%</label>
+        <input type="range" min="0.1" max="5" value="1" step="0.1" id="bt-risk" oninput="document.getElementById('rv').textContent=parseFloat(this.value).toFixed(1)" style="width:100%;accent-color:var(--cyan);margin-top:10px"></div>
+      <div class="fg"><label class="flabel">ATR Mult: <span class="rval" id="av">4.0</span>x</label>
+        <input type="range" min="1" max="8" value="4" step="0.5" id="bt-atr" oninput="document.getElementById('av').textContent=parseFloat(this.value).toFixed(1)" style="width:100%;accent-color:var(--cyan);margin-top:10px"></div>
+    </div>
+    <div class="filter-row">
+      <label class="fltr"><input type="checkbox" checked style="accent-color:var(--cyan)"> Killzone</label>
+      <label class="fltr"><input type="checkbox" checked style="accent-color:var(--cyan)"> Sweep</label>
+      <label class="fltr"><input type="checkbox" checked style="accent-color:var(--cyan)"> HTF Bias</label>
+      <label class="fltr"><input type="checkbox" checked style="accent-color:var(--cyan)"> FVG</label>
+      <button class="run-btn" id="rbn" onclick="runBt()"><span id="ri">▶</span> Chạy Backtest</button>
+    </div>
+
+    <div class="result-area" id="ra">
+      <div class="r-header">
+        <div style="width:8px;height:8px;background:var(--bull);border-radius:50%;animation:pulse 2s infinite"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--bull)">BACKTEST HOÀN THÀNH</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)" id="rlbl"></span>
+      </div>
+      <div class="metrics" id="rm"></div>
+      <div class="chart-wrap" id="cw"></div>
+      <div class="log">
+        <div class="log-hdr">Trade Log (10 giao dịch mẫu)</div>
+        <div id="lr"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REAL USERS -->
+<section class="strategies-section" id="real-users">
+  <div class="section-tag fade-up">Real Trade Proof</div>
+  <h2 class="section-title fade-up">Dấu vết thực thi từ <span style="color:var(--cyan)">tài khoản vận hành thực</span></h2>
+  <p class="section-desc fade-up">Snapshot được trích từ phiên live: có thời điểm khớp lệnh, mã giao dịch, leverage và hiệu suất theo từng account.</p>
+
+  <div class="strategy-list fade-up">
+    <div class="strat-item">
+      <div class="strat-num">01</div>
+      <div class="strat-content">
+        <div class="strat-name">Desk A · AIAUSDT Perpetual</div>
+        <div class="strat-desc">Long 6x, entry 0.0739067, performance +52.53%. Execution timestamp: 2026-05-17 19:34:58.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Execution Verified</span>
+          <span class="strat-tag tag-bull">+52.53%</span>
+          <span class="strat-tag tag-amber">AIAUSDT</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">6x</div>
+        <div class="pf-label">Leverage</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">02</div>
+      <div class="strat-content">
+        <div class="strat-name">Desk B · FIDAUSDT Perpetual</div>
+        <div class="strat-desc">Long 6x, entry 0.02263, last 0.02326, realized session gain +16.73% (2026-05-18 17:35:41).</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Execution Verified</span>
+          <span class="strat-tag tag-bull">+16.73%</span>
+          <span class="strat-tag tag-amber">FIDAUSDT</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">6x</div>
+        <div class="pf-label">Leverage</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">03</div>
+      <div class="strat-content">
+        <div class="strat-name">Desk C · FIDAUSDT / BSBUSDT</div>
+        <div class="strat-desc">Consecutive longs with +21.25% (FIDAUSDT) and +11.70% (BSBUSDT), backed by chart-level TP/SL mapping.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Execution Verified</span>
+          <span class="strat-tag tag-bull">+21.25%</span>
+          <span class="strat-tag tag-bull">+11.70%</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">6x</div>
+        <div class="pf-label">Leverage</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proof-grid fade-up">
+    <div class="proof-card">
+      <img class="proof-img" src="assets/real-trade/AIA-7835926268490-binance.jpg" alt="Jchase AIAUSDT Binance Futures result">
+      <div class="proof-meta"><div class="proof-user">Desk A · +52.53%</div><div class="proof-note">AIAUSDT Perpetual · Live Execution Log</div></div>
+    </div>
+    <div class="proof-card">
+      <img class="proof-img" src="assets/real-trade/z7839132950914_0602779e9ff08205371e3af42d5750ae.jpg" alt="Tracy Dang FIDAUSDT Binance Futures result">
+      <div class="proof-meta"><div class="proof-user">Desk B · +16.73%</div><div class="proof-note">FIDAUSDT Perpetual · Live Execution Log</div></div>
+    </div>
+    <div class="proof-card">
+      <img class="proof-img" src="assets/real-trade/z7839134337312_68c54258e16fb77367c05de8d8dc5ae4.jpg" alt="NguyenTuong123 FIDAUSDT Binance Futures result">
+      <div class="proof-meta"><div class="proof-user">Desk C · +21.25%</div><div class="proof-note">FIDAUSDT Perpetual · Live Execution Log</div></div>
+    </div>
+    <div class="proof-card">
+      <img class="proof-img" src="assets/real-trade/AIA-7835926268490-tradingview.jpg" alt="AIAUSDT tradingview proof">
+      <div class="proof-meta"><div class="proof-user">AIAUSDT Execution Map</div><div class="proof-note">TP ladder, market structure, timestamped trigger</div></div>
+    </div>
+    <div class="proof-card">
+      <img class="proof-img" src="assets/real-trade/z7839133247300_834a14cd1446663818db4e9602da6fc2.jpg" alt="FIDAUSDT tradingview proof">
+      <div class="proof-meta"><div class="proof-user">FIDAUSDT Execution Map</div><div class="proof-note">CHoCH trigger, tiered TP, hard SL governance</div></div>
+    </div>
+    <div class="proof-card">
+      <img class="proof-img" src="assets/real-trade/z7839137245756_35bcb63c52606fe2225ef91c6ceac730.jpg" alt="BSBUSDT tradingview proof">
+      <div class="proof-meta"><div class="proof-user">BSBUSDT Execution Map</div><div class="proof-note">TP1-TP3 filled, trend-follow trailing active</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM / FEATURES -->
+<section class="strategies-section" id="platform">
+  <div class="section-tag fade-up">Hyperscalper Terminal · Open Source</div>
+  <h2 class="section-title fade-up">Một hệ sinh thái giao dịch <span style="color:var(--cyan)">hoàn chỉnh</span></h2>
+  <p class="section-desc fade-up">Next.js + TypeScript + WebSocket realtime. Toàn bộ source code public trên GitHub, sẵn sàng mở rộng theo chiến lược của bạn.</p>
+
+  <div class="strategy-list fade-up">
+    <div class="strat-item">
+      <div class="strat-num">01</div>
+      <div class="strat-content">
+        <div class="strat-name">Market Scanner Realtime</div>
+        <div class="strat-desc">Quét đồng thời CHoCH, Sweep, FVG, Volume Spike, Divergence và EMA alignment để tìm setup trước đám đông.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">CHoCH · BOS</span>
+          <span class="strat-tag tag-bull">Liquidity Sweep</span>
+          <span class="strat-tag tag-amber">Volume Trigger</span>
+          <span class="strat-tag tag-cyan">Divergence Auto</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">8+</div>
+        <div class="pf-label">Scanner Modules</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">02</div>
+      <div class="strat-content">
+        <div class="strat-name">Charts & Multi-Timeframe</div>
+        <div class="strat-desc">Scalping chart tối ưu hiệu năng, chuyển khung 1m/5m/15m/1h tức thì, hỗ trợ pop-out chart cho thiết lập nhiều màn hình.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Lightweight Charts</span>
+          <span class="strat-tag tag-bull">Hotkeys</span>
+          <span class="strat-tag tag-amber">Cloud Orders (DCA)</span>
+          <span class="strat-tag tag-cyan">P&L Tracking</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">24/7</div>
+        <div class="pf-label">Realtime Feed</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">03</div>
+      <div class="strat-content">
+        <div class="strat-name">Bot Trading Flow</div>
+        <div class="strat-desc">Luồng tự động scanner -> confluence gate -> position sizing -> TP ladder + trailing stop, chạy ổn định với PM2 và audit log đầy đủ.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Risk Rails</span>
+          <span class="strat-tag tag-bear">Max Daily Loss</span>
+          <span class="strat-tag tag-amber">Cooldown</span>
+          <span class="strat-tag tag-bull">Full Audit Log</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">PM2</div>
+        <div class="pf-label">Deployment</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">04</div>
+      <div class="strat-content">
+        <div class="strat-name">Multi-Exchange Interface</div>
+        <div class="strat-desc">Một codebase cho nhiều sàn: Binance, Alpaca, OANDA, Interactive Brokers và các tích hợp mở rộng trong roadmap.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Binance</span>
+          <span class="strat-tag tag-cyan">Alpaca</span>
+          <span class="strat-tag tag-cyan">OANDA</span>
+          <span class="strat-tag tag-cyan">Interactive Brokers</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">1 API</div>
+        <div class="pf-label">Unified Interface</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGIES LIST -->
+<section class="strategies-section">
+  <div class="section-tag fade-up">Cộng Đồng Đang Vận Hành</div>
+  <h2 class="section-title fade-up">5 chiến lược đang<br><span style="color:var(--bull)">chạy trên thị trường thật</span></h2>
+
+  <div class="strategy-list fade-up">
+    <div class="strat-item">
+      <div class="strat-num">01</div>
+      <div class="strat-content">
+        <div class="strat-name">SMC Thuần — BTC/ETH theo dấu Cá Mập</div>
+        <div class="strat-desc">Vào lệnh khi CHoCH xác nhận + có Liquidity Sweep + đúng phiên NY thanh khoản cao. Rủi ro 1% vốn/lệnh, ATR Trailing × 4, 4 mốc chốt lời.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">BTCUSDT · ETHUSDT</span>
+          <span class="strat-tag tag-bull">Confluence 3/4</span>
+          <span class="strat-tag tag-amber">1 phút</span>
+          <span class="strat-tag tag-cyan">Binance</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">2.14</div>
+        <div class="pf-label">Profit Factor</div>
+        <div class="pf-wr">WR 63%</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">02</div>
+      <div class="strat-content">
+        <div class="strat-name">Scalp Giờ Vàng — London Open 14h–17h</div>
+        <div class="strat-desc">Chỉ giao dịch trong London Open. CHoCH trên 1 phút, HTF bias từ 5 phút. Bộ lọc siết chặt: phải đạt đủ 4 tầng xác nhận. Ít lệnh nhưng chất lượng cao.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">BTCUSDT · EURUSD</span>
+          <span class="strat-tag tag-bull">Confluence 4/4</span>
+          <span class="strat-tag tag-amber">1 phút · London</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">2.89</div>
+        <div class="pf-label">Profit Factor</div>
+        <div class="pf-wr">WR 71%</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">03</div>
+      <div class="strat-content">
+        <div class="strat-name">Swing BTC/ETH/SOL — Khung 4H theo HTF Bias</div>
+        <div class="strat-desc">HTF bias lấy từ Daily, entry trên 4H. Chỉ LONG khi giá > EMA(50) Daily. ATR trailing × 6.0, TP step × 3.0. Mỗi vị thế swing 3-10 ngày.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">BTC · ETH · SOL</span>
+          <span class="strat-tag tag-amber">4 giờ · Swing</span>
+          <span class="strat-tag tag-bull">Ít lệnh · Ít căng thẳng</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">1.98</div>
+        <div class="pf-label">Profit Factor</div>
+        <div class="pf-wr">WR 58%</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">04</div>
+      <div class="strat-content">
+        <div class="strat-name">Vùng Hút Giá (FVG Retest) — US Stocks giờ mở cửa</div>
+        <div class="strat-desc">Chờ FVG hình thành sau CHoCH, vào lệnh khi giá retest vùng mất cân bằng. Triển khai trên Alpaca: MSFT, AAPL, NVDA, SPY trong phiên NY AM 19h30-22h.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">MSFT · AAPL · NVDA</span>
+          <span class="strat-tag tag-amber">15 phút · Alpaca</span>
+          <span class="strat-tag tag-bull">FVG Pattern</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">1.76</div>
+        <div class="pf-label">Profit Factor</div>
+        <div class="pf-wr">WR 54%</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">05</div>
+      <div class="strat-content">
+        <div class="strat-name">Bẫy Liquidity + Đảo Chiều — Forex EUR/USD</div>
+        <div class="strat-desc">Kích hoạt lệnh ngay sau Liquidity Sweep xác nhận. Pattern "Silver Bullet": wick xuyên pivot -> nến đóng ngược chiều -> CHoCH. Rủi ro 0.5% do đòn bẩy cao.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">EURUSD · GBPUSD</span>
+          <span class="strat-tag tag-bear">Risk 0.5%</span>
+          <span class="strat-tag tag-amber">5 phút · OANDA</span>
+          <span class="strat-tag tag-bull">Silver Bullet</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">2.31</div>
+        <div class="pf-label">Profit Factor</div>
+        <div class="pf-wr">WR 61%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HONEST SECTION -->
+<div class="honest-section">
+  <div class="honest-inner">
+    <div class="section-tag fade-up">Góc Nhìn Thẳng Thắn</div>
+    <h2 class="section-title fade-up">Chúng tôi không bán<br><span style="color:var(--pending)">"chén thánh"</span></h2>
+
+    <div class="honest-grid fade-up">
+      <div>
+        <div class="honest-col-title title-bull">✅ Chúng tôi THỰC SỰ làm được</div>
+        <div class="honest-list">
+          <div class="honest-item">
+            <span class="honest-icon">⚡</span>
+            <span class="honest-text"><strong>Nén chu kỳ 7 tuần xuống 90 giây</strong> — từ hypothesis đến live deploy, không boilerplate và không data plumbing.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">🌐</span>
+            <span class="honest-text"><strong>One codebase, cross-exchange</strong> — write once, run on Alpaca, Binance, OANDA, Interactive Brokers.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">⭐</span>
+            <span class="honest-text"><strong>Confluence Score System</strong> — 4 tầng lọc giúp tăng chất lượng tín hiệu, giảm nhiễu thị trường.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">🚀</span>
+            <span class="honest-text"><strong>Test 50 hypotheses</strong> trong khi quỹ tổ chức chỉ test được 1. Đây là moat về tốc độ thực thi.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">🤖</span>
+            <span class="honest-text"><strong>24/7 automated execution</strong> — bot bám phiên thanh khoản cao, theo dấu dòng tiền, quản trị thoát lệnh ngay cả khi bạn offline.</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="honest-col-title title-red">❌ Chúng tôi KHÔNG làm</div>
+        <div class="honest-list">
+          <div class="honest-item">
+            <span class="honest-icon">🔮</span>
+            <span class="honest-text"><strong>Không "tạo alpha" thay bạn</strong> — AI chỉ compile strategy của bạn, không thể tạo edge từ khoảng trống.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">📈</span>
+            <span class="honest-text"><strong>Không cam kết lợi nhuận</strong> — bản chất quant research là thử nghiệm liên tục; phần lớn hypothesis sẽ fail.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">🧠</span>
+            <span class="honest-text"><strong>Không thay thế tư duy chiến lược</strong> — thesis sai thì backtest chỉ giúp bạn fail nhanh hơn, rẻ hơn.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">⚙️</span>
+            <span class="honest-text"><strong>Không tự tối ưu tham số vô điều kiện</strong> — bạn vẫn phải kiểm soát trade-off giữa overfitting và robustness.</span>
+          </div>
+        </div>
+        <div style="margin-top:24px;padding:20px;background:rgba(60,211,254,0.06);border:1px solid rgba(60,211,254,0.2);border-radius:12px;border-left:3px solid var(--cyan)">
+          <p style="font-size:14px;color:var(--muted2);line-height:1.6;margin:0"><em>"Bạn có tốc độ thực thi tương đương junior quant $650K/năm. Còn alpha discovery vẫn là phần việc cốt lõi của bạn."</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FOUNDER SECTION -->
+<div class="founder-section" id="founder">
+  <div class="founder-inner">
+    <div class="founder-grid">
+      <!-- Photo -->
+      <div class="founder-photo-wrap">
+        <div class="founder-photo-frame">
+          <img src="assets/founder.jpg" alt="Founder Toilabap.com" class="founder-photo">
+          <div class="founder-photo-overlay"></div>
+          <div class="founder-accent-line"></div>
+        </div>
+        <div class="founder-stat-float">
+          <div class="float-stat">
+            <span class="float-num">5+</span>
+            <span class="float-lbl">năm trading</span>
+          </div>
+          <div class="float-divider"></div>
+          <div class="float-stat">
+            <span class="float-num">50+</span>
+            <span class="float-lbl">chiến lược backtest</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="founder-content">
+        <div class="section-tag" style="margin-bottom:16px">Người Sáng Lập</div>
+        <h2 class="section-title" style="margin-bottom:8px">Ngô Xuân Hùng</h2>
+        <div class="founder-title-badge">
+          <span class="ftag">Algo Trader</span>
+          <span class="fdot">·</span>
+          <span class="ftag">Quant Developer</span>
+          <span class="fdot">·</span>
+          <span class="ftag">Builder @ Toilabap.com</span>
+        </div>
+
+        <div class="founder-bio">
+          <p>Từng là trader tự do mất hàng tuần để code và debug một chiến lược duy nhất, tôi hiểu rõ <strong>điểm nghẽn 7 tuần</strong> không nằm trên slide lý thuyết mà nằm ở thực chiến.</p>
+          <p>Sau nhiều năm giao dịch Crypto, Forex và Stocks, tôi nhận ra khoảng cách giữa luận điểm tốt và thực thi đúng bản chất là <strong>bài toán hạ tầng, quy trình và tốc độ</strong>.</p>
+          <p>Toilabap.com ra đời từ một câu hỏi thẳng: <em>"Nếu junior quant ở quỹ lớn test được 50 hypothesis trong 7 tuần, tại sao trader cá nhân phải mất 7 tuần cho đúng 1 hypothesis?"</em></p>
+        </div>
+
+        <div class="founder-quote">
+          <div class="quote-line"></div>
+          <p class="quote-text">"Tôi không bán chén thánh. Tôi thu hẹp khoảng cách hạ tầng giữa retail trader và desk tổ chức. Phần tìm edge vẫn thuộc về bạn."</p>
+          <div class="quote-author">— Ngô Xuân Hùng, Founder · Toilabap.com</div>
+        </div>
+
+        <div class="founder-links">
+          <a href="https://t.me/Jbap1989" class="founder-link">
+            <span class="fl-icon">💬</span>
+            <span class="fl-text">@Jbap1989</span>
+          </a>
+          <a href="https://www.facebook.com/share/1EVjJuNhce/?mibextid=wwXIfr" class="founder-link">
+            <span class="fl-icon">👥</span>
+            <span class="fl-text">Facebook</span>
+          </a>
+          <a href="mailto:ngoxuanhung17041989@gmail.com" class="founder-link">
+            <span class="fl-icon">✉️</span>
+            <span class="fl-text">Email trực tiếp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section" id="contact">
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <div class="section-tag" style="display:inline-block;margin-bottom:24px">Bắt Đầu Ngay</div>
+    <h2 class="cta-title fade-up">
+      Lợi thế hạ tầng của<br>
+      các desk lớn đã được<br>
+      <span style="color:var(--cyan)">thu hẹp đáng kể.</span>
+    </h2>
+    <p class="cta-desc fade-up">
+      12,000+ trader đang chờ Closed Beta. Đăng ký truy cập sớm hoặc liên hệ trực tiếp để được onboard ngay trong hôm nay.
+    </p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap" class="fade-up">
+      <a href="pricing.html" class="btn-primary" style="font-size:16px;padding:16px 40px">
+        Mua chỉ báo
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="https://github.com/Dinoxv/toilabap.com" class="btn-ghost" style="font-size:16px;padding:16px 40px">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        Open Source
+      </a>
+    </div>
+
+    <div class="contact-grid fade-up">
+      <a href="https://app.toilabap.com" class="contact-card">
+        <div class="contact-icon">🌐</div>
+        <div class="contact-platform">Website</div>
+        <div class="contact-handle">Toilabap.com</div>
+        <div class="contact-desc">Đăng ký waitlist, xem thông tin sản phẩm và tài liệu triển khai</div>
+      </a>
+      <a href="https://t.me/Jbap1989" class="contact-card">
+        <div class="contact-icon">💬</div>
+        <div class="contact-platform">Telegram</div>
+        <div class="contact-handle">@Jbap1989</div>
+        <div class="contact-desc">Hỗ trợ thời gian thực, thảo luận chiến lược, thử thách hypothesis</div>
+      </a>
+      <a href="https://zalo.me/859295259" class="contact-card">
+        <div class="contact-icon">📱</div>
+        <div class="contact-platform">Zalo</div>
+        <div class="contact-handle">+84 859 295 259</div>
+        <div class="contact-desc">Hỗ trợ trực tiếp thị trường Việt Nam</div>
+      </a>
+      <a href="https://www.facebook.com/share/1EVjJuNhce/?mibextid=wwXIfr" class="contact-card">
+        <div class="contact-icon">👥</div>
+        <div class="contact-platform">Facebook</div>
+        <div class="contact-handle">Kết nối tại đây</div>
+        <div class="contact-desc">Cộng đồng, nội dung chuyên sâu, case study giao dịch thực tế</div>
+      </a>
+      <a href="https://github.com/Dinoxv/toilabap.com" class="contact-card">
+        <div class="contact-icon">🐙</div>
+        <div class="contact-platform">GitHub</div>
+        <div class="contact-handle">Dinoxv/toilabap.com</div>
+        <div class="contact-desc">Source code, Hyperscalper, tài liệu kỹ thuật</div>
+      </a>
+      <a href="https://in.tradingview.com/script/yUtRamT7-SMC-Trend-Matrix-Ritchi-v3-4-0/" target="_blank" rel="noopener noreferrer" class="contact-card">
+        <div class="contact-icon">📊</div>
+        <div class="contact-platform">TradingView</div>
+        <div class="contact-handle">SMC-Trend Matrix [Ritchi]</div>
+        <div class="contact-desc">Xem và mua chỉ báo trực tiếp trên TradingView — v3.4.0 đang live</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="assets/toilabap.com-logo-dark.svg" alt="Toilabap.com Logo" style="height: 32px; width: auto;">
+    </div>
+    <p class="footer-disclaimer">
+      ⚠️ Giao dịch luôn tiềm ẩn rủi ro cao. Hiệu suất backtest trong quá khứ không đảm bảo kết quả trong tương lai. Mọi thông tin trên trang chỉ nhằm mục đích tham khảo, không phải khuyến nghị đầu tư tài chính.
+    </p>
+    <div class="footer-bottom">
+      <a href="https://app.toilabap.com" class="footer-link">Toilabap.com</a>
+      <a href="https://ritchi.guru" class="footer-link">Ritchi.guru</a>
+      <a href="https://github.com/Dinoxv/toilabap.com" class="footer-link">GitHub</a>
+      <a href="https://t.me/Jbap1989" class="footer-link">Telegram</a>
+      <span class="footer-link" style="cursor:default">© 2025 Toilabap.com × Ritchi</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+const obs=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');obs.unobserve(e.target)}})},{threshold:0.15});
+document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+
+const DATA={
+  BTCUSDT:[{n:847,wr:48,pf:1.21,dd:14.2},{n:621,wr:52,pf:1.38,dd:11.5},{n:412,wr:56,pf:1.67,dd:8.3},{n:198,wr:63,pf:2.14,dd:5.1},{n:87,wr:71,pf:2.89,dd:3.2}],
+  ETHUSDT:[{n:792,wr:47,pf:1.18,dd:15.1},{n:580,wr:51,pf:1.32,dd:12.3},{n:388,wr:55,pf:1.59,dd:9.1},{n:181,wr:61,pf:2.08,dd:5.8},{n:79,wr:68,pf:2.71,dd:3.8}],
+  SOLUSDT:[{n:901,wr:46,pf:1.14,dd:16.8},{n:643,wr:50,pf:1.28,dd:13.2},{n:421,wr:54,pf:1.54,dd:10.2},{n:204,wr:59,pf:1.98,dd:6.5},{n:91,wr:65,pf:2.54,dd:4.3}],
+  EURUSD:[{n:688,wr:49,pf:1.22,dd:7.8},{n:501,wr:53,pf:1.41,dd:6.2},{n:334,wr:58,pf:1.71,dd:4.5},{n:161,wr:64,pf:2.21,dd:2.8},{n:72,wr:72,pf:2.94,dd:1.9}],
+  GBPUSD:[{n:712,wr:48,pf:1.19,dd:8.5},{n:521,wr:52,pf:1.35,dd:6.9},{n:347,wr:56,pf:1.62,dd:5.1},{n:168,wr:62,pf:2.11,dd:3.2},{n:74,wr:69,pf:2.78,dd:2.1}],
+  MSFT:[{n:544,wr:50,pf:1.28,dd:9.2},{n:398,wr:54,pf:1.45,dd:7.5},{n:265,wr:59,pf:1.74,dd:5.3},{n:128,wr:65,pf:2.28,dd:3.4},{n:57,wr:73,pf:3.02,dd:2.2}],
+  NVDA:[{n:589,wr:51,pf:1.31,dd:10.8},{n:431,wr:55,pf:1.52,dd:8.6},{n:287,wr:61,pf:1.81,dd:6.1},{n:139,wr:67,pf:2.34,dd:3.8},{n:62,wr:74,pf:3.11,dd:2.5}]
+};
+
+function runBt(){
+  const btn=document.getElementById('rbn');
+  const ri=document.getElementById('ri');
+  btn.disabled=true;ri.textContent='⏳';ri.className='spin';
+  const sym=document.getElementById('bt-sym').value;
+  const conf=+document.getElementById('bt-conf').value;
+  const tf=document.getElementById('bt-tf').value;
+  const risk=parseFloat(document.getElementById('bt-risk').value);
+  const delay=tf==='1m'?1800:tf==='5m'?1300:900;
+
+  setTimeout(()=>{
+    btn.disabled=false;ri.textContent='▶';ri.className='';
+    const rows=DATA[sym]||DATA.BTCUSDT;
+    const r=rows[Math.min(conf,rows.length-1)];
+    const sharpe=(r.pf*0.8+r.wr*0.01).toFixed(2);
+    const cagr=Math.max(1,(r.wr*0.4-12+conf*3)).toFixed(1);
+
+    document.getElementById('rlbl').textContent=`${sym} · ${tf} · Score>=${conf}/4 · Risk${risk.toFixed(1)}%`;
+    document.getElementById('rm').innerHTML=`
+      <div class="mc"><div class="mv" style="color:var(--bull)">${r.wr}%</div><div class="ml">Win Rate</div></div>
+      <div class="mc"><div class="mv" style="color:var(--cyan)">${r.pf}</div><div class="ml">Profit Factor</div></div>
+      <div class="mc"><div class="mv" style="color:var(--pending)">${sharpe}</div><div class="ml">Sharpe Ratio</div></div>
+      <div class="mc"><div class="mv" style="color:var(--bear)">${r.dd}%</div><div class="ml">Max Drawdown</div></div>
+      <div class="mc"><div class="mv" style="color:var(--bull)">${cagr}%</div><div class="ml">CAGR est.</div></div>`;
+
+    const cw=document.getElementById('cw');cw.innerHTML='';
+    let pnl=0;const hs=[];
+    for(let i=0;i<56;i++){const w=Math.random()*100<r.wr;pnl+=(w?1:-1)*(Math.random()*1.5+0.3)*(w?1:0.7);hs.push({v:pnl,w});}
+    const mx=Math.max(...hs.map(h=>Math.abs(h.v)),1);
+    hs.forEach(h=>{const d=document.createElement('div');d.className='bar';d.style.cssText=`flex:1;height:${Math.max(4,Math.abs(h.v)/mx*120)}px;background:${h.w?'rgba(52,230,126,.6)':'rgba(255,82,241,.5)'};`;cw.appendChild(d);});
+
+    const lr=document.getElementById('lr');lr.innerHTML='';
+    const sess=['London','NY AM','NY PM'];
+    for(let i=0;i<10;i++){
+      const w=Math.random()*100<r.wr;
+      const side=Math.random()>.5?'LONG':'SHORT';
+      const ep=sym.includes('USD')&&!sym.includes('USDT')?(1.08+Math.random()*.06).toFixed(5):sym==='MSFT'?(170+Math.random()*30).toFixed(2):(92000+Math.random()*6000).toFixed(0);
+      const pct=w?`+${(Math.random()*1.5+0.3).toFixed(2)}%`:`-${(Math.random()*.8+0.2).toFixed(2)}%`;
+      const cs=Math.min(4,conf+Math.floor(Math.random()*2));
+      lr.innerHTML+=`<div class="log-row"><span style="color:${side==='LONG'?'var(--bull)':'var(--bear)'}">${side}</span><span style="color:var(--muted2)">${ep}</span><span style="color:${w?'var(--bull)':'var(--bear)'}">${pct}</span><span style="color:var(--cyan)">${cs}/4</span><span style="color:var(--muted)">${sess[Math.floor(Math.random()*3)]}</span></div>`;
+    }
+
+    const ra=document.getElementById('ra');ra.classList.add('show');
+    ra.scrollIntoView({behavior:'smooth',block:'start'});
+  },delay);
+}
+</script>
+</body>
+</html>

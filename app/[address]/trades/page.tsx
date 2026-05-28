@@ -2,7 +2,7 @@ import TodaysTradesView from '@/components/TodaysTradesView';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Trade History | RITEX AI",
+  title: "Trade History | app.toilabap.com",
   description: "View your complete trading history with performance analytics and detailed trade metrics",
 };
 

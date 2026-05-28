@@ -22,7 +22,7 @@ export async function generateMetadata({ params }: MultiChartPageProps): Promise
   const normalized = normalizeSymbol(symbol);
 
   return {
-    title: `${normalized} Multi-Chart | RITEX AI`,
+    title: `${normalized} Multi-Chart | app.toilabap.com`,
     description: `${normalized} multi-timeframe analysis with synchronized charts`,
   };
 }

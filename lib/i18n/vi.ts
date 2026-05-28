@@ -58,7 +58,7 @@ export const vi: Translations = {
     reviewDesc: 'Theo dõi mọi giao dịch. Xem tỷ lệ thắng, P&L và xu hướng hiệu suất.',
     readyToTrade: 'SẴN SÀNG GIAO DỊCH?',
     readyToTradeDesc: 'Bắt đầu giao dịch thông minh hơn mà không cần cài đặt phức tạp. Kết nối thông tin sàn và bắt đầu ngay.',
-    builtBy: 'Phát triển bởi RITEX AI',
+    builtBy: 'Phát triển bởi toilabap.com',
     betaWarning: 'PHẦN MỀM BETA: Nền tảng này đang trong giai đoạn beta. Giao dịch có rủi ro tổn thất tài chính đáng kể. Hiệu suất quá khứ không đảm bảo kết quả tương lai. Sử dụng theo rủi ro của bạn.',
     // Stats
     statsLines: 'Dòng code TS/TSX',
@@ -118,7 +118,7 @@ export const vi: Translations = {
   },
   auth: {
     loadingCredentials: 'Đang tải thông tin...',
-    welcomeTitle: 'Chào mừng đến RITEX AI',
+    welcomeTitle: 'Chào mừng đến toilabap.com',
     welcomeDesc: 'Cấu hình thông tin sàn giao dịch để bắt đầu',
     privateKeyRequired: 'Khóa riêng là bắt buộc',
     privateKeyMustStart0x: 'Khóa riêng phải bắt đầu bằng 0x',
@@ -280,8 +280,8 @@ export const vi: Translations = {
     trendLengthColor: 'ĐỘ DÀI XU HƯỚNG (MÀU)',
     atrMultSl: 'HỆ SỐ ATR (SL)',
     tpMultiplier: 'HỆ SỐ TP',
-    positionSize: '█ KÍCH THƯỚC VỊ THẾ (% GIÁ TRỊ TÀI KHOẢN)',
-    positionSizeDesc: 'Cấu hình phần trăm giá trị tài khoản cho mỗi loại lệnh.',
+    positionSize: '█ KÍCH THƯỚC VỊ THẾ (USDT)',
+    positionSizeDesc: 'Nhập số tiền ký quỹ ban đầu (USDT) cho từng loại lệnh.',
     cloudOrders: 'LỆNH CLOUD',
     smallOrders: 'LỆNH NHỎ (SM LONG/SHORT)',
     bigOrders: 'LỆNH LỚN (BIG LONG/SHORT)',

@@ -9,7 +9,7 @@ import type {
   TradeData,
   AllMidsData,
 } from './exchange-websocket.interface';
-import { useWebSocketStatusStore } from '@/stores/useWebSocketStatusStore';
+import { useWebSocketStatusStore, type WebSocketStreamType } from '@/stores/useWebSocketStatusStore';
 import { useSymbolMetaStore } from '@/stores/useSymbolMetaStore';
 import { formatPrice, formatSize } from '@/lib/format-utils';
 
@@ -37,10 +37,28 @@ export class BinanceWebSocketService implements ExchangeWebSocketService {
   private nextId = 1;
   private subscriptions = new Map<string, SubRecord>();
   private streamRefs = new Map<string, number>();
+  private streamTypes = new Map<string, WebSocketStreamType>();
+  private streamLastEventAt = new Map<string, number>();
+  private streamLastResubscribeAt = new Map<string, number>();
+  private reconnectTimer: ReturnType<typeof setTimeout> | null = null;
+  private staleCheckTimer: ReturnType<typeof setInterval> | null = null;
+  private reconnectAttempts = 0;
+
+  private static readonly STALE_CHECK_INTERVAL_MS = 5000;
+  private static readonly RESUBSCRIBE_COOLDOWN_MS = 10000;
+  private static readonly STALE_THRESHOLDS: Record<WebSocketStreamType, number> = {
+    candles: 20000,
+    trades: 20000,
+    orderbook: 10000,
+    prices: 15000,
+  };
 
   constructor(isTestnet: boolean = false) {
-    // USDⓈ-M Futures WebSocket — must use fstream.binance.com (NOT stream.binance.com which is Spot-only)
-    this.wsUrl = isTestnet ? 'wss://testnet.binancefuture.com/ws' : 'wss://fstream.binance.com/ws';
+    // USDⓈ-M Futures WebSocket (2026 routed endpoints): use /market for kline/trade/mark streams.
+    // Unrouted /ws may not receive market/private-class streams anymore.
+    this.wsUrl = isTestnet
+      ? 'wss://fstream.binancefuture.com/market/ws'
+      : 'wss://fstream.binance.com/market/ws';
   }
 
   private ensureConnected(): void {
@@ -48,23 +66,33 @@ export class BinanceWebSocketService implements ExchangeWebSocketService {
       return;
     }
 
+    this.clearReconnectTimer();
     useWebSocketStatusStore.getState().setOverallStatus('connecting');
     this.ws = new WebSocket(this.wsUrl);
+    this.ensureStaleChecker();
 
     this.ws.onopen = () => {
       this.isReady = true;
+      this.reconnectAttempts = 0;
       useWebSocketStatusStore.getState().setOverallStatus('connected');
 
       // Resubscribe all streams after reconnect
       const allStreams = Array.from(this.streamRefs.keys());
       if (allStreams.length > 0) {
         this.send({ method: 'SUBSCRIBE', params: allStreams, id: this.nextId++ });
+        const now = Date.now();
+        allStreams.forEach((stream) => {
+          this.streamLastEventAt.set(stream, now);
+        });
       }
     };
 
     this.ws.onclose = () => {
       this.isReady = false;
       useWebSocketStatusStore.getState().setOverallStatus('disconnected');
+      if (this.streamRefs.size > 0) {
+        this.scheduleReconnect();
+      }
     };
 
     this.ws.onerror = () => {
@@ -81,9 +109,117 @@ export class BinanceWebSocketService implements ExchangeWebSocketService {
     this.ws.send(JSON.stringify(payload));
   }
 
-  private addStreamRef(stream: string): void {
+  private getStoreStreamType(type: SubRecord['type']): WebSocketStreamType {
+    if (type === 'candle') return 'candles';
+    if (type === 'trade') return 'trades';
+    return 'prices';
+  }
+
+  private getStaleThresholdMs(streamType: WebSocketStreamType): number {
+    return BinanceWebSocketService.STALE_THRESHOLDS[streamType] || 20000;
+  }
+
+  private ensureStaleChecker(): void {
+    if (this.staleCheckTimer) {
+      return;
+    }
+
+    this.staleCheckTimer = setInterval(() => {
+      if (this.streamRefs.size === 0) {
+        return;
+      }
+
+      if (!this.isReady) {
+        this.scheduleReconnect();
+        return;
+      }
+
+      const now = Date.now();
+      this.streamRefs.forEach((_, stream) => {
+        const streamType = this.streamTypes.get(stream) || 'candles';
+        const thresholdMs = this.getStaleThresholdMs(streamType);
+        const lastEventAt = this.streamLastEventAt.get(stream) || 0;
+
+        if (now - lastEventAt <= thresholdMs) {
+          return;
+        }
+
+        const warning = `No updates for ${stream} in ${Math.round((now - lastEventAt) / 1000)}s`;
+        useWebSocketStatusStore.getState().markStreamStale(stream, warning);
+        useWebSocketStatusStore.getState().setStreamStatus(streamType, 'error', warning);
+
+        const lastResubAt = this.streamLastResubscribeAt.get(stream) || 0;
+        if (now - lastResubAt < BinanceWebSocketService.RESUBSCRIBE_COOLDOWN_MS) {
+          return;
+        }
+
+        this.streamLastResubscribeAt.set(stream, now);
+        this.resubscribeStream(stream, streamType);
+      });
+    }, BinanceWebSocketService.STALE_CHECK_INTERVAL_MS);
+  }
+
+  private clearStaleChecker(): void {
+    if (this.staleCheckTimer) {
+      clearInterval(this.staleCheckTimer);
+      this.staleCheckTimer = null;
+    }
+  }
+
+  private clearReconnectTimer(): void {
+    if (this.reconnectTimer) {
+      clearTimeout(this.reconnectTimer);
+      this.reconnectTimer = null;
+    }
+  }
+
+  private scheduleReconnect(): void {
+    if (this.reconnectTimer || this.streamRefs.size === 0) {
+      return;
+    }
+    const delay = Math.min(1000 * (2 ** this.reconnectAttempts), 15000);
+    this.reconnectAttempts += 1;
+
+    this.reconnectTimer = setTimeout(() => {
+      this.reconnectTimer = null;
+      this.ensureConnected();
+    }, delay);
+  }
+
+  private resubscribeStream(stream: string, streamType: WebSocketStreamType): void {
+    if (!this.isReady || !this.ws || this.ws.readyState !== WebSocket.OPEN) {
+      this.scheduleReconnect();
+      return;
+    }
+
+    useWebSocketStatusStore.getState().incrementStreamAutoResubscribe(stream);
+    this.send({ method: 'UNSUBSCRIBE', params: [stream], id: this.nextId++ });
+    this.send({ method: 'SUBSCRIBE', params: [stream], id: this.nextId++ });
+    this.streamLastEventAt.set(stream, Date.now());
+    useWebSocketStatusStore.getState().setStreamStatus(streamType, 'connecting');
+  }
+
+  private markStreamActivity(stream: string): void {
+    this.streamLastEventAt.set(stream, Date.now());
+    const streamType = this.streamTypes.get(stream);
+    if (!streamType) return;
+
+    useWebSocketStatusStore.getState().markStreamHeartbeat(stream);
+    useWebSocketStatusStore.getState().setStreamStatus(streamType, 'connected');
+  }
+
+  private addStreamRef(stream: string, type: SubRecord['type']): void {
     const current = this.streamRefs.get(stream) || 0;
     this.streamRefs.set(stream, current + 1);
+
+    const streamType = this.getStoreStreamType(type);
+    this.streamTypes.set(stream, streamType);
+    const thresholdMs = this.getStaleThresholdMs(streamType);
+    useWebSocketStatusStore.getState().registerStreamHealth(stream, streamType, thresholdMs);
+
+    if (!this.streamLastEventAt.has(stream)) {
+      this.streamLastEventAt.set(stream, Date.now());
+    }
 
     if (current === 0 && this.isReady) {
       this.send({ method: 'SUBSCRIBE', params: [stream], id: this.nextId++ });
@@ -97,21 +233,34 @@ export class BinanceWebSocketService implements ExchangeWebSocketService {
       if (this.isReady) {
         this.send({ method: 'UNSUBSCRIBE', params: [stream], id: this.nextId++ });
       }
+      this.streamTypes.delete(stream);
+      this.streamLastEventAt.delete(stream);
+      this.streamLastResubscribeAt.delete(stream);
+      useWebSocketStatusStore.getState().clearStreamHealth(stream);
+
+      if (this.streamRefs.size === 0) {
+        this.clearReconnectTimer();
+      }
       return;
     }
 
     this.streamRefs.set(stream, current - 1);
   }
 
-  private processBulkMarkPriceArray(arr: any[]): void {
+  private processBulkMarkPriceArray(arr: unknown[]): void {
     const mids: AllMidsData = {};
-    arr.forEach((it: any) => {
+    arr.forEach((it) => {
+      if (!it || typeof it !== 'object') {
+        return;
+      }
+      const payload = it as { s?: string; p?: string };
       // Only USDT-margined futures mark prices; 'p' = mark price on Futures WS
-      if (it?.s && it?.p && String(it.s).endsWith('USDT')) {
-        mids[fromStreamSymbol(it.s)] = parseFloat(it.p);
+      if (payload.s && payload.p && String(payload.s).endsWith('USDT')) {
+        mids[fromStreamSymbol(payload.s)] = parseFloat(payload.p);
       }
     });
     if (Object.keys(mids).length > 0) {
+      this.markStreamActivity('!markPrice@arr');
       this.subscriptions.forEach((sub) => {
         if (sub.type !== 'allMids' || sub.stream !== '!markPrice@arr') return;
         (sub.callback as AllMidsCallback)(mids);
@@ -151,6 +300,7 @@ export class BinanceWebSocketService implements ExchangeWebSocketService {
       if (normalizedMsg.e === 'kline') {
         const symbol = fromStreamSymbol(normalizedMsg.s || '');
         const stream = `${toStreamSymbol(symbol)}@kline_${normalizedMsg.k?.i || '1m'}`;
+        this.markStreamActivity(stream);
 
         this.subscriptions.forEach((sub) => {
           if (sub.type !== 'candle' || sub.stream !== stream) return;
@@ -189,6 +339,7 @@ export class BinanceWebSocketService implements ExchangeWebSocketService {
       if (normalizedMsg.e === 'aggTrade') {
         const symbol = fromStreamSymbol(normalizedMsg.s || '');
         const stream = `${toStreamSymbol(symbol)}@aggTrade`;
+        this.markStreamActivity(stream);
 
         this.subscriptions.forEach((sub) => {
           if (sub.type !== 'trade' || sub.stream !== stream) return;
@@ -219,6 +370,7 @@ export class BinanceWebSocketService implements ExchangeWebSocketService {
         const mids: AllMidsData = {};
         // 'p' = mark price (USDⓈ-M Futures mark price, NOT spot price)
         mids[fromStreamSymbol(normalizedMsg.s)] = parseFloat(normalizedMsg.p || '0');
+        this.markStreamActivity('!markPrice@arr');
 
         this.subscriptions.forEach((sub) => {
           if (sub.type !== 'allMids' || sub.stream !== '!markPrice@arr') return;
@@ -243,7 +395,7 @@ export class BinanceWebSocketService implements ExchangeWebSocketService {
       callback,
     });
 
-    this.addStreamRef(stream);
+    this.addStreamRef(stream, 'candle');
     return id;
   }
 
@@ -260,7 +412,7 @@ export class BinanceWebSocketService implements ExchangeWebSocketService {
       callback,
     });
 
-    this.addStreamRef(stream);
+    this.addStreamRef(stream, 'trade');
     return id;
   }
 
@@ -277,7 +429,7 @@ export class BinanceWebSocketService implements ExchangeWebSocketService {
       callback,
     });
 
-    this.addStreamRef(stream);
+    this.addStreamRef(stream, 'allMids');
     return id;
   }
 
@@ -292,7 +444,12 @@ export class BinanceWebSocketService implements ExchangeWebSocketService {
   disconnect(): void {
     this.subscriptions.clear();
     this.streamRefs.clear();
+    this.streamTypes.clear();
+    this.streamLastEventAt.clear();
+    this.streamLastResubscribeAt.clear();
     this.isReady = false;
+    this.clearReconnectTimer();
+    this.clearStaleChecker();
 
     if (this.ws) {
       this.ws.close();

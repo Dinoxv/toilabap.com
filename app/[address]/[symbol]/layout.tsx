@@ -21,7 +21,7 @@ export default function SymbolLayout({ children, params }: SymbolLayoutProps) {
   const upperSymbol = normalizeSymbol(symbol);
 
   useEffect(() => {
-    document.title = `${upperSymbol} - RITEX AI`;
+    document.title = `${upperSymbol} Trading | app.toilabap.com`;
   }, [upperSymbol]);
 
   return (

@@ -2071,7 +2071,15 @@ export default function ScalpingChart({ coin, interval, onPriceUpdate, onChartRe
           </div>
         )}
       </div>
-      <div ref={chartContainerRef} className="flex-1 min-h-0" />
+      <div className="relative flex-1 min-h-0">
+        <div ref={chartContainerRef} className="absolute inset-0" />
+        <img
+          src="/branding/toilabap.com-logo-dark.svg"
+          alt="toilabap.com"
+          className="pointer-events-none absolute left-1/2 top-1/2 z-10 w-[220px] max-w-[40%] -translate-x-1/2 -translate-y-1/2 opacity-10 select-none"
+          draggable={false}
+        />
+      </div>
       <div className="mt-1 flex gap-3 text-[9px] items-center">
         <ChartLegend className="flex-shrink-0" />
         {emaSettings.ema1.enabled && (

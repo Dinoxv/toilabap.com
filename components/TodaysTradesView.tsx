@@ -77,12 +77,12 @@ function TodaysTradesView() {
 
   return (
     <div className="h-full flex flex-col bg-bg-primary">
-      <div className="flex flex-col h-full w-full p-2 gap-2">
+      <div className="flex flex-col h-full w-full p-1.5 sm:p-2 gap-2">
         <div className="terminal-border p-1.5">
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 overflow-x-auto">
             <button
               onClick={() => setActiveTab('daily')}
-              className={`text-[10px] font-mono px-2 py-1 transition-colors ${
+              className={`text-[11px] font-mono px-2.5 py-1.5 transition-colors whitespace-nowrap ${
                 activeTab === 'daily'
                   ? 'text-primary-bright border-b-2 border-primary-bright'
                   : 'text-primary-muted hover:text-primary'
@@ -92,7 +92,7 @@ function TodaysTradesView() {
             </button>
             <button
               onClick={() => setActiveTab('monthly')}
-              className={`text-[10px] font-mono px-2 py-1 transition-colors ${
+              className={`text-[11px] font-mono px-2.5 py-1.5 transition-colors whitespace-nowrap ${
                 activeTab === 'monthly'
                   ? 'text-primary-bright border-b-2 border-primary-bright'
                   : 'text-primary-muted hover:text-primary'
@@ -106,24 +106,24 @@ function TodaysTradesView() {
         {activeTab === 'daily' ? (
           <>
             <div className="terminal-border p-1.5">
-              <div className="flex justify-between items-center">
+              <div className="flex flex-col gap-2 lg:flex-row lg:justify-between lg:items-center">
                 <div className="terminal-text">
-                  <span className="text-primary text-sm font-bold tracking-wider">
+                  <span className="text-primary text-[11px] sm:text-sm font-bold tracking-wider">
                     █ {isToday ? "TODAY'S TRADES" : `TRADES - ${displayDate.toUpperCase()}`}
                   </span>
                 </div>
-                <div className="flex items-center gap-4">
-                  <div className="flex items-center gap-1 text-[10px] font-mono">
+                <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between lg:justify-end lg:gap-4">
+                  <div className="flex items-center justify-between sm:justify-start gap-1 text-[10px] sm:text-[11px] font-mono">
                     <button
                       onClick={handlePreviousDay}
-                      className="text-primary hover:text-primary-bright px-1 transition-colors"
+                      className="text-primary hover:text-primary-bright px-1.5 py-1 sm:py-0.5 transition-colors"
                     >
                       ← PREV
                     </button>
                     <span className="text-primary-muted">|</span>
                     <button
                       onClick={handleToday}
-                      className={`px-1 transition-colors ${isToday ? 'text-primary-muted cursor-default' : 'text-primary hover:text-primary-bright'}`}
+                      className={`px-1.5 py-1 sm:py-0.5 transition-colors ${isToday ? 'text-primary-muted cursor-default' : 'text-primary hover:text-primary-bright'}`}
                       disabled={isToday}
                     >
                       TODAY
@@ -131,21 +131,23 @@ function TodaysTradesView() {
                     <span className="text-primary-muted">|</span>
                     <button
                       onClick={handleNextDay}
-                      className={`px-1 transition-colors ${isNextDisabled ? 'text-primary-muted cursor-not-allowed' : 'text-primary hover:text-primary-bright'}`}
+                      className={`px-1.5 py-1 sm:py-0.5 transition-colors ${isNextDisabled ? 'text-primary-muted cursor-not-allowed' : 'text-primary hover:text-primary-bright'}`}
                       disabled={isNextDisabled}
                     >
                       NEXT →
                     </button>
                   </div>
-                  {isToday && (
-                    <div className="text-right text-[10px]">
-                      <div className="text-primary-muted">{displayDate}</div>
-                    </div>
-                  )}
-                  <div className="text-right text-[10px]">
-                    <div className="text-primary-muted">TOTAL P&L:</div>
-                    <div className={totalPnl >= 0 ? 'text-bullish' : 'text-bearish'}>
-                      {totalPnl >= 0 ? '+' : ''}{totalPnl.toFixed(2)} USD
+                  <div className="grid grid-cols-1 sm:flex items-center sm:justify-end gap-1 sm:gap-4 text-[11px]">
+                    {isToday && (
+                      <div className="text-left sm:text-right">
+                        <div className="text-primary-muted">{displayDate}</div>
+                      </div>
+                    )}
+                    <div className="text-left sm:text-right">
+                      <div className="text-primary-muted">TOTAL P&L:</div>
+                      <div className={totalPnl >= 0 ? 'text-bullish' : 'text-bearish'}>
+                        {totalPnl >= 0 ? '+' : ''}{totalPnl.toFixed(2)} USD
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -184,13 +186,12 @@ function TodaysTradesView() {
             </div>
           </div>
         ) : (
-          <div className="flex gap-2 flex-1 min-h-0">
-            {/* Left column - 50% */}
-            <div className="flex-1 flex flex-col gap-2 min-h-0">
-              {/* Top: Donut Chart and Statistics side by side */}
-              <div className="flex gap-2" style={{ height: '250px' }}>
-                {/* Donut chart */}
-                <div className="terminal-border p-1.5 flex-1 flex flex-col">
+          <div className="flex flex-col xl:flex-row gap-2 flex-1 min-h-0 overflow-y-auto xl:overflow-hidden">
+            {/* Left column */}
+            <div className="flex flex-col gap-2 min-h-0 shrink-0 xl:shrink xl:flex-1">
+              {/* Top: Donut Chart and Statistics */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-2 h-auto md:h-[250px]">
+                <div className="terminal-border p-1.5 flex flex-col min-h-[200px] md:min-h-0">
                   <div className="text-[10px] text-primary-muted mb-2 uppercase tracking-wider">
                     █ P&L BY SYMBOL
                   </div>
@@ -199,8 +200,7 @@ function TodaysTradesView() {
                   </div>
                 </div>
 
-                {/* Statistics panel */}
-                <div className="terminal-border p-1.5 flex-1 flex flex-col">
+                <div className="terminal-border p-1.5 flex flex-col">
                   <div className="text-[10px] text-primary-muted mb-2 uppercase tracking-wider">
                     █ STATISTICS
                   </div>
@@ -208,8 +208,7 @@ function TodaysTradesView() {
                 </div>
               </div>
 
-              {/* Bottom: Cumulative P&L Chart */}
-              <div className="terminal-border p-1.5 flex-1 flex flex-col min-h-0">
+              <div className="terminal-border p-1.5 flex-1 flex flex-col min-h-[220px] md:min-h-0">
                 <div className="text-[10px] text-primary-muted mb-2 uppercase tracking-wider">
                   █ CUMULATIVE P&L
                 </div>
@@ -219,12 +218,12 @@ function TodaysTradesView() {
               </div>
             </div>
 
-            {/* Right column - 50% - Full height positions list */}
-            <div className="terminal-border p-1.5 flex-1 flex flex-col min-h-0">
+            {/* Right column - positions */}
+            <div className="terminal-border p-1.5 flex flex-col min-h-[220px] shrink-0 xl:shrink xl:min-h-0 xl:flex-1">
               <div className="text-[10px] text-primary-muted mb-2 uppercase tracking-wider">
                 █ POSITIONS
               </div>
-              <div className="overflow-y-auto space-y-2">
+              <div className="space-y-2 pr-0.5 xl:overflow-y-auto">
                 {positionGroups.map((group) => (
                   <TradeRow key={group.id} group={group} />
                 ))}

@@ -120,7 +120,7 @@ export interface TrendMatrixScanParams {
   config: TrendMatrixScannerConfig;
   indicatorConfig: {
     msLen: number;
-    htfTF: '1m' | '5m' | '15m' | '1h' | '4h' | '1d';
+    htfTF: '1m' | '3m' | '5m' | '15m' | '1h' | '4h' | '1d';
     htfEmaLen: number;
     atrLength: number;
     atrMult: number;
@@ -308,6 +308,12 @@ export class ScannerService {
     }
 
     return Math.max(requiredCandles, 150);
+  }
+
+  private getMappedHtfTimeframe(timeframe: TimeInterval): TimeInterval | null {
+    if (timeframe === '1m') return '3m';
+    if (timeframe === '5m') return '15m';
+    return null;
   }
 
   /**
@@ -1498,6 +1504,8 @@ export class ScannerService {
     const candleStore = useCandleStore.getState();
     const closePrices = candleStore.getClosePrices(symbol, '1m', 100) || [];
     const lookback = Math.max(1, config.signalLookback || 10);
+    // Scanner policy: only accept very fresh Trend Matrix signals to avoid stale entries.
+    const maxSignalAgeBars = Math.min(2, Math.max(1, config.signalLookback || 2));
 
     for (const timeframe of timeframes) {
       try {
@@ -1512,8 +1520,23 @@ export class ScannerService {
           continue;
         }
 
+        const mappedHtf = this.getMappedHtfTimeframe(timeframe);
+        const htfLookbackCandles = Math.max(80, indicatorConfig.htfEmaLen * 3);
+        let htfCandles: TransformedCandle[] | null = null;
+        if (mappedHtf) {
+          htfCandles = this.getCandlesFromStore(symbol, mappedHtf, htfLookbackCandles);
+          if (!htfCandles || htfCandles.length < Math.min(20, indicatorConfig.htfEmaLen)) {
+            htfCandles = await this.fetchCandlesDirect(symbol, mappedHtf, htfLookbackCandles);
+          }
+        }
+
         const trendMatrix = calculateTrendMatrix(candles as any, {
           msLen: indicatorConfig.msLen,
+          tradeTimeframe: timeframe,
+          htfCandles: htfCandles as any,
+          debugBiasSource: true,
+          debugContext: 'scanner',
+          debugSymbol: symbol,
           htfTF: indicatorConfig.htfTF,
           htfEmaLen: indicatorConfig.htfEmaLen,
           atrLength: indicatorConfig.atrLength,
@@ -1531,7 +1554,23 @@ export class ScannerService {
           showPending: indicatorConfig.showPending,
         });
 
-        const recentSignals = trendMatrix.buySellLabels.slice(-lookback);
+        this.logInfo(
+          `[TrendMatrix][BiasSource] ${symbol} tf=${timeframe} source=${trendMatrix.summary.biasSource}`,
+          trendMatrix.summary.biasDebugSample
+        );
+
+        const latestCandleTimeSec = Math.floor(candles[candles.length - 1].time / 1000);
+        const timeframeSec = this.getIntervalMinutes(timeframe) * 60;
+
+        const recentSignals = trendMatrix.buySellLabels
+          .filter((label) => {
+            const ageSec = latestCandleTimeSec - label.time;
+            if (ageSec < 0) return false;
+            const ageBars = Math.floor(ageSec / timeframeSec);
+            return ageBars <= maxSignalAgeBars;
+          })
+          .slice(-lookback);
+
         if (recentSignals.length === 0) {
           continue;
         }
@@ -1576,7 +1615,7 @@ export class ScannerService {
           trendMatrixSignals: [trendMatrixValue],
           matchedAt: Date.now(),
           signalType,
-          description: `Trend Matrix ${signalType === 'bullish' ? 'BUY' : 'SELL'} signal on ${timeframe}`,
+          description: `Trend Matrix ${signalType === 'bullish' ? 'BUY' : 'SELL'} signal on ${timeframe} (<= ${maxSignalAgeBars} bars)`,
           scanType: 'trendMatrix',
           closePrices,
         };

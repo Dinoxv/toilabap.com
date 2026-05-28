@@ -8,7 +8,7 @@ interface TradesLayoutProps {
 
 export default function TradesLayout({ children }: TradesLayoutProps) {
   useEffect(() => {
-    document.title = 'Today\'s Trades - RITEX AI';
+    document.title = 'Today\'s Trades - app.toilabap.com';
   }, []);
 
   return (

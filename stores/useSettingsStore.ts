@@ -378,14 +378,39 @@ const mergeSettings = (storedSettings: any): AppSettings => {
           timeframes: storedSettings.scanner?.trendMatrixScanner?.timeframes ?? DEFAULT_SETTINGS.scanner.trendMatrixScanner.timeframes,
           signalLookback: storedSettings.scanner?.trendMatrixScanner?.signalLookback ?? DEFAULT_SETTINGS.scanner.trendMatrixScanner.signalLookback,
         },
+        playSoundOnNewSignal: storedSettings.scanner?.playSoundOnNewSignal ?? DEFAULT_SETTINGS.scanner.playSoundOnNewSignal,
       },
       orders: {
+        cloudInitialMarginUsdt: storedSettings.orders?.cloudInitialMarginUsdt
+          ?? storedSettings.orders?.cloudPercentage
+          ?? DEFAULT_SETTINGS.orders.cloudInitialMarginUsdt,
+        smallInitialMarginUsdt: storedSettings.orders?.smallInitialMarginUsdt
+          ?? storedSettings.orders?.smallPercentage
+          ?? DEFAULT_SETTINGS.orders.smallInitialMarginUsdt,
+        bigInitialMarginUsdt: storedSettings.orders?.bigInitialMarginUsdt
+          ?? storedSettings.orders?.bigPercentage
+          ?? DEFAULT_SETTINGS.orders.bigInitialMarginUsdt,
         cloudPercentage: storedSettings.orders?.cloudPercentage ?? DEFAULT_SETTINGS.orders.cloudPercentage,
         smallPercentage: storedSettings.orders?.smallPercentage ?? DEFAULT_SETTINGS.orders.smallPercentage,
         bigPercentage: storedSettings.orders?.bigPercentage ?? DEFAULT_SETTINGS.orders.bigPercentage,
         leverage: storedSettings.orders?.leverage ?? DEFAULT_SETTINGS.orders.leverage,
         byExchange: {
           hyperliquid: {
+            cloudInitialMarginUsdt: storedSettings.orders?.byExchange?.hyperliquid?.cloudInitialMarginUsdt
+              ?? storedSettings.orders?.byExchange?.hyperliquid?.cloudPercentage
+              ?? storedSettings.orders?.cloudInitialMarginUsdt
+              ?? storedSettings.orders?.cloudPercentage
+              ?? DEFAULT_SETTINGS.orders.byExchange.hyperliquid.cloudInitialMarginUsdt,
+            smallInitialMarginUsdt: storedSettings.orders?.byExchange?.hyperliquid?.smallInitialMarginUsdt
+              ?? storedSettings.orders?.byExchange?.hyperliquid?.smallPercentage
+              ?? storedSettings.orders?.smallInitialMarginUsdt
+              ?? storedSettings.orders?.smallPercentage
+              ?? DEFAULT_SETTINGS.orders.byExchange.hyperliquid.smallInitialMarginUsdt,
+            bigInitialMarginUsdt: storedSettings.orders?.byExchange?.hyperliquid?.bigInitialMarginUsdt
+              ?? storedSettings.orders?.byExchange?.hyperliquid?.bigPercentage
+              ?? storedSettings.orders?.bigInitialMarginUsdt
+              ?? storedSettings.orders?.bigPercentage
+              ?? DEFAULT_SETTINGS.orders.byExchange.hyperliquid.bigInitialMarginUsdt,
             cloudPercentage: storedSettings.orders?.byExchange?.hyperliquid?.cloudPercentage
               ?? storedSettings.orders?.cloudPercentage
               ?? DEFAULT_SETTINGS.orders.byExchange.hyperliquid.cloudPercentage,
@@ -400,6 +425,21 @@ const mergeSettings = (storedSettings: any): AppSettings => {
               ?? DEFAULT_SETTINGS.orders.byExchange.hyperliquid.leverage,
           },
           binance: {
+            cloudInitialMarginUsdt: storedSettings.orders?.byExchange?.binance?.cloudInitialMarginUsdt
+              ?? storedSettings.orders?.byExchange?.binance?.cloudPercentage
+              ?? storedSettings.orders?.cloudInitialMarginUsdt
+              ?? storedSettings.orders?.cloudPercentage
+              ?? DEFAULT_SETTINGS.orders.byExchange.binance.cloudInitialMarginUsdt,
+            smallInitialMarginUsdt: storedSettings.orders?.byExchange?.binance?.smallInitialMarginUsdt
+              ?? storedSettings.orders?.byExchange?.binance?.smallPercentage
+              ?? storedSettings.orders?.smallInitialMarginUsdt
+              ?? storedSettings.orders?.smallPercentage
+              ?? DEFAULT_SETTINGS.orders.byExchange.binance.smallInitialMarginUsdt,
+            bigInitialMarginUsdt: storedSettings.orders?.byExchange?.binance?.bigInitialMarginUsdt
+              ?? storedSettings.orders?.byExchange?.binance?.bigPercentage
+              ?? storedSettings.orders?.bigInitialMarginUsdt
+              ?? storedSettings.orders?.bigPercentage
+              ?? DEFAULT_SETTINGS.orders.byExchange.binance.bigInitialMarginUsdt,
             cloudPercentage: storedSettings.orders?.byExchange?.binance?.cloudPercentage
               ?? storedSettings.orders?.cloudPercentage
               ?? DEFAULT_SETTINGS.orders.byExchange.binance.cloudPercentage,

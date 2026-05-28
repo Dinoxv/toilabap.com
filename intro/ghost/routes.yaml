@@ -1,0 +1,26 @@
+routes:
+  /pricing/:
+    template: page-pricing
+    data: page.pricing
+
+collections:
+  /:
+    permalink: /{slug}/
+    template: index
+    filter: primary_tag:-hash-hidden
+
+  /blog/:
+    permalink: /blog/{slug}/
+    template: index
+
+  /authors/:
+    permalink: /author/{slug}/
+    template: author
+
+  /tags/:
+    permalink: /tag/{slug}/
+    template: tag
+
+taxonomies:
+  tag: /tag/{slug}/
+  author: /author/{slug}/

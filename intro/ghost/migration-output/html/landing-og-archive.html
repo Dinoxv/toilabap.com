@@ -1,0 +1,931 @@
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="/toilabap.com-logo-dark.svg" alt="Toilabap.com Logo" style="height: 32px; width: auto;">
+  </div>
+  <ul class="nav-links">
+    <li><a href="#problem">Bài Toán</a></li>
+    <li><a href="#solution">Giải Pháp</a></li>
+    <li><a href="#strategy">Trend Matrix</a></li>
+    <li><a href="#backtest">Backtest Lab</a></li>
+    <li><a href="#real-users">User Thực Tế</a></li>
+    <li><a href="#platform">Tính Năng</a></li>
+    <li><a href="#founder">Sáng Lập</a></li>
+    <li><a href="#contact">Liên Hệ</a></li>
+    <li><a href="https://github.com/Dinoxv/toilabap.com" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+  </ul>
+  <a href="https://app.toilabap.com" class="nav-cta">Truy cập sớm →</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="home">
+  <div class="hero-grid-bg"></div>
+  <div class="hero-glow"></div>
+
+  <div class="hero-badge">
+    <span class="dot"></span>
+    12,000+ trader đã đăng ký quyền truy cập sớm
+  </div>
+
+  <h1 class="hero-title">
+    Theo dấu<br>
+    <span class="accent">Dòng Tiền Thông Minh</span><br>
+    <span class="accent2">đi trước nhịp giá</span>
+  </h1>
+
+  <p class="hero-sub">
+    Nền tảng algo trading end-to-end: từ luận điểm giao dịch đến lệnh live chỉ trong
+    <strong style="color:var(--cyan)">90 giây</strong>.
+    Vận hành 24/7, tự bám phiên thanh khoản cao, tự quản trị thoát lệnh.
+  </p>
+
+  <div class="hero-actions">
+    <a href="https://app.toilabap.com" class="btn-primary">
+      Đăng ký truy cập sớm
+      <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <a href="https://github.com/Dinoxv/toilabap.com" class="btn-ghost">
+      <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+      GitHub Open Source
+    </a>
+  </div>
+</div>
+
+<!-- TICKER TAPE -->
+<div class="ticker-wrap">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item"><span class="pair">BTCUSDT</span><span class="up">95,420</span><span class="badge badge-buy">BUY (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">ETHUSDT</span><span class="up">3,285</span><span class="badge badge-buy">BUY (4/4)</span></span>
+    <span class="ticker-item"><span class="pair">EURUSD</span><span class="down">1.0845</span><span class="badge badge-sell">SELL (2/4)</span></span>
+    <span class="ticker-item"><span class="pair">NVDA</span><span class="up">874.50</span><span class="badge badge-buy">BUY (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">SOLUSDT</span><span class="down">142.30</span><span class="badge badge-sell">SELL (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">GBPUSD</span><span class="up">1.2738</span><span class="badge badge-buy">BUY (2/4)</span></span>
+    <span class="ticker-item"><span class="pair">AAPL</span><span class="up">184.92</span><span class="badge badge-buy">BUY (4/4)</span></span>
+    <span class="ticker-item"><span class="pair">XAUUSD</span><span class="down">2,312</span><span class="badge badge-sell">SELL (3/4)</span></span>
+    <!-- duplicate for seamless loop -->
+    <span class="ticker-item"><span class="pair">BTCUSDT</span><span class="up">95,420</span><span class="badge badge-buy">BUY (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">ETHUSDT</span><span class="up">3,285</span><span class="badge badge-buy">BUY (4/4)</span></span>
+    <span class="ticker-item"><span class="pair">EURUSD</span><span class="down">1.0845</span><span class="badge badge-sell">SELL (2/4)</span></span>
+    <span class="ticker-item"><span class="pair">NVDA</span><span class="up">874.50</span><span class="badge badge-buy">BUY (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">SOLUSDT</span><span class="down">142.30</span><span class="badge badge-sell">SELL (3/4)</span></span>
+    <span class="ticker-item"><span class="pair">GBPUSD</span><span class="up">1.2738</span><span class="badge badge-buy">BUY (2/4)</span></span>
+    <span class="ticker-item"><span class="pair">AAPL</span><span class="up">184.92</span><span class="badge badge-buy">BUY (4/4)</span></span>
+    <span class="ticker-item"><span class="pair">XAUUSD</span><span class="down">2,312</span><span class="badge badge-sell">SELL (3/4)</span></span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats fade-up">
+  <div class="stat-item">
+    <div class="stat-num bear">89%</div>
+    <div class="stat-label">Retail trader thua lỗ vì thiếu hệ thống thực thi chuẩn</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num" style="color:var(--pending)">7 tuần</div>
+    <div class="stat-label">Chu kỳ trung bình từ luận điểm đến triển khai live</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num cyan">90s</div>
+    <div class="stat-label">Từ prompt đến lệnh live trên Toilabap.com</div>
+  </div>
+  <div class="stat-item">
+    <div class="stat-num bull">12K+</div>
+    <div class="stat-label">Trader trong hàng chờ Closed Beta</div>
+  </div>
+</div>
+
+<!-- PROBLEM -->
+<div class="problem-section" id="problem">
+  <div class="problem-inner">
+    <div class="section-tag fade-up">Bài Toán Thị Trường</div>
+    <h2 class="section-title fade-up">Điểm nghẽn <span style="color:var(--pending)">7 tuần</span><br>bào mòn mọi lợi thế</h2>
+    <p class="section-desc fade-up">Khoảng cách từ luận điểm đến thực thi không phải bài toán IQ, mà là bài toán hạ tầng, quy trình và tốc độ.</p>
+
+    <div class="problem-grid fade-up">
+      <div class="timeline">
+        <div class="timeline-item">
+          <div class="timeline-dot dot-red">W1</div>
+          <div class="timeline-content">
+            <div class="timeline-week">Tuần 1–3</div>
+            <div class="timeline-title">Code Entry/Exit Logic</div>
+            <div class="timeline-desc">Xây position sizing, ràng buộc rủi ro. Lỗi phổ biến: off-by-one trong data index, look-ahead bias, sizing không chuẩn hóa theo danh mục.</div>
+            <span class="timeline-cost">~3 tuần × $12,500/tuần</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-red">W4</div>
+          <div class="timeline-content">
+            <div class="timeline-week">Tuần 4–5</div>
+            <div class="timeline-title">Backtest Walk-Forward</div>
+            <div class="timeline-desc">Backtest engine xử lý split/dividend sai, mô hình slippage thiếu thực tế. Riêng out-of-sample validation đã ngốn hàng tuần.</div>
+            <span class="timeline-cost">~2 tuần × $12,500/tuần</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-warn">W6</div>
+          <div class="timeline-content">
+            <div class="timeline-week">Tuần 6</div>
+            <div class="timeline-title">Validate Metrics & Risk</div>
+            <div class="timeline-desc">Chiến lược bị loại khi drawdown xấu hơn benchmark. Toàn bộ effort nghiên cứu gần như phải làm lại.</div>
+            <span class="timeline-cost">~1 tuần × $12,500/tuần</span>
+          </div>
+        </div>
+        <div class="timeline-item">
+          <div class="timeline-dot dot-warn">W7</div>
+          <div class="timeline-content">
+            <div class="timeline-week">Tuần 7</div>
+            <div class="timeline-title">Paper Trade — Market Đã Xoay</div>
+            <div class="timeline-desc">Đến paper trade mới đo được trượt giá thực tế, nhưng market regime đã đổi. Edge ban đầu không còn.</div>
+            <span class="timeline-cost">$87,500 burn-rate. Edge đã trễ nhịp.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="problem-right">
+        <div class="pain-card">
+          <div class="pain-num" style="color:var(--bear)">$87<span style="font-size:28px">K</span></div>
+          <div class="pain-label">Chi phí nhân sự cho mỗi hypothesis tại quỹ lớn, chưa gồm data feed và overhead hạ tầng.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-num" style="color:var(--pending)">50×</div>
+          <div class="pain-label">Số hypothesis bạn có thể kiểm định trong thời gian quỹ tổ chức chỉ test được 1. Đây là edge vận hành thực tế.</div>
+        </div>
+        <div class="pain-card">
+          <div class="pain-num" style="color:var(--cyan)">$650K</div>
+          <div class="pain-label">Thu nhập junior quant tại quỹ top-tier, chỉ để làm một việc: biến luận điểm thành hệ thống có thể khớp lệnh.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SOLUTION -->
+<section class="solution-section" id="solution">
+  <div class="section-tag fade-up">Giải Pháp</div>
+  <h2 class="section-title fade-up">Pipeline <span style="color:var(--cyan)">90 giây</span> —<br>từ prompt đến lệnh khớp live</h2>
+
+  <div class="pipeline fade-up">
+    <div class="pipe-step">
+      <div class="pipe-num">BƯỚC 01</div>
+      <div class="pipe-time">T+0<span class="unit">s</span></div>
+      <div class="pipe-label">Nhập luận điểm bằng ngôn ngữ tự nhiên hoặc nạp sẵn cấu hình Trend Matrix Strategy</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">BƯỚC 02</div>
+      <div class="pipe-time">T+15<span class="unit">s</span></div>
+      <div class="pipe-label">AI biên dịch thành Strategy object: CHoCH + Sweep + FVG + HTF Bias + Killzone + ATR Risk</div>
+    </div>
+    <div class="pipe-step">
+      <div class="pipe-num">BƯỚC 03</div>
+      <div class="pipe-time">T+47<span class="unit">s</span></div>
+      <div class="pipe-label">Backtest BTC 5 năm khung 1 phút trong 47 giây. Sharpe, Win Rate, Profit Factor tự động xuất</div>
+    </div>
+    <div class="pipe-step" style="border-right:none">
+      <div class="pipe-num">BƯỚC 04</div>
+      <div class="pipe-time">T+90<span class="unit">s</span></div>
+      <div class="pipe-label">s.run() — Triển khai lên Binance/Alpaca/OANDA. Bot vận hành 24/7, bạn nhận cảnh báo theo thời gian thực</div>
+    </div>
+    <div class="pipe-total">
+      <div class="big">90s</div>
+      <div class="label">Luận điểm → Live</div>
+    </div>
+  </div>
+
+  <div class="code-compare fade-up">
+    <div class="code-block">
+      <div class="code-header old">
+        <div class="dot" style="background:#F87171;border-radius:50%"></div>
+        Cách cũ — 200+ dòng boilerplate
+      </div>
+      <div class="code-body"><span class="cm"># Mỗi nguồn data là một API khác nhau</span>
+<span class="kw">import</span> yfinance <span class="kw">as</span> yf          <span class="cm"># US Stocks</span>
+<span class="kw">from</span> binance.client <span class="kw">import</span> Client  <span class="cm"># Crypto</span>
+<span class="kw">import</span> oandapyV20              <span class="cm"># Forex</span>
+
+<span class="cm"># 3 API khác nhau, 3 rate limit khác nhau</span>
+<span class="cm"># Data format không đồng nhất → normalize thủ công</span>
+<span class="cm"># Look-ahead bias, slippage model sai...</span>
+<span class="cm"># → 200-500 dòng TRƯỚC KHI test strategy</span></div>
+    </div>
+    <div class="code-block">
+      <div class="code-header new">
+        <div class="dot" style="background:var(--bull);border-radius:50%"></div>
+        Với Toilabap.com — 3 dòng, chuẩn hóa toàn bộ
+      </div>
+      <div class="code-body"><span class="kw">from</span> toilabap <span class="kw">import</span> Alpaca, Binance, OANDA
+
+<span class="cm"># Cùng một interface, mọi sàn, mọi asset class</span>
+interface.<span class="fn">history</span>(<span class="str">'MSFT'</span>, <span class="num">50</span>, resolution=<span class="str">'1d'</span>)
+interface.<span class="fn">history</span>(<span class="str">'BTC-USD'</span>, <span class="num">50</span>, resolution=<span class="str">'1h'</span>)
+interface.<span class="fn">history</span>(<span class="str">'EUR/USD'</span>, <span class="num">50</span>, resolution=<span class="str">'15m'</span>)
+
+<span class="cm"># Backtest → Deploy: thay đúng MỘT dòng</span>
+s.<span class="fn">backtest</span>(to=<span class="str">'5y'</span>)  <span class="cm"># → s.run()</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGY -->
+<div class="strategy-section" id="strategy">
+  <div class="strategy-inner">
+    <div class="section-tag fade-up">Trend Matrix Strategy [Ritchi] v3.1.1</div>
+    <h2 class="section-title fade-up">Chiến lược SMC production-grade<br><span style="color:var(--cyan)">sẵn sàng vào live ngay hôm nay</span></h2>
+
+    <div class="strategy-grid fade-up">
+      <!-- Alert mockup -->
+      <div>
+        <div class="alert-mockup">
+          <div class="alert-topbar">
+            <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+            🟢 TÍN HIỆU [LONG] — Điểm Đảo Chiều Xác Suất Cao
+          </div>
+          <div class="alert-body">
+            <div class="alert-row">
+              <span class="alert-label">📊 Cặp</span>
+              <span class="alert-value cyan">BTCUSDT</span>
+            </div>
+            <div class="alert-row">
+              <span class="alert-label">⏱ Khung thời gian</span>
+              <span class="alert-value">1 phút</span>
+            </div>
+            <div class="alert-row">
+              <span class="alert-label">⭐ Mức tin cậy</span>
+              <div class="alert-score">
+                <span class="score-pip pip-on">✓</span>
+                <span class="score-pip pip-on">✓</span>
+                <span class="score-pip pip-on">✓</span>
+                <span class="score-pip pip-off">—</span>
+                <span style="font-size:12px;color:var(--bull);margin-left:4px;font-weight:700">3/4</span>
+              </div>
+            </div>
+            <div class="alert-row">
+              <span class="alert-label">💰 Giá Vào</span>
+              <span class="alert-value">95,000</span>
+            </div>
+            <div class="alert-row">
+              <span class="alert-label">🛡 Mức dừng lỗ</span>
+              <span class="alert-value red">94,620 (−0.40%)</span>
+            </div>
+            <div class="alert-row">
+              <span class="alert-label">🔒 Cắt lỗ cứng</span>
+              <span class="alert-value red">92,150 (−2.47%)</span>
+            </div>
+
+            <div class="tp-row" style="margin-top:16px;padding-top:12px;border-top:1px solid var(--border)">
+              <div style="font-size:11px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">💰 4 mốc chốt lời theo kế hoạch</div>
+              <div class="tp-line">
+                <span class="level">TP1</span>
+                <div class="tp-bar-wrap"><div class="tp-bar" style="width:100%;background:rgba(52,230,126,0.4)"></div></div>
+                <span class="pct">+0.40%</span>
+              </div>
+              <div class="tp-line">
+                <span class="level">TP2</span>
+                <div class="tp-bar-wrap"><div class="tp-bar" style="width:75%;background:rgba(52,230,126,0.55)"></div></div>
+                <span class="pct">+0.80%</span>
+              </div>
+              <div class="tp-line">
+                <span class="level">TP3</span>
+                <div class="tp-bar-wrap"><div class="tp-bar" style="width:50%;background:rgba(52,230,126,0.7)"></div></div>
+                <span class="pct">+1.20%</span>
+              </div>
+              <div class="tp-line">
+                <span class="level">TP4</span>
+                <div class="tp-bar-wrap"><div class="tp-bar" style="width:30%;background:var(--bull)"></div></div>
+                <span class="pct">+1.60%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Backtest Results -->
+        <div class="bt-results" style="margin-top:16px">
+          <div class="bt-title">Backtest BTC 5 năm — 1 phút — 47 giây</div>
+          <div class="bt-score">
+            <div class="bt-score-row">
+              <div class="bt-conf">
+                <span class="lbl">Score</span>
+                2/4
+              </div>
+              <div class="bt-bar-group">
+                <div class="bt-mini-bar" style="width:100%;background:rgba(52,230,126,0.25);color:var(--bull)">
+                  <span>Win Rate</span><span>56%</span>
+                </div>
+                <div class="bt-mini-bar" style="width:100%;background:rgba(60,211,254,0.15);color:var(--cyan);font-size:10px">
+                  <span>412 lệnh | PF 1.67 | DD 8.3%</span>
+                </div>
+              </div>
+            </div>
+            <div class="bt-score-row">
+              <div class="bt-conf">
+                <span class="lbl">Score</span>
+                3/4
+              </div>
+              <div class="bt-bar-group">
+                <div class="bt-mini-bar" style="width:100%;background:rgba(52,230,126,0.35);color:var(--bull)">
+                  <span>Win Rate</span><span>63%</span>
+                </div>
+                <div class="bt-mini-bar" style="width:100%;background:rgba(60,211,254,0.15);color:var(--cyan);font-size:10px">
+                  <span>198 lệnh | PF 2.14 | DD 5.1%</span>
+                </div>
+              </div>
+            </div>
+            <div class="bt-score-row">
+              <div class="bt-conf">
+                <span class="lbl">Score</span>
+                4/4
+              </div>
+              <div class="bt-bar-group">
+                <div class="bt-mini-bar" style="width:100%;background:rgba(52,230,126,0.5);color:var(--bull)">
+                  <span>Win Rate</span><span>71%</span>
+                </div>
+                <div class="bt-mini-bar" style="width:100%;background:rgba(60,211,254,0.15);color:var(--cyan);font-size:10px">
+                  <span>87 lệnh | PF 2.89 | DD 3.2%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filter grid + description -->
+      <div>
+        <p style="color:var(--muted2);font-size:15px;line-height:1.7;margin-bottom:32px">
+          Trend Matrix Strategy đóng gói đầy đủ logic SMC production-grade, từ phát hiện CHoCH đến quản trị rủi ro ATR, không cần tự viết thêm code.
+        </p>
+        <div class="filter-grid">
+          <div class="filter-card">
+            <div class="filter-icon">⚡</div>
+            <div class="filter-name">Khoảnh Khắc Đổi Chiều</div>
+            <div class="filter-desc">CHoCH — thời điểm cấu trúc giá gãy nhịp cũ, hệ thống kích hoạt tín hiệu tức thì</div>
+            <span class="filter-badge">CHoCH Detection</span>
+          </div>
+          <div class="filter-card">
+            <div class="filter-icon">🎣</div>
+            <div class="filter-name">Bẫy Tiền Thông Minh</div>
+            <div class="filter-desc">Liquidity Sweep — nhận diện pha quét stop loss trước khi giá đảo chiều</div>
+            <span class="filter-badge">Liquidity Sweep</span>
+          </div>
+          <div class="filter-card">
+            <div class="filter-icon">🧭</div>
+            <div class="filter-name">La Bàn Xu Hướng</div>
+            <div class="filter-desc">HTF EMA Bias — chỉ kích hoạt lệnh theo đúng hướng xu hướng khung lớn</div>
+            <span class="filter-badge">HTF Bias Filter</span>
+          </div>
+          <div class="filter-card">
+            <div class="filter-icon">🧲</div>
+            <div class="filter-name">Vùng Hút Giá</div>
+            <div class="filter-desc">Fair Value Gap — vùng mất cân bằng giá mà thị trường thường quay lại lấp</div>
+            <span class="filter-badge">FVG Detection</span>
+          </div>
+        </div>
+
+        <div style="margin-top:24px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:20px">
+          <div style="font-size:11px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:16px">⏰ Giờ Vàng Giao Dịch (GMT+7)</div>
+          <div style="display:flex;flex-direction:column;gap:8px;font-family:'JetBrains Mono',monospace;font-size:13px">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="color:var(--muted2)">🇬🇧 London Open</span>
+              <span style="color:var(--cyan)">14:00 – 17:00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="color:var(--muted2)">🇺🇸 New York AM</span>
+              <span style="color:var(--cyan)">19:30 – 22:00</span>
+            </div>
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="color:var(--muted2)">🌙 New York PM</span>
+              <span style="color:var(--cyan)">01:00 – 03:00</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- BACKTEST LAB -->
+<section id="backtest">
+  <div class="section-tag fade-up">🔬 Backtest Lab</div>
+  <h2 class="section-title fade-up">Test hypothesis của bạn <span style="color:var(--cyan)">trong 47 giây</span></h2>
+  <p class="section-desc fade-up">Cấu hình Trend Matrix Strategy, chạy backtest mô phỏng, nhận Sharpe, Win Rate, Profit Factor tức thì.</p>
+
+  <div class="bt-form fade-up">
+    <div style="font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:18px;display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;background:var(--cyan);border-radius:50%;display:block"></span>Cấu hình Backtest</div>
+    <div class="form-grid">
+      <div class="fg"><label class="flabel">Symbol</label>
+        <select class="fsel" id="bt-sym"><option>BTCUSDT</option><option>ETHUSDT</option><option>SOLUSDT</option><option>EURUSD</option><option>GBPUSD</option><option>MSFT</option><option>NVDA</option></select></div>
+      <div class="fg"><label class="flabel">Timeframe</label>
+        <select class="fsel" id="bt-tf"><option>1m</option><option>5m</option><option>15m</option><option>1h</option><option>4h</option><option>1d</option></select></div>
+      <div class="fg"><label class="flabel">Lookback</label>
+        <select class="fsel" id="bt-lb"><option>1 năm</option><option>2 năm</option><option selected>5 năm</option></select></div>
+      <div class="fg"><label class="flabel">Min Confluence: <span class="rval" id="cv">2</span>/4</label>
+        <input type="range" min="0" max="4" value="2" id="bt-conf" oninput="document.getElementById('cv').textContent=this.value" style="width:100%;accent-color:var(--cyan);margin-top:10px"></div>
+      <div class="fg"><label class="flabel">Risk Per Trade: <span class="rval" id="rv">1.0</span>%</label>
+        <input type="range" min="0.1" max="5" value="1" step="0.1" id="bt-risk" oninput="document.getElementById('rv').textContent=parseFloat(this.value).toFixed(1)" style="width:100%;accent-color:var(--cyan);margin-top:10px"></div>
+      <div class="fg"><label class="flabel">ATR Mult: <span class="rval" id="av">4.0</span>x</label>
+        <input type="range" min="1" max="8" value="4" step="0.5" id="bt-atr" oninput="document.getElementById('av').textContent=parseFloat(this.value).toFixed(1)" style="width:100%;accent-color:var(--cyan);margin-top:10px"></div>
+    </div>
+    <div class="filter-row">
+      <label class="fltr"><input type="checkbox" checked style="accent-color:var(--cyan)"> Killzone</label>
+      <label class="fltr"><input type="checkbox" checked style="accent-color:var(--cyan)"> Sweep</label>
+      <label class="fltr"><input type="checkbox" checked style="accent-color:var(--cyan)"> HTF Bias</label>
+      <label class="fltr"><input type="checkbox" checked style="accent-color:var(--cyan)"> FVG</label>
+      <button class="run-btn" id="rbn" onclick="runBt()"><span id="ri">▶</span> Chạy Backtest</button>
+    </div>
+
+    <div class="result-area" id="ra">
+      <div class="r-header">
+        <div style="width:8px;height:8px;background:var(--bull);border-radius:50%;animation:pulse 2s infinite"></div>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--bull)">BACKTEST HOÀN THÀNH</span>
+        <span style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--muted)" id="rlbl"></span>
+      </div>
+      <div class="metrics" id="rm"></div>
+      <div class="chart-wrap" id="cw"></div>
+      <div class="log">
+        <div class="log-hdr">Trade Log (10 giao dịch mẫu)</div>
+        <div id="lr"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REAL USERS -->
+<section class="strategies-section" id="real-users">
+  <div class="section-tag fade-up">Real Trade Proof</div>
+  <h2 class="section-title fade-up">Dấu vết thực thi từ <span style="color:var(--cyan)">tài khoản vận hành thực</span></h2>
+  <p class="section-desc fade-up">Snapshot được trích từ phiên live: có thời điểm khớp lệnh, mã giao dịch, leverage và hiệu suất theo từng account.</p>
+
+  <div class="strategy-list fade-up">
+    <div class="strat-item">
+      <div class="strat-num">01</div>
+      <div class="strat-content">
+        <div class="strat-name">Desk A · AIAUSDT Perpetual</div>
+        <div class="strat-desc">Long 6x, entry 0.0739067, performance +52.53%. Execution timestamp: 2026-05-17 19:34:58.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Execution Verified</span>
+          <span class="strat-tag tag-bull">+52.53%</span>
+          <span class="strat-tag tag-amber">AIAUSDT</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">6x</div>
+        <div class="pf-label">Leverage</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">02</div>
+      <div class="strat-content">
+        <div class="strat-name">Desk B · FIDAUSDT Perpetual</div>
+        <div class="strat-desc">Long 6x, entry 0.02263, last 0.02326, realized session gain +16.73% (2026-05-18 17:35:41).</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Execution Verified</span>
+          <span class="strat-tag tag-bull">+16.73%</span>
+          <span class="strat-tag tag-amber">FIDAUSDT</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">6x</div>
+        <div class="pf-label">Leverage</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">03</div>
+      <div class="strat-content">
+        <div class="strat-name">Desk C · FIDAUSDT / BSBUSDT</div>
+        <div class="strat-desc">Consecutive longs with +21.25% (FIDAUSDT) and +11.70% (BSBUSDT), backed by chart-level TP/SL mapping.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Execution Verified</span>
+          <span class="strat-tag tag-bull">+21.25%</span>
+          <span class="strat-tag tag-bull">+11.70%</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">6x</div>
+        <div class="pf-label">Leverage</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="proof-grid fade-up">
+    <div class="proof-card">
+      <img class="proof-img" src="https://intro.toilabap.com/assets/real-trade/AIA-7835926268490-binance.jpg" alt="Jchase AIAUSDT Binance Futures result">
+      <div class="proof-meta"><div class="proof-user">Desk A · +52.53%</div><div class="proof-note">AIAUSDT Perpetual · Live Execution Log</div></div>
+    </div>
+    <div class="proof-card">
+      <img class="proof-img" src="https://intro.toilabap.com/assets/real-trade/z7839132950914_0602779e9ff08205371e3af42d5750ae.jpg" alt="Tracy Dang FIDAUSDT Binance Futures result">
+      <div class="proof-meta"><div class="proof-user">Desk B · +16.73%</div><div class="proof-note">FIDAUSDT Perpetual · Live Execution Log</div></div>
+    </div>
+    <div class="proof-card">
+      <img class="proof-img" src="https://intro.toilabap.com/assets/real-trade/z7839134337312_68c54258e16fb77367c05de8d8dc5ae4.jpg" alt="NguyenTuong123 FIDAUSDT Binance Futures result">
+      <div class="proof-meta"><div class="proof-user">Desk C · +21.25%</div><div class="proof-note">FIDAUSDT Perpetual · Live Execution Log</div></div>
+    </div>
+    <div class="proof-card">
+      <img class="proof-img" src="https://intro.toilabap.com/assets/real-trade/AIA-7835926268490-tradingview.jpg" alt="AIAUSDT tradingview proof">
+      <div class="proof-meta"><div class="proof-user">AIAUSDT Execution Map</div><div class="proof-note">TP ladder, market structure, timestamped trigger</div></div>
+    </div>
+    <div class="proof-card">
+      <img class="proof-img" src="https://intro.toilabap.com/assets/real-trade/z7839133247300_834a14cd1446663818db4e9602da6fc2.jpg" alt="FIDAUSDT tradingview proof">
+      <div class="proof-meta"><div class="proof-user">FIDAUSDT Execution Map</div><div class="proof-note">CHoCH trigger, tiered TP, hard SL governance</div></div>
+    </div>
+    <div class="proof-card">
+      <img class="proof-img" src="https://intro.toilabap.com/assets/real-trade/z7839137245756_35bcb63c52606fe2225ef91c6ceac730.jpg" alt="BSBUSDT tradingview proof">
+      <div class="proof-meta"><div class="proof-user">BSBUSDT Execution Map</div><div class="proof-note">TP1-TP3 filled, trend-follow trailing active</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PLATFORM / FEATURES -->
+<section class="strategies-section" id="platform">
+  <div class="section-tag fade-up">Hyperscalper Terminal · Open Source</div>
+  <h2 class="section-title fade-up">Một hệ sinh thái giao dịch <span style="color:var(--cyan)">hoàn chỉnh</span></h2>
+  <p class="section-desc fade-up">Next.js + TypeScript + WebSocket realtime. Toàn bộ source code public trên GitHub, sẵn sàng mở rộng theo chiến lược của bạn.</p>
+
+  <div class="strategy-list fade-up">
+    <div class="strat-item">
+      <div class="strat-num">01</div>
+      <div class="strat-content">
+        <div class="strat-name">Market Scanner Realtime</div>
+        <div class="strat-desc">Quét đồng thời CHoCH, Sweep, FVG, Volume Spike, Divergence và EMA alignment để tìm setup trước đám đông.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">CHoCH · BOS</span>
+          <span class="strat-tag tag-bull">Liquidity Sweep</span>
+          <span class="strat-tag tag-amber">Volume Trigger</span>
+          <span class="strat-tag tag-cyan">Divergence Auto</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">8+</div>
+        <div class="pf-label">Scanner Modules</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">02</div>
+      <div class="strat-content">
+        <div class="strat-name">Charts & Multi-Timeframe</div>
+        <div class="strat-desc">Scalping chart tối ưu hiệu năng, chuyển khung 1m/5m/15m/1h tức thì, hỗ trợ pop-out chart cho thiết lập nhiều màn hình.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Lightweight Charts</span>
+          <span class="strat-tag tag-bull">Hotkeys</span>
+          <span class="strat-tag tag-amber">Cloud Orders (DCA)</span>
+          <span class="strat-tag tag-cyan">P&L Tracking</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">24/7</div>
+        <div class="pf-label">Realtime Feed</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">03</div>
+      <div class="strat-content">
+        <div class="strat-name">Bot Trading Flow</div>
+        <div class="strat-desc">Luồng tự động scanner -> confluence gate -> position sizing -> TP ladder + trailing stop, chạy ổn định với PM2 và audit log đầy đủ.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Risk Rails</span>
+          <span class="strat-tag tag-bear">Max Daily Loss</span>
+          <span class="strat-tag tag-amber">Cooldown</span>
+          <span class="strat-tag tag-bull">Full Audit Log</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">PM2</div>
+        <div class="pf-label">Deployment</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">04</div>
+      <div class="strat-content">
+        <div class="strat-name">Multi-Exchange Interface</div>
+        <div class="strat-desc">Một codebase cho nhiều sàn: Binance, Alpaca, OANDA, Interactive Brokers và các tích hợp mở rộng trong roadmap.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">Binance</span>
+          <span class="strat-tag tag-cyan">Alpaca</span>
+          <span class="strat-tag tag-cyan">OANDA</span>
+          <span class="strat-tag tag-cyan">Interactive Brokers</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">1 API</div>
+        <div class="pf-label">Unified Interface</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STRATEGIES LIST -->
+<section class="strategies-section">
+  <div class="section-tag fade-up">Cộng Đồng Đang Vận Hành</div>
+  <h2 class="section-title fade-up">5 chiến lược đang<br><span style="color:var(--bull)">chạy trên thị trường thật</span></h2>
+
+  <div class="strategy-list fade-up">
+    <div class="strat-item">
+      <div class="strat-num">01</div>
+      <div class="strat-content">
+        <div class="strat-name">SMC Thuần — BTC/ETH theo dấu Cá Mập</div>
+        <div class="strat-desc">Vào lệnh khi CHoCH xác nhận + có Liquidity Sweep + đúng phiên NY thanh khoản cao. Rủi ro 1% vốn/lệnh, ATR Trailing × 4, 4 mốc chốt lời.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">BTCUSDT · ETHUSDT</span>
+          <span class="strat-tag tag-bull">Confluence 3/4</span>
+          <span class="strat-tag tag-amber">1 phút</span>
+          <span class="strat-tag tag-cyan">Binance</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">2.14</div>
+        <div class="pf-label">Profit Factor</div>
+        <div class="pf-wr">WR 63%</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">02</div>
+      <div class="strat-content">
+        <div class="strat-name">Scalp Giờ Vàng — London Open 14h–17h</div>
+        <div class="strat-desc">Chỉ giao dịch trong London Open. CHoCH trên 1 phút, HTF bias từ 5 phút. Bộ lọc siết chặt: phải đạt đủ 4 tầng xác nhận. Ít lệnh nhưng chất lượng cao.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">BTCUSDT · EURUSD</span>
+          <span class="strat-tag tag-bull">Confluence 4/4</span>
+          <span class="strat-tag tag-amber">1 phút · London</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">2.89</div>
+        <div class="pf-label">Profit Factor</div>
+        <div class="pf-wr">WR 71%</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">03</div>
+      <div class="strat-content">
+        <div class="strat-name">Swing BTC/ETH/SOL — Khung 4H theo HTF Bias</div>
+        <div class="strat-desc">HTF bias lấy từ Daily, entry trên 4H. Chỉ LONG khi giá > EMA(50) Daily. ATR trailing × 6.0, TP step × 3.0. Mỗi vị thế swing 3-10 ngày.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">BTC · ETH · SOL</span>
+          <span class="strat-tag tag-amber">4 giờ · Swing</span>
+          <span class="strat-tag tag-bull">Ít lệnh · Ít căng thẳng</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">1.98</div>
+        <div class="pf-label">Profit Factor</div>
+        <div class="pf-wr">WR 58%</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">04</div>
+      <div class="strat-content">
+        <div class="strat-name">Vùng Hút Giá (FVG Retest) — US Stocks giờ mở cửa</div>
+        <div class="strat-desc">Chờ FVG hình thành sau CHoCH, vào lệnh khi giá retest vùng mất cân bằng. Triển khai trên Alpaca: MSFT, AAPL, NVDA, SPY trong phiên NY AM 19h30-22h.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">MSFT · AAPL · NVDA</span>
+          <span class="strat-tag tag-amber">15 phút · Alpaca</span>
+          <span class="strat-tag tag-bull">FVG Pattern</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">1.76</div>
+        <div class="pf-label">Profit Factor</div>
+        <div class="pf-wr">WR 54%</div>
+      </div>
+    </div>
+
+    <div class="strat-item">
+      <div class="strat-num">05</div>
+      <div class="strat-content">
+        <div class="strat-name">Bẫy Liquidity + Đảo Chiều — Forex EUR/USD</div>
+        <div class="strat-desc">Kích hoạt lệnh ngay sau Liquidity Sweep xác nhận. Pattern "Silver Bullet": wick xuyên pivot -> nến đóng ngược chiều -> CHoCH. Rủi ro 0.5% do đòn bẩy cao.</div>
+        <div class="strat-tags">
+          <span class="strat-tag tag-cyan">EURUSD · GBPUSD</span>
+          <span class="strat-tag tag-bear">Risk 0.5%</span>
+          <span class="strat-tag tag-amber">5 phút · OANDA</span>
+          <span class="strat-tag tag-bull">Silver Bullet</span>
+        </div>
+      </div>
+      <div class="strat-pf">
+        <div class="pf-val">2.31</div>
+        <div class="pf-label">Profit Factor</div>
+        <div class="pf-wr">WR 61%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HONEST SECTION -->
+<div class="honest-section">
+  <div class="honest-inner">
+    <div class="section-tag fade-up">Góc Nhìn Thẳng Thắn</div>
+    <h2 class="section-title fade-up">Chúng tôi không bán<br><span style="color:var(--pending)">"chén thánh"</span></h2>
+
+    <div class="honest-grid fade-up">
+      <div>
+        <div class="honest-col-title title-bull">✅ Chúng tôi THỰC SỰ làm được</div>
+        <div class="honest-list">
+          <div class="honest-item">
+            <span class="honest-icon">⚡</span>
+            <span class="honest-text"><strong>Nén chu kỳ 7 tuần xuống 90 giây</strong> — từ hypothesis đến live deploy, không boilerplate và không data plumbing.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">🌐</span>
+            <span class="honest-text"><strong>One codebase, cross-exchange</strong> — write once, run on Alpaca, Binance, OANDA, Interactive Brokers.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">⭐</span>
+            <span class="honest-text"><strong>Confluence Score System</strong> — 4 tầng lọc giúp tăng chất lượng tín hiệu, giảm nhiễu thị trường.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">🚀</span>
+            <span class="honest-text"><strong>Test 50 hypotheses</strong> trong khi quỹ tổ chức chỉ test được 1. Đây là moat về tốc độ thực thi.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">🤖</span>
+            <span class="honest-text"><strong>24/7 automated execution</strong> — bot bám phiên thanh khoản cao, theo dấu dòng tiền, quản trị thoát lệnh ngay cả khi bạn offline.</span>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="honest-col-title title-red">❌ Chúng tôi KHÔNG làm</div>
+        <div class="honest-list">
+          <div class="honest-item">
+            <span class="honest-icon">🔮</span>
+            <span class="honest-text"><strong>Không "tạo alpha" thay bạn</strong> — AI chỉ compile strategy của bạn, không thể tạo edge từ khoảng trống.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">📈</span>
+            <span class="honest-text"><strong>Không cam kết lợi nhuận</strong> — bản chất quant research là thử nghiệm liên tục; phần lớn hypothesis sẽ fail.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">🧠</span>
+            <span class="honest-text"><strong>Không thay thế tư duy chiến lược</strong> — thesis sai thì backtest chỉ giúp bạn fail nhanh hơn, rẻ hơn.</span>
+          </div>
+          <div class="honest-item">
+            <span class="honest-icon">⚙️</span>
+            <span class="honest-text"><strong>Không tự tối ưu tham số vô điều kiện</strong> — bạn vẫn phải kiểm soát trade-off giữa overfitting và robustness.</span>
+          </div>
+        </div>
+        <div style="margin-top:24px;padding:20px;background:rgba(60,211,254,0.06);border:1px solid rgba(60,211,254,0.2);border-radius:12px;border-left:3px solid var(--cyan)">
+          <p style="font-size:14px;color:var(--muted2);line-height:1.6;margin:0"><em>"Bạn có tốc độ thực thi tương đương junior quant $650K/năm. Còn alpha discovery vẫn là phần việc cốt lõi của bạn."</em></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- FOUNDER SECTION -->
+<div class="founder-section" id="founder">
+  <div class="founder-inner">
+    <div class="founder-grid">
+      <!-- Photo -->
+      <div class="founder-photo-wrap">
+        <div class="founder-photo-frame">
+          <img src="https://intro.toilabap.com/assets/founder.jpg" alt="Founder Toilabap.com" class="founder-photo">
+          <div class="founder-photo-overlay"></div>
+          <div class="founder-accent-line"></div>
+        </div>
+        <div class="founder-stat-float">
+          <div class="float-stat">
+            <span class="float-num">5+</span>
+            <span class="float-lbl">năm trading</span>
+          </div>
+          <div class="float-divider"></div>
+          <div class="float-stat">
+            <span class="float-num">50+</span>
+            <span class="float-lbl">chiến lược backtest</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="founder-content">
+        <div class="section-tag" style="margin-bottom:16px">Người Sáng Lập</div>
+        <h2 class="section-title" style="margin-bottom:8px">Ngô Xuân Hùng</h2>
+        <div class="founder-title-badge">
+          <span class="ftag">Algo Trader</span>
+          <span class="fdot">·</span>
+          <span class="ftag">Quant Developer</span>
+          <span class="fdot">·</span>
+          <span class="ftag">Builder @ Toilabap.com</span>
+        </div>
+
+        <div class="founder-bio">
+          <p>Từng là trader tự do mất hàng tuần để code và debug một chiến lược duy nhất, tôi hiểu rõ <strong>điểm nghẽn 7 tuần</strong> không nằm trên slide lý thuyết mà nằm ở thực chiến.</p>
+          <p>Sau nhiều năm giao dịch Crypto, Forex và Stocks, tôi nhận ra khoảng cách giữa luận điểm tốt và thực thi đúng bản chất là <strong>bài toán hạ tầng, quy trình và tốc độ</strong>.</p>
+          <p>Toilabap.com ra đời từ một câu hỏi thẳng: <em>"Nếu junior quant ở quỹ lớn test được 50 hypothesis trong 7 tuần, tại sao trader cá nhân phải mất 7 tuần cho đúng 1 hypothesis?"</em></p>
+        </div>
+
+        <div class="founder-quote">
+          <div class="quote-line"></div>
+          <p class="quote-text">"Tôi không bán chén thánh. Tôi thu hẹp khoảng cách hạ tầng giữa retail trader và desk tổ chức. Phần tìm edge vẫn thuộc về bạn."</p>
+          <div class="quote-author">— Ngô Xuân Hùng, Founder · Toilabap.com</div>
+        </div>
+
+        <div class="founder-links">
+          <a href="https://t.me/Jbap1989" class="founder-link">
+            <span class="fl-icon">💬</span>
+            <span class="fl-text">@Jbap1989</span>
+          </a>
+          <a href="https://www.facebook.com/share/1EVjJuNhce/?mibextid=wwXIfr" class="founder-link">
+            <span class="fl-icon">👥</span>
+            <span class="fl-text">Facebook</span>
+          </a>
+          <a href="mailto:ngoxuanhung17041989@gmail.com" class="founder-link">
+            <span class="fl-icon">✉️</span>
+            <span class="fl-text">Email trực tiếp</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-section" id="contact">
+  <div class="cta-glow"></div>
+  <div class="cta-inner">
+    <div class="section-tag" style="display:inline-block;margin-bottom:24px">Bắt Đầu Ngay</div>
+    <h2 class="cta-title fade-up">
+      Lợi thế hạ tầng của<br>
+      các desk lớn đã được<br>
+      <span style="color:var(--cyan)">thu hẹp đáng kể.</span>
+    </h2>
+    <p class="cta-desc fade-up">
+      12,000+ trader đang chờ Closed Beta. Đăng ký truy cập sớm hoặc liên hệ trực tiếp để được onboard ngay trong hôm nay.
+    </p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap" class="fade-up">
+      <a href="https://app.toilabap.com" class="btn-primary" style="font-size:16px;padding:16px 40px">
+        Đăng ký Waitlist
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="https://github.com/Dinoxv/toilabap.com" class="btn-ghost" style="font-size:16px;padding:16px 40px">
+        <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+        Open Source
+      </a>
+    </div>
+
+    <div class="contact-grid fade-up">
+      <a href="https://app.toilabap.com" class="contact-card">
+        <div class="contact-icon">🌐</div>
+        <div class="contact-platform">Website</div>
+        <div class="contact-handle">Toilabap.com</div>
+        <div class="contact-desc">Đăng ký waitlist, xem thông tin sản phẩm và tài liệu triển khai</div>
+      </a>
+      <a href="https://t.me/Jbap1989" class="contact-card">
+        <div class="contact-icon">💬</div>
+        <div class="contact-platform">Telegram</div>
+        <div class="contact-handle">@Jbap1989</div>
+        <div class="contact-desc">Hỗ trợ thời gian thực, thảo luận chiến lược, thử thách hypothesis</div>
+      </a>
+      <a href="https://zalo.me/859295259" class="contact-card">
+        <div class="contact-icon">📱</div>
+        <div class="contact-platform">Zalo</div>
+        <div class="contact-handle">+84 859 295 259</div>
+        <div class="contact-desc">Hỗ trợ trực tiếp thị trường Việt Nam</div>
+      </a>
+      <a href="https://www.facebook.com/share/1EVjJuNhce/?mibextid=wwXIfr" class="contact-card">
+        <div class="contact-icon">👥</div>
+        <div class="contact-platform">Facebook</div>
+        <div class="contact-handle">Kết nối tại đây</div>
+        <div class="contact-desc">Cộng đồng, nội dung chuyên sâu, case study giao dịch thực tế</div>
+      </a>
+      <a href="https://github.com/Dinoxv/toilabap.com" class="contact-card">
+        <div class="contact-icon">🐙</div>
+        <div class="contact-platform">GitHub</div>
+        <div class="contact-handle">Dinoxv/toilabap.com</div>
+        <div class="contact-desc">Source code, Hyperscalper, tài liệu kỹ thuật</div>
+      </a>
+      <a href="mailto:ngoxuanhung17041989@gmail.com" class="contact-card">
+        <div class="contact-icon">✉️</div>
+        <div class="contact-platform">Email</div>
+        <div class="contact-handle">ngoxuanhung17041989@gmail.com</div>
+        <div class="contact-desc">Partnership, B2B, tích hợp và hợp tác chiến lược</div>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo">
+      <img src="https://intro.toilabap.com/assets/toilabap.com-logo-dark.svg" alt="Toilabap.com Logo" style="height: 32px; width: auto;">
+    </div>
+    <p class="footer-disclaimer">
+      ⚠️ Giao dịch luôn tiềm ẩn rủi ro cao. Hiệu suất backtest trong quá khứ không đảm bảo kết quả trong tương lai. Mọi thông tin trên trang chỉ nhằm mục đích tham khảo, không phải khuyến nghị đầu tư tài chính.
+    </p>
+    <div class="footer-bottom">
+      <a href="https://app.toilabap.com" class="footer-link">Toilabap.com</a>
+      <a href="https://ritchi.guru" class="footer-link">Ritchi.guru</a>
+      <a href="https://github.com/Dinoxv/toilabap.com" class="footer-link">GitHub</a>
+      <a href="https://t.me/Jbap1989" class="footer-link">Telegram</a>
+      <span class="footer-link" style="cursor:default">© 2025 Toilabap.com × Ritchi</span>
+    </div>
+  </div>
+</footer>
+
+

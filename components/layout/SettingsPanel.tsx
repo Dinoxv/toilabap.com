@@ -124,15 +124,15 @@ export default function SettingsPanel() {
 
   const orderSettingsByExchange = settings.orders.byExchange ?? {
     hyperliquid: {
-      cloudPercentage: settings.orders.cloudPercentage,
-      smallPercentage: settings.orders.smallPercentage,
-      bigPercentage: settings.orders.bigPercentage,
+      cloudInitialMarginUsdt: settings.orders.cloudInitialMarginUsdt ?? settings.orders.cloudPercentage ?? 5,
+      smallInitialMarginUsdt: settings.orders.smallInitialMarginUsdt ?? settings.orders.smallPercentage ?? 10,
+      bigInitialMarginUsdt: settings.orders.bigInitialMarginUsdt ?? settings.orders.bigPercentage ?? 25,
       leverage: settings.orders.leverage,
     },
     binance: {
-      cloudPercentage: settings.orders.cloudPercentage,
-      smallPercentage: settings.orders.smallPercentage,
-      bigPercentage: settings.orders.bigPercentage,
+      cloudInitialMarginUsdt: settings.orders.cloudInitialMarginUsdt ?? settings.orders.cloudPercentage ?? 5,
+      smallInitialMarginUsdt: settings.orders.smallInitialMarginUsdt ?? settings.orders.smallPercentage ?? 10,
+      bigInitialMarginUsdt: settings.orders.bigInitialMarginUsdt ?? settings.orders.bigPercentage ?? 25,
       leverage: settings.orders.leverage,
     },
   };
@@ -463,6 +463,14 @@ export default function SettingsPanel() {
                         label={`${t.settings.playSoundOnResults} - ${selectedExchange.toUpperCase()}`}
                         checked={activeScannerRuntime.playSound}
                         onChange={(checked) => updateScannerRuntimeExchange(selectedExchange, { playSound: checked })}
+                      />
+                    </div>
+
+                    <div>
+                      <SettingCheckboxRow
+                        label="Phát âm thanh khi có tín hiệu mới"
+                        checked={settings.scanner.playSoundOnNewSignal}
+                        onChange={(checked) => updateScannerSettings({ playSoundOnNewSignal: checked })}
                       />
                     </div>
                   </div>
@@ -2160,6 +2168,22 @@ export default function SettingsPanel() {
                           <div className={` mb-2`}>{t.settings.parameters}</div>
                           <div className="grid grid-cols-2 gap-3 text-xs">
                             <div>
+                              <SettingLabel>HTF TF</SettingLabel>
+                              <select
+                                value={settings.indicators.trendMatrix.htfTF}
+                                onChange={(e) => updateTrendMatrixSettings({ htfTF: e.target.value as '1m' | '3m' | '5m' | '15m' | '1h' | '4h' | '1d' })}
+                                className={INPUT_COMPACT_CLASS}
+                              >
+                                <option value="3m">3m</option>
+                                <option value="5m">5m</option>
+                                <option value="15m">15m</option>
+                                <option value="1h">1h</option>
+                                <option value="4h">4h</option>
+                                <option value="1d">1d</option>
+                              </select>
+                              <div className="mt-1 inline-flex items-center rounded-full border border-cyan-400/30 bg-cyan-400/10 px-2 py-0.5 text-[10px] font-semibold text-cyan-200">HTF đang dùng: 1m → 3m, 5m → 15m</div>
+                            </div>
+                            <div>
                               <SettingLabel>MS Len</SettingLabel>
                               <input type="number" min="2" max="50" value={settings.indicators.trendMatrix.msLen} onChange={(e) => updateTrendMatrixSettings({ msLen: Number(e.target.value) || 2 })} className={INPUT_COMPACT_CLASS} />
                             </div>
@@ -2186,10 +2210,6 @@ export default function SettingsPanel() {
                             <div>
                               <SettingLabel>Max Loss %</SettingLabel>
                               <input type="number" min="0.1" max="100" step="0.1" value={settings.indicators.trendMatrix.maxLossPercent} onChange={(e) => updateTrendMatrixSettings({ maxLossPercent: Number(e.target.value) || 0.1 })} className={INPUT_COMPACT_CLASS} />
-                            </div>
-                            <div>
-                              <SettingLabel>Partial TP %</SettingLabel>
-                              <input type="number" min="0.1" max="100" step="0.1" value={settings.indicators.trendMatrix.partialTpPct} onChange={(e) => updateTrendMatrixSettings({ partialTpPct: Number(e.target.value) || 0.1 })} className={INPUT_COMPACT_CLASS} />
                             </div>
                             <div>
                               <SettingLabel>Bull Color</SettingLabel>
@@ -2230,61 +2250,46 @@ export default function SettingsPanel() {
                   <div>
                     <label className="text-primary-muted font-mono block mb-2 text-xs flex items-center justify-between">
                       <span>{t.settings.cloudOrders}</span>
-                      <span className="text-accent-blue">{activeOrderSettings.cloudPercentage}%</span>
+                      <span className="text-accent-blue">{activeOrderSettings.cloudInitialMarginUsdt} USDT</span>
                     </label>
                     <input
-                      type="range"
+                      type="number"
                       min="1"
-                      max="50"
                       step="1"
-                      value={activeOrderSettings.cloudPercentage}
-                      onChange={(e) => updateOrderSettingsExchange(selectedExchange, { cloudPercentage: Number(e.target.value) })}
-                      className={`${RANGE_FIELD_CLASS} accent-accent-blue`}
+                      value={activeOrderSettings.cloudInitialMarginUsdt}
+                      onChange={(e) => updateOrderSettingsExchange(selectedExchange, { cloudInitialMarginUsdt: Number(e.target.value) || 1 })}
+                      className={INPUT_FIELD_CLASS}
                     />
-                    <div className="flex justify-between text-[10px] text-primary-muted mt-1">
-                      <span>1%</span>
-                      <span>50%</span>
-                    </div>
                   </div>
 
                   <div>
                     <label className="text-primary-muted font-mono block mb-2 text-xs flex items-center justify-between">
                       <span>{t.settings.smallOrders}</span>
-                      <span className="text-primary">{activeOrderSettings.smallPercentage}%</span>
+                      <span className="text-primary">{activeOrderSettings.smallInitialMarginUsdt} USDT</span>
                     </label>
                     <input
-                      type="range"
+                      type="number"
                       min="1"
-                      max="50"
                       step="1"
-                      value={activeOrderSettings.smallPercentage}
-                      onChange={(e) => updateOrderSettingsExchange(selectedExchange, { smallPercentage: Number(e.target.value) })}
-                      className={`${RANGE_FIELD_CLASS} accent-primary`}
+                      value={activeOrderSettings.smallInitialMarginUsdt}
+                      onChange={(e) => updateOrderSettingsExchange(selectedExchange, { smallInitialMarginUsdt: Number(e.target.value) || 1 })}
+                      className={INPUT_FIELD_CLASS}
                     />
-                    <div className="flex justify-between text-[10px] text-primary-muted mt-1">
-                      <span>1%</span>
-                      <span>50%</span>
-                    </div>
                   </div>
 
                   <div>
                     <label className="text-primary-muted font-mono block mb-2 text-xs flex items-center justify-between">
                       <span>{t.settings.bigOrders}</span>
-                      <span className="text-accent-rose">{activeOrderSettings.bigPercentage}%</span>
+                      <span className="text-accent-rose">{activeOrderSettings.bigInitialMarginUsdt} USDT</span>
                     </label>
                     <input
-                      type="range"
+                      type="number"
                       min="1"
-                      max="100"
                       step="1"
-                      value={activeOrderSettings.bigPercentage}
-                      onChange={(e) => updateOrderSettingsExchange(selectedExchange, { bigPercentage: Number(e.target.value) })}
-                      className={`${RANGE_FIELD_CLASS} accent-accent-rose`}
+                      value={activeOrderSettings.bigInitialMarginUsdt}
+                      onChange={(e) => updateOrderSettingsExchange(selectedExchange, { bigInitialMarginUsdt: Number(e.target.value) || 1 })}
+                      className={INPUT_FIELD_CLASS}
                     />
-                    <div className="flex justify-between text-[10px] text-primary-muted mt-1">
-                      <span>1%</span>
-                      <span>100%</span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -2308,7 +2313,7 @@ export default function SettingsPanel() {
                     onChange={(e) => updateOrderSettingsExchange(selectedExchange, { leverage: Number(e.target.value) })}
                     className={`${RANGE_FIELD_CLASS} accent-accent-yellow`}
                   />
-                  <div className="flex justify-between text-[10px] text-primary-muted mt-1">
+                  <div className="flex justify-between text-[10px] text-primary-muted/50 mt-1">
                     <span>1x</span>
                     <span>25x</span>
                     <span>50x</span>

@@ -2,6 +2,10 @@
   <img src="docs/toilabap.com/toilabap.com-logo-light.svg" alt="Logo Toilabap" width="320" />
 </p>
 
+<p align="center">
+  <img src="public/landing/hero-screen.png" alt="Màn hình giao diện Hyperscalper" width="1000" />
+</p>
+
 # Toilabap.com x Hyperscalper
 
 Toilabap.com x Hyperscalper là nền tảng giao dịch thuật toán mã nguồn mở, giúp đội ngũ giao dịch và kỹ thuật triển khai chiến lược từ ý tưởng đến chạy thực tế nhanh, có cấu trúc và dễ mở rộng.
